@@ -1,0 +1,9 @@
+[general]
+name=Open Fibre
+description=This plugin helps make Open Fibre data.
+version=1.0
+qgisMinimumVersion=3.0
+supportsQt6=True
+author=UOpen Data Services
+email=ucode@opendataservices.coop
+icon=logo.png

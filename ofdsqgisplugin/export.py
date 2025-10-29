@@ -42,6 +42,8 @@ def get_json(layers):
                 "id": f.attribute("spans/0/id"),
                 "name": f.attribute("spans/0/name") or "",
                 "route": json.loads(f.geometry().asJson()),
+                "start": f.attribute("spans/0/start") or "",
+                "end": f.attribute("spans/0/end") or "",
             }
         )
     # done

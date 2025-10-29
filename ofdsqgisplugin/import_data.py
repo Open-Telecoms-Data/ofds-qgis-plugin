@@ -38,6 +38,9 @@ def import_json(layers, data):
                     span_feature = QgsFeature(layers["spans"].fields())
                     span_feature.setAttribute("spans/0/id", span.get("id"))
                     span_feature.setAttribute("spans/0/name", span.get("name"))
+                    span_feature.setAttribute("spans/0/start", span.get("start"))
+                    span_feature.setAttribute("spans/0/end", span.get("end"))
+
                     span_feature.setGeometry(
                         QgsJsonUtils.geometryFromGeoJson(
                             json.dumps(span.get("route", "{}"))

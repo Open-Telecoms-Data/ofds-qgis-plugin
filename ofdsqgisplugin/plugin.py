@@ -7,6 +7,7 @@ from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 from .add_layers import add_layers
 from .export import get_json
+from .import_data import import_json
 from .lib import find_layers
 
 PLUGIN_DIR = os.path.dirname(__file__)
@@ -25,6 +26,14 @@ class OFDSQGISPlugin:
         )
         self.iface.addToolBarIcon(self.action_add_layers)
         self.action_add_layers.triggered.connect(self.add_layers)
+        # --------------------- import JSON
+        self.action_import_json = QAction(
+            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_import_json.png"))),
+            "Import JSON",
+            self.iface.mainWindow(),
+        )
+        self.iface.addToolBarIcon(self.action_import_json)
+        self.action_import_json.triggered.connect(self.import_json)
         # --------------------- export JSON
         self.action_export_json = QAction(
             QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_export_json.png"))),
@@ -37,6 +46,8 @@ class OFDSQGISPlugin:
     def unload(self):
         self.iface.removeToolBarIcon(self.action_add_layers)
         del self.action_add_layers
+        self.iface.removeToolBarIcon(self.action_import_json)
+        del self.action_import_json
         self.iface.removeToolBarIcon(self.action_export_json)
         del self.action_export_json
 
@@ -80,3 +91,23 @@ class OFDSQGISPlugin:
         # Save JSON
         with open(filename, "w") as fp:
             json.dump(data, fp, indent=2)
+
+    def import_json(self):
+        # check
+        layers = find_layers()
+        if not layers:
+            self.iface.messageBar().pushMessage("Add OFDS layers first")
+            return
+        # get filename
+        filename_details = QFileDialog.getOpenFileName(
+            None, "Select input JSON file ", "", "*.json"
+        )
+        # catch cancel being pressed
+        if not filename_details[0]:
+            return
+        # Get new filenme
+        filename = filename_details[0]
+        # import JSON
+        with open(filename) as fp:
+            data = json.load(fp)
+        import_json(layers, data)

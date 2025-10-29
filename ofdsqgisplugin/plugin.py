@@ -41,6 +41,12 @@ class OFDSQGISPlugin:
         del self.action_export_json
 
     def add_layers(self):
+        # checks
+        layers = find_layers()
+        if layers:
+            self.iface.messageBar().pushMessage("This project already has OFDS layers")
+            return
+        # get filename
         filename_details = QFileDialog.getSaveFileName(
             None, "Select output file ", "", "*.gpkg"
         )

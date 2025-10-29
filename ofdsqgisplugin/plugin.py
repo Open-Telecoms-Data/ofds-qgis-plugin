@@ -9,6 +9,7 @@ from .add_layers import add_layers
 from .export import get_json
 from .import_data import import_json
 from .lib import find_layers
+from .validate import validate
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -34,6 +35,14 @@ class OFDSQGISPlugin:
         )
         self.iface.addToolBarIcon(self.action_import_json)
         self.action_import_json.triggered.connect(self.import_json)
+        # --------------------- validate
+        self.action_validate = QAction(
+            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_validate.png"))),
+            "Validate",
+            self.iface.mainWindow(),
+        )
+        self.iface.addToolBarIcon(self.action_validate)
+        self.action_validate.triggered.connect(self.validate)
         # --------------------- export JSON
         self.action_export_json = QAction(
             QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_export_json.png"))),
@@ -48,6 +57,8 @@ class OFDSQGISPlugin:
         del self.action_add_layers
         self.iface.removeToolBarIcon(self.action_import_json)
         del self.action_import_json
+        self.iface.removeToolBarIcon(self.action_validate)
+        del self.action_validate
         self.iface.removeToolBarIcon(self.action_export_json)
         del self.action_export_json
 
@@ -111,3 +122,12 @@ class OFDSQGISPlugin:
         with open(filename) as fp:
             data = json.load(fp)
         import_json(layers, data)
+
+    def validate(self):
+        # check
+        layers = find_layers()
+        if not layers:
+            self.iface.messageBar().pushMessage("Add OFDS layers first")
+            return
+        # Validate
+        validate(layers, self.iface.messageBar())

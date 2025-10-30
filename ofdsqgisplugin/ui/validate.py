@@ -20,9 +20,14 @@ class Ui_Dialog(object):
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
-        self.textBrowser = QtWidgets.QTextBrowser(Dialog)
-        self.textBrowser.setGeometry(QtCore.QRect(20, 20, 256, 192))
-        self.textBrowser.setObjectName("textBrowser")
+        self.scrollArea = QtWidgets.QScrollArea(Dialog)
+        self.scrollArea.setGeometry(QtCore.QRect(0, 10, 401, 221))
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 399, 219))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)  # type: ignore

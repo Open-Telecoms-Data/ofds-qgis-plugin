@@ -1,0 +1,6 @@
+# Lint and check code
+black
+isort
+flake8
+# For QT Designer forms -> python
+pyqt5-tools

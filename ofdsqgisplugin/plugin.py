@@ -9,7 +9,7 @@ from .add_layers import add_layers
 from .export import get_json
 from .import_data import import_json
 from .lib import find_layers
-from .validate import validate
+from .validate import ValidateDialog
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -17,6 +17,7 @@ PLUGIN_DIR = os.path.dirname(__file__)
 class OFDSQGISPlugin:
     def __init__(self, iface):
         self.iface = iface
+        self.validate_dialog = ValidateDialog()
 
     def initGui(self):
         # --------------------- Add Layers
@@ -59,6 +60,8 @@ class OFDSQGISPlugin:
         del self.action_import_json
         self.iface.removeToolBarIcon(self.action_validate)
         del self.action_validate
+        self.validate_dialog.close()
+        del self.validate_dialog
         self.iface.removeToolBarIcon(self.action_export_json)
         del self.action_export_json
 
@@ -130,4 +133,5 @@ class OFDSQGISPlugin:
             self.iface.messageBar().pushMessage("Add OFDS layers first")
             return
         # Validate
-        validate(layers, self.iface.messageBar())
+        self.validate_dialog.validate(layers)
+        self.validate_dialog.show()

@@ -133,5 +133,4 @@ class OFDSQGISPlugin:
             self.iface.messageBar().pushMessage("Add OFDS layers first")
             return
         # Validate
-        self.validate_dialog.validate(layers)
-        self.validate_dialog.show()
+        self.validate_dialog.validate(layers, self.iface.messageBar())

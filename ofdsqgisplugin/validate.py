@@ -14,12 +14,13 @@ class ValidateDialog(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
-    def validate(self, layers):
+    def validate(self, layers, message_bar):
         data = get_json(layers)
         validator = PythonValidate()
         results = validator.validate(data)
-        if results:
-            out = "\n".join(["ERROR: " + str(r) for r in results])
-        else:
-            out = "No errors found!"
+        if not results:
+            message_bar.pushMessage("No errors found while validating OFDS data!")
+            return
+        out = "\n".join(["ERROR: " + str(r) for r in results])
         self.ui.textBrowser.setText(out)
+        self.show()

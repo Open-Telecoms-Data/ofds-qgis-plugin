@@ -95,38 +95,40 @@ def add_layers(filename):
     # spans_layer.triggerRepaint() may be needed, but as this point there is no data to repaint
 
     # Configure layer fields
-    for idx, type, config in [
-        (0, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (1, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (2, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (3, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (4, "TextEdit", {}),
-        (5, "TextEdit", {}),
-        (6, "TextEdit", {}),
-        (7, "TextEdit", {}),
-        (8, "TextEdit", {}),
-        (9, "TextEdit", {}),
-        (10, "TextEdit", {}),
-        (11, "TextEdit", {}),
-        (12, "TextEdit", {}),
-        (13, "TextEdit", {}),
-        (14, "TextEdit", {}),
-        (15, "TextEdit", {}),
-        (16, "TextEdit", {}),
-        (17, "TextEdit", {}),
-        (18, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (19, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (20, "TextEdit", {}),
-        (21, "TextEdit", {}),
-        (22, "TextEdit", {}),
-        (23, "TextEdit", {}),
+    for idx, type, config, alias in [
+        (0, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
+        (1, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Name"),
+        (2, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Website"),
+        (3, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Publisher ID"),
+        (4, "TextEdit", {}, "Publisher Name"),
+        (5, "TextEdit", {}, "Publisher Identifier ID"),
+        (6, "TextEdit", {}, "Publisher Identifier Scheme"),
+        (7, "TextEdit", {}, "Publisher Identifier Legal Name"),
+        (8, "TextEdit", {}, "Publisher Identifier URI"),
+        (9, "TextEdit", {}, "Publisher Country"),
+        (10, "TextEdit", {}, "Publisher Roles"),
+        (11, "TextEdit", {}, "Publisher Role Details"),
+        (12, "TextEdit", {}, "Publisher Website"),
+        (13, "TextEdit", {}, "Publisher Logo"),
+        (14, "TextEdit", {}, "Publication Date"),
+        (15, "TextEdit", {}, "Collection Date"),
+        (16, "TextEdit", {}, "Accuracy"),
+        (17, "TextEdit", {}, "Accuracy Details"),
+        (18, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Language"),
+        (19, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Id"),
+        (20, "TextEdit", {}, None),
+        (21, "TextEdit", {}, None),
+        (22, "TextEdit", {}, None),
+        (23, "TextEdit", {}, None),
     ]:
         networks_layer.setEditorWidgetSetup(idx, QgsEditorWidgetSetup(type, config))
+        if alias:
+            networks_layer.setFieldAlias(idx, alias)
 
-    for idx, type, config in [
-        (0, "Hidden", {}),
-        (1, "UuidGenerator", {}),
-        (2, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
+    for idx, type, config, alias in [
+        (0, "Hidden", {}, None),
+        (1, "UuidGenerator", {}, "Id"),
+        (2, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Name"),
         (
             3,
             "ValueRelation",
@@ -145,6 +147,7 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "phases/0/name",
             },
+            "Phase",
         ),
         (
             4,
@@ -159,12 +162,18 @@ def add_layers(filename):
                     {"Under construction": "underConstruction"},
                 ]
             },
+            "Status",
         ),
-        (5, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (6, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (7, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (8, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (9, "ValueMap", {"map": COUNTRY_VALUE_MAP}),
+        (5, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Address Street"),
+        (6, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Address Locality"),
+        (7, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Address Region"),
+        (
+            8,
+            "TextEdit",
+            {"IsMultiline": False, "UseHtml": False},
+            "Address Postal Code",
+        ),
+        (9, "ValueMap", {"map": COUNTRY_VALUE_MAP}, "Address Country"),
         (
             10,
             "ValueMap",
@@ -184,9 +193,15 @@ def add_layers(filename):
                     {"Tower": "tower"},
                 ]
             },
+            "Type",
         ),
-        (11, "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}),
-        (12, "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}),
+        (
+            11,
+            "ValueMap",
+            {"map": [{"True": "true"}, {"False": "false"}]},
+            "Access Point",
+        ),
+        (12, "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}, "Power"),
         (
             13,
             "ValueMap",
@@ -196,6 +211,7 @@ def add_layers(filename):
                     {"Multi-Protocol Label Switching": "mpls"},
                 ]
             },
+            "Technologies",
         ),
         (
             14,
@@ -215,6 +231,7 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "organisations/0/name",
             },
+            "Physical Infrastructure Provider",
         ),
         (
             15,
@@ -234,11 +251,12 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "organisations/0/name",
             },
+            "Network Providers",
         ),
-        (16, "Hidden", {}),
-        (17, "Hidden", {}),
-        (18, "Hidden", {}),
-        (19, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
+        (16, "Hidden", {}, None),
+        (17, "Hidden", {}, None),
+        (18, "Hidden", {}, None),
+        (19, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
         (
             20,
             "ValueRelation",
@@ -257,15 +275,18 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "name",
             },
+            None,
         ),
-        (21, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
+        (21, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
     ]:
         nodes_layer.setEditorWidgetSetup(idx, QgsEditorWidgetSetup(type, config))
+        if alias:
+            nodes_layer.setFieldAlias(idx, alias)
 
-    for idx, type, config in [
-        (0, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (1, "UuidGenerator", {}),
-        (2, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
+    for idx, type, config, alias in [
+        (0, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
+        (1, "UuidGenerator", {}, "Id"),
+        (2, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Name"),
         (
             3,
             "ValueRelation",
@@ -284,6 +305,7 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "phases/0/name",
             },
+            "Phase",
         ),
         (
             4,
@@ -298,6 +320,7 @@ def add_layers(filename):
                     {"Under construction": "underConstruction"},
                 ]
             },
+            "Status",
         ),
         (
             5,
@@ -309,6 +332,7 @@ def add_layers(filename):
                 "field_format": "yyyy-MM-dd",
                 "field_iso_format": False,
             },
+            "Ready for service date",
         ),
         (
             6,
@@ -328,6 +352,7 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "nodes/0/name",
             },
+            "Start Node",
         ),
         (
             7,
@@ -347,8 +372,9 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "nodes/0/name",
             },
+            "End Node",
         ),
-        (8, "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}),
+        (8, "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}, "Directed"),
         (
             9,
             "ValueRelation",
@@ -367,6 +393,7 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "organisations/0/name",
             },
+            "Physical Infrastructure Provider",
         ),
         (
             10,
@@ -386,6 +413,7 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "organisations/0/name",
             },
+            "Supplier",
         ),
         (
             11,
@@ -398,6 +426,7 @@ def add_layers(filename):
                     {"Microwave radio": "microwave"},
                 ]
             },
+            "Transmission Medium",
         ),
         (
             12,
@@ -408,9 +437,15 @@ def add_layers(filename):
                     {"Below ground": "belowGround"},
                 ]
             },
+            "Deployment",
         ),
-        (13, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (14, "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}),
+        (
+            13,
+            "TextEdit",
+            {"IsMultiline": False, "UseHtml": False},
+            "Deployment Details",
+        ),
+        (14, "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}, "Dark Fibre"),
         (
             15,
             "ValueMap",
@@ -425,11 +460,22 @@ def add_layers(filename):
                     {"G.657": "G.657"},
                 ]
             },
+            "Fibre Type",
         ),
-        (16, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (17, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (18, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (19, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
+        (
+            16,
+            "TextEdit",
+            {"IsMultiline": False, "UseHtml": False},
+            "Fibre Type Subtype",
+        ),
+        (
+            17,
+            "TextEdit",
+            {"IsMultiline": False, "UseHtml": False},
+            "Fibre Type Details",
+        ),
+        (18, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Fibre Count"),
+        (19, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Fibre Length"),
         (
             20,
             "ValueMap",
@@ -441,10 +487,11 @@ def add_layers(filename):
                     {"Time Division Multiplexing": "tdm"},
                 ]
             },
+            "Technologies",
         ),
-        (21, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (22, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (23, "ValueMap", {"map": COUNTRY_VALUE_MAP}),
+        (21, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Capacity"),
+        (22, "TextEdit", {"IsMultiline": False, "UseHtml": False}, "Capacity Details"),
+        (23, "ValueMap", {"map": COUNTRY_VALUE_MAP}, "Countries"),
         (
             24,
             "ValueRelation",
@@ -463,12 +510,13 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "organisations/0/name",
             },
+            "Network Providers",
         ),
-        (25, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (26, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (27, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (28, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
-        (29, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
+        (25, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
+        (26, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
+        (27, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
+        (28, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
+        (29, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
         (
             30,
             "ValueRelation",
@@ -487,10 +535,13 @@ def add_layers(filename):
                 "UseCompleter": False,
                 "Value": "name",
             },
+            None,
         ),
-        (31, "TextEdit", {"IsMultiline": False, "UseHtml": False}),
+        (31, "TextEdit", {"IsMultiline": False, "UseHtml": False}, None),
     ]:
         spans_layer.setEditorWidgetSetup(idx, QgsEditorWidgetSetup(type, config))
+        if alias:
+            spans_layer.setFieldAlias(idx, alias)
 
     for idx, type, config in [
         (0, "TextEdit", {"IsMultiline": False, "UseHtml": False}),

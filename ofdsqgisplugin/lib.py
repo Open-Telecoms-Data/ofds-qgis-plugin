@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QDate, Qt
 from qgis.core import QgsProject, QgsVectorLayer
 
 
@@ -49,3 +50,20 @@ def find_layers():
     # That way downstream code can raise an alert on a simple "if" check
     # and can then trust all layers are present
     return None if [k for k, v in layers.items() if not v] else layers
+
+
+def set_key_in_dict_for_export(data, key, value):
+    if not value:
+        return
+    key_bits = key.split("/")
+    final_key = key_bits.pop(-1)
+    for key_bit in key_bits:
+        if key_bit in data:
+            data = data[key_bit]
+        else:
+            data[key_bit] = {}
+            data = data[key_bit]
+    if isinstance(value, QDate):
+        data[final_key] = value.toString(Qt.ISODate)
+    else:
+        data[final_key] = value

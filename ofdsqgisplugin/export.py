@@ -17,6 +17,14 @@ def get_json(layers):
             "id": network_id,
             "nodes": [],
             "spans": [],
+            "links": {
+                "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__3__0/schema/network-schema.json",
+                "rel": "describedby",
+            },
+            "crs": {
+                "name": "urn:ogc:def:crs:OGC::CRS84",
+                "uri": "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+            },
         }
         set_key_in_dict_for_export(networks[network_id], "name", f.attribute("name"))
         set_key_in_dict_for_export(
@@ -119,9 +127,11 @@ def get_json(layers):
         )
         set_key_in_dict_for_export(node_data, "type", f.attribute("nodes/0/type"))
         set_key_in_dict_for_export(
-            node_data, "accessPoint", f.attribute("nodes/0/accessPoint")
+            node_data, "accessPoint", f.attribute("nodes/0/accessPoint"), type=bool
         )
-        set_key_in_dict_for_export(node_data, "power", f.attribute("nodes/0/power"))
+        set_key_in_dict_for_export(
+            node_data, "power", f.attribute("nodes/0/power"), type=bool
+        )
         set_key_in_dict_for_export(
             node_data, "technologies", f.attribute("nodes/0/technologies")
         )
@@ -155,7 +165,7 @@ def get_json(layers):
         set_key_in_dict_for_export(span_data, "start", f.attribute("spans/0/start"))
         set_key_in_dict_for_export(span_data, "end", f.attribute("spans/0/end"))
         set_key_in_dict_for_export(
-            span_data, "directed", f.attribute("spans/0/directed")
+            span_data, "directed", f.attribute("spans/0/directed"), type=bool
         )
         set_key_in_dict_for_export(
             span_data,
@@ -179,7 +189,7 @@ def get_json(layers):
             f.attribute("spans/0/deploymentDetails/description"),
         )
         set_key_in_dict_for_export(
-            span_data, "darkFibre", f.attribute("spans/0/darkFibre")
+            span_data, "darkFibre", f.attribute("spans/0/darkFibre"), type=bool
         )
         set_key_in_dict_for_export(
             span_data, "fibreType", f.attribute("spans/0/fibreType")
@@ -195,10 +205,10 @@ def get_json(layers):
             f.attribute("spans/0/fibreTypeDetails/description"),
         )
         set_key_in_dict_for_export(
-            span_data, "fibreCount", f.attribute("spans/0/fibreCount")
+            span_data, "fibreCount", f.attribute("spans/0/fibreCount"), type=int
         )
         set_key_in_dict_for_export(
-            span_data, "fibreLength", f.attribute("spans/0/fibreLength")
+            span_data, "fibreLength", f.attribute("spans/0/fibreLength"), type=float
         )
         set_key_in_dict_for_export(
             span_data, "technologies", f.attribute("spans/0/technologies")

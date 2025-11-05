@@ -52,7 +52,7 @@ def find_layers():
     return None if [k for k, v in layers.items() if not v] else layers
 
 
-def set_key_in_dict_for_export(data, key, value):
+def set_key_in_dict_for_export(data, key, value, type=str):
     if not value:
         return
     key_bits = key.split("/")
@@ -65,5 +65,11 @@ def set_key_in_dict_for_export(data, key, value):
             data = data[key_bit]
     if isinstance(value, QDate):
         data[final_key] = value.toString(Qt.ISODate)
+    elif type == bool:
+        data[final_key] = value == "true"
+    elif type == int:
+        data[final_key] = int(value)
+    elif type == float:
+        data[final_key] = float(value)
     else:
         data[final_key] = value

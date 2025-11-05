@@ -88,6 +88,12 @@ def add_layers(filename):
     group.insertChildNode(-1, QgsLayerTreeLayer(contracts_documents_layer))
     QgsProject.instance().addMapLayer(contracts_documents_layer, False)
 
+    # Symbology
+    renderer = spans_layer.renderer()
+    symbol = renderer.symbol()
+    symbol.setWidth(1.5)
+    # spans_layer.triggerRepaint() may be needed, but as this point there is no data to repaint
+
     # Configure layer fields
     for idx, type, config in [
         (0, "TextEdit", {"IsMultiline": False, "UseHtml": False}),

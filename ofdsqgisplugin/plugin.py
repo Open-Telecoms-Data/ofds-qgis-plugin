@@ -88,7 +88,9 @@ class OFDSQGISPlugin:
         if not filename_details[0]:
             return
         # Get new filenme
-        filename = filename_details[0] + ".gpkg"
+        filename = filename_details[0] + (
+            "" if filename_details[0].endswith(".gpkg") else ".gpkg"
+        )
         # Copy template to desired location
         shutil.copyfile(os.path.join(PLUGIN_DIR, "template.gpkg"), filename)
         # add layers
@@ -108,7 +110,9 @@ class OFDSQGISPlugin:
         if not filename_details[0]:
             return
         # Get new filenme
-        filename = filename_details[0] + ".json"
+        filename = filename_details[0] + (
+            "" if filename_details[0].endswith(".json") else ".json"
+        )
         # Make JSON
         data = get_json(layers)
         # Save JSON

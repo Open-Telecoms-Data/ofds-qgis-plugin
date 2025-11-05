@@ -3,6 +3,10 @@
 A QGIS plugin for creating, editing and interacting with OFDS data.
 
 
+## **Requirements**
+
+QGIS 3.40 or higher. This was released in October 2024 and is currently (November 2025) the Long Term Version (LTS) release of QGIS.
+
 ## **Installation**
 
 This guide assumes you are familiar with QGIS.

@@ -70,9 +70,9 @@ class OFDSQGISPlugin:
         # check projection
         # The data standard says it should be OGC:CRS84
         # https://standard.ofds.info/en/0.1-dev/reference/schema.html?highlight=wgs84#coordinatereferencesystem
-        if QgsProject.instance().crs().authid() != "OGC:CRS84":
+        if QgsProject.instance().crs().authid() not in ["OGC:CRS84", "EPSG:4326"]:
             self.iface.messageBar().pushMessage(
-                "Can only use OFDS with projects in the OGC:CRS84 coordinate reference system (CRS). Please change your coordinate reference system."
+                "Can only use OFDS with projects in the OGC:CRS84 or EPSG:4326 coordinate reference system (CRS). Please change your coordinate reference system."
             )
             return
         # check already has layers

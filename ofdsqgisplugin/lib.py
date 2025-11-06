@@ -1,58 +1,36 @@
+import json
+import os
+
 from PyQt5.QtCore import QDate, Qt
 from qgis.core import QgsProject, QgsVectorLayer
 
+PLUGIN_DIR = os.path.dirname(__file__)
+
 
 def find_layers():
-    layers = {
-        "networks": None,
-        "nodes": None,
-        "spans": None,
-        "contracts": None,
-        "phases": None,
-        "spans_networkProviders": None,
-        "phases_funders": None,
-        "organisations": None,
-        "nodes_networkProviders": None,
-        "nodes_internationalConnections": None,
-        "links": None,
-        # "contracts_relatedPhases": None,
-        # "contracts_documents": None,
-    }
+    # Get Information
+    with open(
+        os.path.join(
+            PLUGIN_DIR,
+            "schema_0_3",
+            "schema_information.json",
+        )
+    ) as fp:
+        schema_information = json.load(fp)
+    # Look
+    layers = {}
     for k, v in QgsProject.instance().mapLayers().items():
         if isinstance(v, QgsVectorLayer):
-            if k.startswith("Networks_"):
-                layers["networks"] = v
-            elif k.startswith("Nodes_"):
-                layers["nodes"] = v
-            elif k.startswith("Spans_"):
-                layers["spans"] = v
-            elif k.startswith("contracts_"):
-                layers["contracts"] = v
-            elif k.startswith("Phases_"):
-                layers["phases"] = v
-            elif k.startswith("spans_networkProviders_"):
-                layers["spans_networkProviders"] = v
-            elif k.startswith("phases_funders_"):
-                layers["phases_funders"] = v
-            elif k.startswith("organisations_"):
-                layers["organisations"] = v
-            elif k.startswith("nodes_networkProviders_"):
-                layers["nodes_networkProviders"] = v
-            elif k.startswith("nodes_internationalConnections_"):
-                layers["nodes_internationalConnections"] = v
-            elif k.startswith("links_"):
-                layers["links"] = v
-            # elif k.startswith("contracts_relatedPhases"):
-            #    layers["contracts_relatedPhases"] = v
-            # elif k.startswith("contracts_documents"):
-            #    layers["contracts_documents"] = v
+            possible_layer = v.customProperty("ofdslayer")
+            if possible_layer and possible_layer in schema_information.keys():
+                layers[possible_layer] = v
     # If any of the layers are missing, return None.
     # That way downstream code can raise an alert on a simple "if" check
     # and can then trust all layers are present
     return None if [k for k, v in layers.items() if not v] else layers
 
 
-def set_key_in_dict_for_export(data, key, value, type=str):
+def set_key_in_dict_for_export(data, key, value, type=""):
     if not value:
         return
     key_bits = key.split("/")
@@ -65,11 +43,11 @@ def set_key_in_dict_for_export(data, key, value, type=str):
             data = data[key_bit]
     if isinstance(value, QDate):
         data[final_key] = value.toString(Qt.ISODate)
-    elif type == bool:
+    elif type == "boolean":
         data[final_key] = value == "true"
-    elif type == int:
+    elif type == "integer":
         data[final_key] = int(value)
-    elif type == float:
+    elif type == "number":
         data[final_key] = float(value)
     else:
         data[final_key] = value

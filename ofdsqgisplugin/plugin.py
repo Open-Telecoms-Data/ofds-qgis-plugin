@@ -92,7 +92,9 @@ class OFDSQGISPlugin:
             "" if filename_details[0].endswith(".gpkg") else ".gpkg"
         )
         # Copy template to desired location
-        shutil.copyfile(os.path.join(PLUGIN_DIR, "template.gpkg"), filename)
+        shutil.copyfile(
+            os.path.join(PLUGIN_DIR, "schema_0_3", "geopackage.gpkg"), filename
+        )
         # add layers
         add_layers(filename)
 

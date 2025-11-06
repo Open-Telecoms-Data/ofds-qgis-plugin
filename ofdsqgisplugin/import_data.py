@@ -22,8 +22,8 @@ def import_json(layers, data):
             if isinstance(nodes, list):
                 for node in nodes:
                     node_feature = QgsFeature(layers["nodes"].fields())
-                    node_feature.setAttribute("nodes/0/id", node.get("id"))
-                    node_feature.setAttribute("nodes/0/name", node.get("name"))
+                    node_feature.setAttribute("id", node.get("id"))
+                    node_feature.setAttribute("name", node.get("name"))
                     node_feature.setGeometry(
                         QgsJsonUtils.geometryFromGeoJson(
                             json.dumps(node.get("location", "{}"))
@@ -36,10 +36,10 @@ def import_json(layers, data):
             if isinstance(spans, list):
                 for span in spans:
                     span_feature = QgsFeature(layers["spans"].fields())
-                    span_feature.setAttribute("spans/0/id", span.get("id"))
-                    span_feature.setAttribute("spans/0/name", span.get("name"))
-                    span_feature.setAttribute("spans/0/start", span.get("start"))
-                    span_feature.setAttribute("spans/0/end", span.get("end"))
+                    span_feature.setAttribute("id", span.get("id"))
+                    span_feature.setAttribute("name", span.get("name"))
+                    span_feature.setAttribute("start", span.get("start"))
+                    span_feature.setAttribute("end", span.get("end"))
 
                     span_feature.setGeometry(
                         QgsJsonUtils.geometryFromGeoJson(

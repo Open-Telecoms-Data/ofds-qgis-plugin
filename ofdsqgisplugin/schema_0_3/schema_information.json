@@ -1,0 +1,710 @@
+{
+  "phases_funders": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "phases/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "phases/0/funders/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "phases/0/funders/0/name",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "networks": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "OFDS Id",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "name",
+        "alias": "Name",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "website",
+        "alias": "Website",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "publisher/name",
+        "alias": "Publisher name",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "publisher/identifier/id",
+        "alias": "Publisher Identifier ID",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "publisher/identifier/scheme",
+        "alias": "Publisher Identifier Scheme",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "publisher/identifier/legalName",
+        "alias": "Publisher Identifier Legal name",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "publisher/identifier/uri",
+        "alias": "Publisher Identifier URI",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "publicationDate",
+        "alias": "Publication Date",
+        "comment": "",
+        "type": "date"
+      },
+      {
+        "name": "collectionDate",
+        "alias": "Collection date",
+        "comment": "",
+        "type": "date"
+      },
+      {
+        "name": "accuracy",
+        "alias": "Accuracy",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "accuracyDetails",
+        "alias": "Accuracy details",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "language",
+        "alias": "Language",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "nodes_networkProviders": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/networkProviders/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/networkProviders/0/name",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "phases": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "OFDS Id",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "name",
+        "alias": "Name",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "description",
+        "alias": "Description",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "nodes_internationalConnections": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/internationalConnections/0/streetAddress",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/internationalConnections/0/locality",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/internationalConnections/0/region",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/internationalConnections/0/postalCode",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "nodes/0/internationalConnections/0/country",
+        "alias": "",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/country.csv"
+      }
+    ]
+  },
+  "nodes": {
+    "geometry_type": "POINT",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "name",
+        "alias": "Name",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "phase/id",
+        "alias": "Phase",
+        "comment": "",
+        "type": "foreignkey",
+        "foreignkey_layer": "phases",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
+      },
+      {
+        "name": "status",
+        "alias": "Status",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/nodeStatus.csv"
+      },
+      {
+        "name": "address/streetAddress",
+        "alias": "Address street address",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "address/locality",
+        "alias": "Address locality",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "address/region",
+        "alias": "Address region",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "address/postalCode",
+        "alias": "Address post codes",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "address/country",
+        "alias": "Address country",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/country.csv"
+      },
+      {
+        "name": "type",
+        "alias": "Type",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "open/nodeType.csv"
+      },
+      {
+        "name": "accessPoint",
+        "alias": "Access Point",
+        "comment": "",
+        "type": "boolean"
+      },
+      {
+        "name": "power",
+        "alias": "Power",
+        "comment": "",
+        "type": "boolean"
+      },
+      {
+        "name": "technologies",
+        "alias": "Technologies",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "physicalInfrastructureProvider/id",
+        "alias": "Physical Infrastruture Provider",
+        "comment": "",
+        "type": "foreignkey",
+        "foreignkey_layer": "organisations",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
+      }
+    ]
+  },
+  "contracts_relatedPhases": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/relatedPhases/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/relatedPhases/0/name",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "spans_networkProviders": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "spans/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "spans/0/networkProviders/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "spans/0/networkProviders/0/name",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "contracts": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/title",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/description",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/type",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/value/amount",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/value/currency",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/dateSigned",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "contracts_documents": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/documents/0/title",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/documents/0/description",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/documents/0/url",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "contracts/0/documents/0/format",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "spans": {
+    "geometry_type": "LINESTRING",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "name",
+        "alias": "Name",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "phase/id",
+        "alias": "Phase",
+        "comment": "",
+        "type": "foreignkey",
+        "foreignkey_layer": "phases",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
+      },
+      {
+        "name": "status",
+        "alias": "Status",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/spanStatus.csv"
+      },
+      {
+        "name": "readyForServiceDate",
+        "alias": "Ready for service date",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "start",
+        "alias": "Start",
+        "comment": "",
+        "type": "foreignkey",
+        "foreignkey_layer": "nodes",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
+      },
+      {
+        "name": "end",
+        "alias": "End",
+        "comment": "",
+        "type": "foreignkey",
+        "foreignkey_layer": "nodes",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
+      },
+      {
+        "name": "directed",
+        "alias": "Directed",
+        "comment": "",
+        "type": "boolean"
+      },
+      {
+        "name": "physicalInfrastructureProvider/id",
+        "alias": "Physical Infrastrutuce Provider",
+        "comment": "",
+        "type": "foreignkey",
+        "foreignkey_layer": "organisations",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
+      },
+      {
+        "name": "supplier/id",
+        "alias": "Supplier",
+        "comment": "",
+        "type": "foreignkey",
+        "foreignkey_layer": "organisations",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
+      },
+      {
+        "name": "transmissionMedium",
+        "alias": "Transmission Medium",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/transmissionMedium.csv"
+      },
+      {
+        "name": "deployment",
+        "alias": "Deployment",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/deployment.csv"
+      },
+      {
+        "name": "deploymentDetails/description",
+        "alias": "Deployment details",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "darkFibre",
+        "alias": "Dark Fibre",
+        "comment": "",
+        "type": "boolean"
+      },
+      {
+        "name": "fibreType",
+        "alias": "Fibre Type",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/fibreType.csv"
+      },
+      {
+        "name": "fibreTypeDetails/fibreSubtype",
+        "alias": "Fibre Sub Type",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "fibreTypeDetails/description",
+        "alias": "Fibre type details description",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "fibreCount",
+        "alias": "Fibre count",
+        "comment": "",
+        "type": "integer"
+      },
+      {
+        "name": "fibreLength",
+        "alias": "Fibre Length",
+        "comment": "",
+        "type": "number"
+      },
+      {
+        "name": "technologies",
+        "alias": "Technologies",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "capacity",
+        "alias": "Capacity",
+        "comment": "",
+        "type": "number"
+      },
+      {
+        "name": "capacityDetails/description",
+        "alias": "Capacity details",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  },
+  "organisations": {
+    "geometry_type": "",
+    "fields": [
+      {
+        "name": "ofds_id",
+        "json_key": "id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/name",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/identifier/id",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/identifier/scheme",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/identifier/legalName",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/identifier/uri",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/country",
+        "alias": "",
+        "comment": "",
+        "type": "codelist",
+        "codelist_filename": "closed/country.csv"
+      },
+      {
+        "name": "organisations/0/roles",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/roleDetails",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/website",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      },
+      {
+        "name": "organisations/0/logo",
+        "alias": "",
+        "comment": "",
+        "type": ""
+      }
+    ]
+  }
+}

@@ -97,7 +97,7 @@
         "name": "accuracy",
         "alias": "Accuracy",
         "comment": "",
-        "type": ""
+        "type": "number"
       },
       {
         "name": "accuracyDetails",

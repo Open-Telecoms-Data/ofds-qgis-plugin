@@ -314,7 +314,7 @@
       },
       {
         "name": "physicalInfrastructureProvider/id",
-        "alias": "Physical Infrastruture Provider",
+        "alias": "Physical Infrastructure Provider",
         "comment": "",
         "type": "foreignkey",
         "foreignkey_layer": "organisations",
@@ -555,7 +555,7 @@
       },
       {
         "name": "physicalInfrastructureProvider/id",
-        "alias": "Physical Infrastrutuce Provider",
+        "alias": "Physical Infrastructure Provider",
         "comment": "",
         "type": "foreignkey",
         "foreignkey_layer": "organisations",

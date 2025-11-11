@@ -10,6 +10,8 @@ START_OF_NETWORK = {
     "nodes": [],
     "spans": [],
     "phases": [],
+    "organisations": [],
+    "contracts": [],
     "links": {
         "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__3__0/schema/network-schema.json",
         "rel": "describedby",
@@ -89,5 +91,27 @@ def get_json(layers):
                 type=field_info["type"],
             )
         networks[network_id]["spans"].append(span_data)
+    # organisations
+    for f in layers["organisations"].getFeatures():
+        organisation_data = {}
+        for field_info in schema_information["organisations"]["fields"]:
+            set_key_in_dict_for_export(
+                organisation_data,
+                field_info.get("json_key", field_info["name"]),
+                f.attribute(field_info["name"]),
+                type=field_info["type"],
+            )
+        networks[network_id]["organisations"].append(organisation_data)
+    # organisations
+    for f in layers["contracts"].getFeatures():
+        contract_data = {}
+        for field_info in schema_information["contracts"]["fields"]:
+            set_key_in_dict_for_export(
+                contract_data,
+                field_info.get("json_key", field_info["name"]),
+                f.attribute(field_info["name"]),
+                type=field_info["type"],
+            )
+        networks[network_id]["contracts"].append(contract_data)
     # done
     return {"networks": [v for v in networks.values()]}

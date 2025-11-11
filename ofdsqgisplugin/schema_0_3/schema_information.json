@@ -381,51 +381,47 @@
       {
         "name": "ofds_id",
         "json_key": "id",
-        "alias": "",
+        "alias": "OFDS Id",
         "comment": "",
         "type": ""
       },
       {
-        "name": "contracts/0/id",
-        "alias": "",
+        "name": "title",
+        "alias": "Title",
         "comment": "",
         "type": ""
       },
       {
-        "name": "contracts/0/title",
-        "alias": "",
+        "name": "description",
+        "alias": "Description",
         "comment": "",
         "type": ""
       },
       {
-        "name": "contracts/0/description",
-        "alias": "",
+        "name": "type",
+        "alias": "Type",
         "comment": "",
-        "type": ""
+        "type": "codelist",
+        "codelist_filename": "open/contractType.csv"
       },
       {
-        "name": "contracts/0/type",
-        "alias": "",
+        "name": "value/amount",
+        "alias": "Value Amount",
         "comment": "",
-        "type": ""
+        "type": "number"
       },
       {
-        "name": "contracts/0/value/amount",
-        "alias": "",
+        "name": "value/currency",
+        "alias": "Value Currency",
         "comment": "",
-        "type": ""
+        "type": "codelist",
+        "codelist_filename": "closed/currency.csv"
       },
       {
-        "name": "contracts/0/value/currency",
-        "alias": "",
+        "name": "dateSigned",
+        "alias": "Date signed",
         "comment": "",
-        "type": ""
-      },
-      {
-        "name": "contracts/0/dateSigned",
-        "alias": "",
-        "comment": "",
-        "type": ""
+        "type": "date"
       }
     ]
   },
@@ -634,74 +630,68 @@
       {
         "name": "ofds_id",
         "json_key": "id",
-        "alias": "",
+        "alias": "OFDS Id",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/id",
-        "alias": "",
+        "name": "name",
+        "alias": "Name",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/name",
-        "alias": "",
+        "name": "identifier/id",
+        "alias": "identifier Id",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/identifier/id",
-        "alias": "",
+        "name": "identifier/scheme",
+        "alias": "identifier Scheme",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/identifier/scheme",
-        "alias": "",
+        "name": "identifier/legalName",
+        "alias": "identifier Legal Name",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/identifier/legalName",
-        "alias": "",
+        "name": "identifier/uri",
+        "alias": "identifier URL",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/identifier/uri",
-        "alias": "",
-        "comment": "",
-        "type": ""
-      },
-      {
-        "name": "organisations/0/country",
-        "alias": "",
+        "name": "country",
+        "alias": "Country",
         "comment": "",
         "type": "codelist",
         "codelist_filename": "closed/country.csv"
       },
       {
-        "name": "organisations/0/roles",
-        "alias": "",
+        "name": "roles",
+        "alias": "Roles",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/roleDetails",
-        "alias": "",
+        "name": "roleDetails",
+        "alias": "Role Details",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/website",
-        "alias": "",
+        "name": "website",
+        "alias": "Website URL",
         "comment": "",
         "type": ""
       },
       {
-        "name": "organisations/0/logo",
-        "alias": "",
+        "name": "logo",
+        "alias": "Logo URL",
         "comment": "",
         "type": ""
       }

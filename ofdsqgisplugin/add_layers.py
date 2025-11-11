@@ -41,6 +41,8 @@ def add_layers(filename):
             symbol = renderer.symbol()
             symbol.setWidth(1.5)
             # spans_layer.triggerRepaint() may be needed, but as this point there is no data to repaint
+        # Hide the GeoPackage ID field in all forms
+        layers[table_name].setEditorWidgetSetup(0, QgsEditorWidgetSetup("Hidden", {}))
 
     # Configure layer fields
     for table_name, table_info in schema_information.items():

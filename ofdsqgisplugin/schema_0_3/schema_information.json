@@ -164,6 +164,14 @@
         "alias": "Description",
         "comment": "",
         "type": ""
+      },
+      {
+        "name": "network_id",
+        "alias": "Network",
+        "type": "foreignkey",
+        "foreignkey_layer": "networks",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
       }
     ]
   },
@@ -312,6 +320,14 @@
         "foreignkey_layer": "organisations",
         "foreignkey_key": "ofds_id",
         "foreignkey_value": "name"
+      },
+      {
+        "name": "network_id",
+        "alias": "Network",
+        "type": "foreignkey",
+        "foreignkey_layer": "networks",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
       }
     ]
   },
@@ -422,6 +438,14 @@
         "alias": "Date signed",
         "comment": "",
         "type": "date"
+      },
+      {
+        "name": "network_id",
+        "alias": "Network",
+        "type": "foreignkey",
+        "foreignkey_layer": "networks",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
       }
     ]
   },
@@ -621,6 +645,14 @@
         "alias": "Capacity details",
         "comment": "",
         "type": ""
+      },
+      {
+        "name": "network_id",
+        "alias": "Network",
+        "type": "foreignkey",
+        "foreignkey_layer": "networks",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
       }
     ]
   },
@@ -694,6 +726,14 @@
         "alias": "Logo URL",
         "comment": "",
         "type": ""
+      },
+      {
+        "name": "network_id",
+        "alias": "Network",
+        "type": "foreignkey",
+        "foreignkey_layer": "networks",
+        "foreignkey_key": "ofds_id",
+        "foreignkey_value": "name"
       }
     ]
   }

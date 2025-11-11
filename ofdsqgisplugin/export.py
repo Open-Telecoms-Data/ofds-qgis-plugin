@@ -1,6 +1,7 @@
 import copy
 import json
 import os
+import uuid
 
 from .lib import set_key_in_dict_for_export
 
@@ -35,83 +36,68 @@ def get_json(layers):
         schema_information = json.load(fp)
     # Make JSON
     networks = {}
-    network_id = None
+    default_network_id = None
     # networks first
     for f in layers["networks"].getFeatures():
-        network_id = f.attribute("ofds_id")
+        default_network_id = f.attribute("ofds_id")
         # If they put in a network but didn't set an id for it, we'll set one for them
-        if not network_id:
-            network_id = "network"
-        networks[network_id] = copy.deepcopy(START_OF_NETWORK)
+        if not default_network_id:
+            default_network_id = str(uuid.uuid4())
+        networks[default_network_id] = copy.deepcopy(START_OF_NETWORK)
         for field_info in schema_information["networks"]["fields"]:
             set_key_in_dict_for_export(
-                networks[network_id],
+                networks[default_network_id],
                 field_info.get("json_key", field_info["name"]),
                 f.attribute(field_info["name"]),
                 type=field_info["type"],
             )
-    if not network_id:
-        network_id = "network"
-        networks[network_id] = copy.deepcopy(START_OF_NETWORK)
-        networks[network_id]["id"] = network_id
-    # phases
-    for f in layers["phases"].getFeatures():
-        phase_data = {}
-        for field_info in schema_information["phases"]["fields"]:
-            set_key_in_dict_for_export(
-                phase_data,
-                field_info.get("json_key", field_info["name"]),
-                f.attribute(field_info["name"]),
-                type=field_info["type"],
-            )
-        networks[network_id]["phases"].append(phase_data)
+    if not default_network_id:
+        default_network_id = str(uuid.uuid4())
+        networks[default_network_id] = copy.deepcopy(START_OF_NETWORK)
+        networks[default_network_id]["id"] = default_network_id
+    # phases, contracts, organisations
+    for table in ["phases", "contracts", "organisations"]:
+        for f in layers[table].getFeatures():
+            data = {}
+            network_id = f.attribute("network_id") or default_network_id
+            for field_info in schema_information[table]["fields"]:
+                if field_info["name"] != "network_id":
+                    set_key_in_dict_for_export(
+                        data,
+                        field_info.get("json_key", field_info["name"]),
+                        f.attribute(field_info["name"]),
+                        type=field_info["type"],
+                    )
+            networks[network_id][table].append(data)
     # nodes
     for f in layers["nodes"].getFeatures():
         node_data = {
             "location": json.loads(f.geometry().asJson()),
         }
+        network_id = f.attribute("network_id") or default_network_id
         for field_info in schema_information["nodes"]["fields"]:
-            set_key_in_dict_for_export(
-                node_data,
-                field_info.get("json_key", field_info["name"]),
-                f.attribute(field_info["name"]),
-                type=field_info["type"],
-            )
+            if field_info["name"] != "network_id":
+                set_key_in_dict_for_export(
+                    node_data,
+                    field_info.get("json_key", field_info["name"]),
+                    f.attribute(field_info["name"]),
+                    type=field_info["type"],
+                )
         networks[network_id]["nodes"].append(node_data)
     # spans
     for f in layers["spans"].getFeatures():
         span_data = {
             "route": json.loads(f.geometry().asJson()),
         }
+        network_id = f.attribute("network_id") or default_network_id
         for field_info in schema_information["spans"]["fields"]:
-            set_key_in_dict_for_export(
-                span_data,
-                field_info.get("json_key", field_info["name"]),
-                f.attribute(field_info["name"]),
-                type=field_info["type"],
-            )
+            if field_info["name"] != "network_id":
+                set_key_in_dict_for_export(
+                    span_data,
+                    field_info.get("json_key", field_info["name"]),
+                    f.attribute(field_info["name"]),
+                    type=field_info["type"],
+                )
         networks[network_id]["spans"].append(span_data)
-    # organisations
-    for f in layers["organisations"].getFeatures():
-        organisation_data = {}
-        for field_info in schema_information["organisations"]["fields"]:
-            set_key_in_dict_for_export(
-                organisation_data,
-                field_info.get("json_key", field_info["name"]),
-                f.attribute(field_info["name"]),
-                type=field_info["type"],
-            )
-        networks[network_id]["organisations"].append(organisation_data)
-    # organisations
-    for f in layers["contracts"].getFeatures():
-        contract_data = {}
-        for field_info in schema_information["contracts"]["fields"]:
-            set_key_in_dict_for_export(
-                contract_data,
-                field_info.get("json_key", field_info["name"]),
-                f.attribute(field_info["name"]),
-                type=field_info["type"],
-            )
-        networks[network_id]["contracts"].append(contract_data)
     # done
     return {"networks": [v for v in networks.values()]}

@@ -15,7 +15,12 @@ class Builder:
         self.information_out = None
 
     def create_table_from_json_schema(
-        self, json_schema, table_name, has_network_id=False
+        self,
+        json_schema,
+        table_name,
+        has_network_id=False,
+        geographic_type=None,
+        geographic_field=None,
     ):
         columns = []
         for property_key, property_value in json_schema["properties"].items():
@@ -40,7 +45,7 @@ class Builder:
             );
         """.format(
                 table_name,
-                "geom BLOB NOT NULL," if False else "",
+                "geom BLOB NOT NULL," if geographic_type else "",
                 ",".join(fields_sql),
             )
         )
@@ -51,12 +56,27 @@ class Builder:
             VALUES ('{}', '{}', '{}', 4326);
         """.format(
                 table_name,
-                "features" if False else "attributes",
+                "features" if geographic_type else "attributes",
                 table_name,
             )
         )
 
-        self.information_out["tables"][table_name] = {"columns": columns}
+        if geographic_type:
+            self.cursor.execute(
+                """
+                INSERT INTO gpkg_geometry_columns (
+                    table_name, column_name, geometry_type_name, srs_id, z, m
+                ) VALUES ('{}', 'geom', '{}', 4326, 0, 0);
+            """.format(
+                    table_name, geographic_type
+                )
+            )
+
+        self.information_out["tables"][table_name] = {
+            "columns": columns,
+            "geographic_type": geographic_type,
+            "geographic_field": geographic_field,
+        }
 
     def go(self):
         # Load JSON Schema
@@ -93,11 +113,15 @@ class Builder:
             jsonschema["properties"]["nodes"]["items"],
             table_name="nodes",
             has_network_id=True,
+            geographic_field="location",
+            geographic_type="POINT",
         )
         self.create_table_from_json_schema(
             jsonschema["properties"]["spans"]["items"],
             table_name="spans",
             has_network_id=True,
+            geographic_field="route",
+            geographic_type="LINESTRING",
         )
         self.create_table_from_json_schema(
             jsonschema["properties"]["phases"]["items"],

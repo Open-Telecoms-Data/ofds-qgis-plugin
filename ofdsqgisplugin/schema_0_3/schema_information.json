@@ -30,7 +30,9 @@
           "name": "language",
           "type": "text"
         }
-      ]
+      ],
+      "geographic_type": null,
+      "geographic_field": null
     },
     "nodes": {
       "columns": [
@@ -50,7 +52,9 @@
           "name": "network_id",
           "type": "text"
         }
-      ]
+      ],
+      "geographic_type": "POINT",
+      "geographic_field": "location"
     },
     "spans": {
       "columns": [
@@ -86,7 +90,9 @@
           "name": "network_id",
           "type": "text"
         }
-      ]
+      ],
+      "geographic_type": "LINESTRING",
+      "geographic_field": "route"
     },
     "phases": {
       "columns": [
@@ -106,7 +112,9 @@
           "name": "network_id",
           "type": "text"
         }
-      ]
+      ],
+      "geographic_type": null,
+      "geographic_field": null
     },
     "organisations": {
       "columns": [
@@ -138,7 +146,9 @@
           "name": "network_id",
           "type": "text"
         }
-      ]
+      ],
+      "geographic_type": null,
+      "geographic_field": null
     },
     "contracts": {
       "columns": [
@@ -166,7 +176,9 @@
           "name": "network_id",
           "type": "text"
         }
-      ]
+      ],
+      "geographic_type": null,
+      "geographic_field": null
     }
   }
 }

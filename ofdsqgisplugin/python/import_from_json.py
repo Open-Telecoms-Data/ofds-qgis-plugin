@@ -87,4 +87,14 @@ def import_json_to_callable(json_data_to_import, callable):
                                         ),
                                     )
                                 )
+                        if schema_information["tables"][table_name]["geographic_field"]:
+                            geom_data = table_data.get(
+                                schema_information["tables"][table_name][
+                                    "geographic_field"
+                                ]
+                            )
+                            if isinstance(geom_data, dict):
+                                data.append(("geom", json.dumps(geom_data)))
+                            else:
+                                data.append(("geom", ""))
                         callable(table_name, data)

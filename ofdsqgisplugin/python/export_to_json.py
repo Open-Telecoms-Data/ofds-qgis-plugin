@@ -86,6 +86,10 @@ def export_callable_to_json(callable):
                         column_info["name"],
                         data[column_info["name"]],
                     )
+            if schema_information["tables"][table_name]["geographic_field"]:
+                out[schema_information["tables"][table_name]["geographic_field"]] = (
+                    json.loads(data["geom"])
+                )
             networks[network_id][table_name].append(out)
 
     # Wrap up

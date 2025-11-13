@@ -6,44 +6,27 @@ import sqlite3
 MAP_FIELD_TYPES_TO_SQLITE_TYPES = {"boolean": "int", "integer": "int", "number": "real"}
 
 
-def go(root_directory, version_major, version_minor):
-    with open(
-        os.path.join(
-            root_directory,
-            "ofdsqgisplugin",
-            "schema_{}_{}".format(version_major, version_minor),
-            "schema_information.json",
-        )
-    ) as fp:
-        schema_information = json.load(fp)
-    sqlite_filename = os.path.join(
-        root_directory,
-        "ofdsqgisplugin",
-        "schema_{}_{}".format(version_major, version_minor),
-        "geopackage.gpkg",
-    )
-    shutil.copyfile(
-        os.path.join(
-            root_directory,
-            "buildofdsqgisplugin",
-            "empty.gpkg",
-        ),
-        sqlite_filename,
-    )
-    connection = sqlite3.connect(sqlite_filename)
-    cursor = connection.cursor()
-    for table_name, table_info in schema_information.items():
-        fields_sql = []
-        for field_information in table_info["fields"]:
-            fields_sql.append(
-                '"{}" {}'.format(
-                    field_information["name"],
-                    MAP_FIELD_TYPES_TO_SQLITE_TYPES.get(
-                        field_information["type"], "text"
-                    ),
+class Builder:
+
+    def __init__(self, root_directory):
+        self.root_directory = root_directory
+        self.connection = None
+        self.cursor = None
+        self.information_out = None
+
+    def create_table_from_json_schema(self, json_schema, table_name):
+        columns = []
+        for property_key, property_value in json_schema["properties"].items():
+            if property_value["type"] == "string":
+                columns.append(
+                    {
+                        "name": ("ofds_id" if property_key == "id" else property_key),
+                        "type": "text",
+                    }
                 )
-            )
-        cursor.execute(
+
+        fields_sql = [i["name"] + " " + i["type"] for i in columns]
+        self.cursor.execute(
             """
             CREATE TABLE {} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,41 +35,71 @@ def go(root_directory, version_major, version_minor):
             );
         """.format(
                 table_name,
-                "geom BLOB NOT NULL," if table_info["geometry_type"] else "",
+                "geom BLOB NOT NULL," if False else "",
                 ",".join(fields_sql),
             )
         )
 
-        cursor.execute(
+        self.cursor.execute(
             """
             INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id)
             VALUES ('{}', '{}', '{}', 4326);
         """.format(
                 table_name,
-                "features" if table_info["geometry_type"] else "attributes",
+                "features" if False else "attributes",
                 table_name,
             )
         )
 
-        if table_info["geometry_type"]:
-            cursor.execute(
-                """
-                INSERT INTO gpkg_geometry_columns (
-                    table_name, column_name, geometry_type_name, srs_id, z, m
-                ) VALUES ('{}', 'geom', '{}', 4326, 0, 0);
-            """.format(
-                    table_name, table_info["geometry_type"]
-                )
-            )
+        self.information_out["tables"][table_name] = {"columns": columns}
 
-    connection.commit()
+    def go(self):
+        # Load JSON Schema
+        jsonschema_filename = os.path.join(
+            self.root_directory,
+            "buildofdsqgisplugin",
+            "schema_0_3",
+            "schema.json",
+        )
+        with open(jsonschema_filename) as fp:
+            jsonschema = json.load(fp)
+        # Copy GeoPackage
+        sqlite_filename = os.path.join(
+            self.root_directory,
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        )
+        shutil.copyfile(
+            os.path.join(
+                self.root_directory,
+                "buildofdsqgisplugin",
+                "empty.gpkg",
+            ),
+            sqlite_filename,
+        )
+        # Setup
+        self.connection = sqlite3.connect(sqlite_filename)
+        self.cursor = self.connection.cursor()
+        self.information_out = {"tables": {}}
+        # Create Networks Table
+        self.create_table_from_json_schema(jsonschema, table_name="networks")
+        # Wrapup
+        self.connection.commit()
+        schema_information_json_filename = os.path.join(
+            self.root_directory,
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "schema_information.json",
+        )
+        with open(schema_information_json_filename, "w") as fp:
+            json.dump(self.information_out, fp, indent=2)
 
 
 if __name__ == "__main__":
-    go(
+    builder = Builder(
         root_directory=os.path.realpath(
             os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
         ),
-        version_major=os.getenv("VERSION_MAJOR"),
-        version_minor=os.getenv("VERSION_MINOR"),
     )
+    builder.go()

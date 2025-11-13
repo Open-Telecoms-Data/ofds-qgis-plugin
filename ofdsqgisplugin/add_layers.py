@@ -33,3 +33,14 @@ def add_layers(filename):
         layers[table_name].setCustomProperty("ofdslayer", table_name)
         group.insertChildNode(-1, QgsLayerTreeLayer(layers[table_name]))
         QgsProject.instance().addMapLayer(layers[table_name], False)
+
+    # Config for layers
+    for table_name, table_info in schema_information["tables"].items():
+        # Symbology https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/20
+        if table_info["geographic_type"] == "LINESTRING":
+            renderer = layers[table_name].renderer()
+            symbol = renderer.symbol()
+            symbol.setWidth(1.5)
+            # spans_layer.triggerRepaint() may be needed, but as this point there is no data to repaint
+        # Hide the GeoPackage ID field in all forms https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/29
+        layers[table_name].setEditorWidgetSetup(0, QgsEditorWidgetSetup("Hidden", {}))

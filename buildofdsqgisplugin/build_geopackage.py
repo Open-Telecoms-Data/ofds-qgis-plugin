@@ -14,7 +14,9 @@ class Builder:
         self.cursor = None
         self.information_out = None
 
-    def create_table_from_json_schema(self, json_schema, table_name):
+    def create_table_from_json_schema(
+        self, json_schema, table_name, has_network_id=False
+    ):
         columns = []
         for property_key, property_value in json_schema["properties"].items():
             if property_value["type"] == "string":
@@ -24,6 +26,9 @@ class Builder:
                         "type": "text",
                     }
                 )
+
+        if has_network_id:
+            columns.append({"name": "network_id", "type": "text"})
 
         fields_sql = [i["name"] + " " + i["type"] for i in columns]
         self.cursor.execute(
@@ -82,8 +87,33 @@ class Builder:
         self.connection = sqlite3.connect(sqlite_filename)
         self.cursor = self.connection.cursor()
         self.information_out = {"tables": {}}
-        # Create Networks Table
+        # Create Tables
         self.create_table_from_json_schema(jsonschema, table_name="networks")
+        self.create_table_from_json_schema(
+            jsonschema["properties"]["nodes"]["items"],
+            table_name="nodes",
+            has_network_id=True,
+        )
+        self.create_table_from_json_schema(
+            jsonschema["properties"]["spans"]["items"],
+            table_name="spans",
+            has_network_id=True,
+        )
+        self.create_table_from_json_schema(
+            jsonschema["properties"]["phases"]["items"],
+            table_name="phases",
+            has_network_id=True,
+        )
+        self.create_table_from_json_schema(
+            jsonschema["properties"]["organisations"]["items"],
+            table_name="organisations",
+            has_network_id=True,
+        )
+        self.create_table_from_json_schema(
+            jsonschema["properties"]["contracts"]["items"],
+            table_name="contracts",
+            has_network_id=True,
+        )
         # Wrapup
         self.connection.commit()
         schema_information_json_filename = os.path.join(

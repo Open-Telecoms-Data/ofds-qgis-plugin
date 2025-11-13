@@ -43,14 +43,15 @@ def import_json_to_callable(json_data_to_import, callable):
         )
     ) as fp:
         schema_information = json.load(fp)
-    # Start
+    # Start at networks
     networks = json_data_to_import.get("networks", [])
     if isinstance(networks, list):
         for network in networks:
+            network_id = network["id"] or uuid.uuid4()
             data = []
             for column_info in schema_information["tables"]["networks"]["columns"]:
                 if column_info["name"] == "ofds_id":
-                    data.append(("ofds_id", network["id"] or uuid.uuid4()))
+                    data.append(("ofds_id", network_id))
                 else:
                     data.append(
                         (
@@ -61,3 +62,29 @@ def import_json_to_callable(json_data_to_import, callable):
                         )
                     )
             callable("networks", data)
+            # Now other tables
+            for table_name in [
+                "nodes",
+                "spans",
+                "phases",
+                "organisations",
+                "contracts",
+            ]:
+                table_datas = network.get(table_name, [])
+                if isinstance(table_datas, list):
+                    for table_data in table_datas:
+                        thing_id = table_data.get("id") or uuid.uuid4()
+                        data = [("network_id", network_id), ("ofds_id", thing_id)]
+                        for column_info in schema_information["tables"][table_name][
+                            "columns"
+                        ]:
+                            if column_info["name"] != "ofds_id":
+                                data.append(
+                                    (
+                                        column_info["name"],
+                                        get_deep_key_from_data_for_import(
+                                            table_data, column_info["name"]
+                                        ),
+                                    )
+                                )
+                        callable(table_name, data)

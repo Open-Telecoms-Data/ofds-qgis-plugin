@@ -73,6 +73,20 @@ def export_callable_to_json(callable):
                     column_info["name"],
                     data[column_info["name"]],
                 )
+    # Other tables
+    for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:
+        for data in callable(table_name):
+            out = {}
+            network_id = data["network_id"] or default_network_id
+            out["id"] = data["ofds_id"]
+            for column_info in schema_information["tables"][table_name]["columns"]:
+                if column_info["name"] not in ["ofds_id", "network_id"]:
+                    set_key_in_dict_for_export(
+                        out,
+                        column_info["name"],
+                        data[column_info["name"]],
+                    )
+            networks[network_id][table_name].append(out)
 
     # Wrap up
     return {"networks": [v for v in networks.values()]}

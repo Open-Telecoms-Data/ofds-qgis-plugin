@@ -31,6 +31,142 @@
           "type": "text"
         }
       ]
+    },
+    "nodes": {
+      "columns": [
+        {
+          "name": "ofds_id",
+          "type": "text"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "network_id",
+          "type": "text"
+        }
+      ]
+    },
+    "spans": {
+      "columns": [
+        {
+          "name": "ofds_id",
+          "type": "text"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "readyForServiceDate",
+          "type": "text"
+        },
+        {
+          "name": "start",
+          "type": "text"
+        },
+        {
+          "name": "end",
+          "type": "text"
+        },
+        {
+          "name": "fibreType",
+          "type": "text"
+        },
+        {
+          "name": "network_id",
+          "type": "text"
+        }
+      ]
+    },
+    "phases": {
+      "columns": [
+        {
+          "name": "ofds_id",
+          "type": "text"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "description",
+          "type": "text"
+        },
+        {
+          "name": "network_id",
+          "type": "text"
+        }
+      ]
+    },
+    "organisations": {
+      "columns": [
+        {
+          "name": "ofds_id",
+          "type": "text"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "country",
+          "type": "text"
+        },
+        {
+          "name": "roleDetails",
+          "type": "text"
+        },
+        {
+          "name": "website",
+          "type": "text"
+        },
+        {
+          "name": "logo",
+          "type": "text"
+        },
+        {
+          "name": "network_id",
+          "type": "text"
+        }
+      ]
+    },
+    "contracts": {
+      "columns": [
+        {
+          "name": "ofds_id",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "description",
+          "type": "text"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "dateSigned",
+          "type": "text"
+        },
+        {
+          "name": "network_id",
+          "type": "text"
+        }
+      ]
     }
   }
 }

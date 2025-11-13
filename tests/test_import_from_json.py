@@ -31,8 +31,14 @@ def test_import_1():
             "networks": [
                 {
                     "id": "network1",
-                    "name": "name",
-                }
+                    "name": "Network 1",
+                    "organisations": [{"id": "orga", "name": "Org A"}],
+                },
+                {
+                    "id": "network2",
+                    "name": "Network 2",
+                    "organisations": [{"id": "orgb", "name": "Org B"}],
+                },
             ]
         },
         sqlite_filename,
@@ -41,8 +47,18 @@ def test_import_1():
     # Test the database contents
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
+    # networks
     cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
-    assert 1 == len(rows)
-    assert ("network1", "name") == rows[0]
+    assert 2 == len(rows)
+    assert ("network1", "Network 1") == rows[0]
+    assert ("network2", "Network 2") == rows[1]
+    # organisations
+    cursor.execute(
+        "SELECT ofds_id, name, network_id FROM organisations ORDER BY ofds_id ASC"
+    )
+    rows = cursor.fetchall()
+    assert 2 == len(rows)
+    assert ("orga", "Org A", "network1") == rows[0]
+    assert ("orgb", "Org B", "network2") == rows[1]
     connection.close()

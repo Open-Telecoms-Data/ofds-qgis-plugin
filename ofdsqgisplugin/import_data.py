@@ -25,7 +25,7 @@ def import_json(layers, json_data_to_import):
 
     # work
     def callable(table_name, data):
-        feature = QgsFeature(layers["networks"].fields())
+        feature = QgsFeature(layers[table_name].fields())
         for d in data:
             feature.setAttribute(d[0], d[1])
         if not layers[table_name].addFeature(feature):

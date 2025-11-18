@@ -366,9 +366,6 @@ class Builder:
 
         self.recurse(None, jsonschema)
 
-        self.cursor.execute("""SELECT * FROM gpkgext_relations""")
-        print(self.cursor.fetchall())
-
         # Wrapup
         self.connection.commit()
         schema_information_json_filename = os.path.join(

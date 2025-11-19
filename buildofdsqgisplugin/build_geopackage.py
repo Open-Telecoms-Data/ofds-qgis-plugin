@@ -29,11 +29,12 @@ class Builder:
                     {
                         "name": ("ofds_id" if property_key == "id" else property_key),
                         "type": "text",
+                        "title": property_value.get("title"),
                     }
                 )
 
         if has_network_id:
-            columns.append({"name": "network_id", "type": "text"})
+            columns.append({"name": "network_id", "type": "text", "title": "Network ID"})
 
         fields_sql = [i["name"] + " " + i["type"] for i in columns]
         self.cursor.execute(

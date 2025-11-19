@@ -4,31 +4,38 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text"
+          "type": "text",
+          "title": "Identifier"
         },
         {
           "name": "name",
-          "type": "text"
+          "type": "text",
+          "title": "Network name"
         },
         {
           "name": "website",
-          "type": "text"
+          "type": "text",
+          "title": "Website"
         },
         {
           "name": "publicationDate",
-          "type": "text"
+          "type": "text",
+          "title": "Publication date"
         },
         {
           "name": "collectionDate",
-          "type": "text"
+          "type": "text",
+          "title": "Collection date"
         },
         {
           "name": "accuracyDetails",
-          "type": "text"
+          "type": "text",
+          "title": "Accuracy details"
         },
         {
           "name": "language",
-          "type": "text"
+          "type": "text",
+          "title": "Language"
         }
       ],
       "geographic_type": null,
@@ -38,19 +45,23 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text"
+          "type": "text",
+          "title": "Identifier"
         },
         {
           "name": "name",
-          "type": "text"
+          "type": "text",
+          "title": "Node name"
         },
         {
           "name": "status",
-          "type": "text"
+          "type": "text",
+          "title": "Status"
         },
         {
           "name": "network_id",
-          "type": "text"
+          "type": "text",
+          "title": "Network ID"
         }
       ],
       "geographic_type": "POINT",
@@ -60,35 +71,43 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text"
+          "type": "text",
+          "title": "Identifier"
         },
         {
           "name": "name",
-          "type": "text"
+          "type": "text",
+          "title": "Span name"
         },
         {
           "name": "status",
-          "type": "text"
+          "type": "text",
+          "title": "Span status"
         },
         {
           "name": "readyForServiceDate",
-          "type": "text"
+          "type": "text",
+          "title": "Ready for service date"
         },
         {
           "name": "start",
-          "type": "text"
+          "type": "text",
+          "title": "Start"
         },
         {
           "name": "end",
-          "type": "text"
+          "type": "text",
+          "title": "End"
         },
         {
           "name": "fibreType",
-          "type": "text"
+          "type": "text",
+          "title": "Fibre type"
         },
         {
           "name": "network_id",
-          "type": "text"
+          "type": "text",
+          "title": "Network ID"
         }
       ],
       "geographic_type": "LINESTRING",
@@ -98,19 +117,23 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text"
+          "type": "text",
+          "title": "Identifier"
         },
         {
           "name": "name",
-          "type": "text"
+          "type": "text",
+          "title": "Name"
         },
         {
           "name": "description",
-          "type": "text"
+          "type": "text",
+          "title": "Description"
         },
         {
           "name": "network_id",
-          "type": "text"
+          "type": "text",
+          "title": "Network ID"
         }
       ],
       "geographic_type": null,
@@ -120,31 +143,38 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text"
+          "type": "text",
+          "title": "Local identifier"
         },
         {
           "name": "name",
-          "type": "text"
+          "type": "text",
+          "title": "Name"
         },
         {
           "name": "country",
-          "type": "text"
+          "type": "text",
+          "title": "Country"
         },
         {
           "name": "roleDetails",
-          "type": "text"
+          "type": "text",
+          "title": "Role details"
         },
         {
           "name": "website",
-          "type": "text"
+          "type": "text",
+          "title": "Website"
         },
         {
           "name": "logo",
-          "type": "text"
+          "type": "text",
+          "title": "Logo"
         },
         {
           "name": "network_id",
-          "type": "text"
+          "type": "text",
+          "title": "Network ID"
         }
       ],
       "geographic_type": null,
@@ -154,27 +184,33 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text"
+          "type": "text",
+          "title": "Identifier"
         },
         {
           "name": "title",
-          "type": "text"
+          "type": "text",
+          "title": "Contract title"
         },
         {
           "name": "description",
-          "type": "text"
+          "type": "text",
+          "title": "Contract description"
         },
         {
           "name": "type",
-          "type": "text"
+          "type": "text",
+          "title": "Contract type"
         },
         {
           "name": "dateSigned",
-          "type": "text"
+          "type": "text",
+          "title": "Date signed"
         },
         {
           "name": "network_id",
-          "type": "text"
+          "type": "text",
+          "title": "Network ID"
         }
       ],
       "geographic_type": null,

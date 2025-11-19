@@ -44,3 +44,7 @@ def add_layers(filename):
             # spans_layer.triggerRepaint() may be needed, but as this point there is no data to repaint
         # Hide the GeoPackage ID field in all forms https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/29
         layers[table_name].setEditorWidgetSetup(0, QgsEditorWidgetSetup("Hidden", {}))
+        # Fields
+        for field_idx, field_info in enumerate(table_info["columns"]):
+            if field_info["title"]:
+                layers[table_name].setFieldAlias(field_idx + 1, field_info["title"])

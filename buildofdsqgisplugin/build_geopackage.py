@@ -32,6 +32,27 @@ class Builder:
                         "title": property_value.get("title"),
                     }
                 )
+                self.cursor.execute(
+                    """
+                    INSERT INTO gpkg_data_columns (
+                        table_name,
+                        column_name,
+                        name,
+                        title,
+                        description,
+                        mime_type,
+                        constraint_name
+                    )
+                    VALUES (?, ?, ?, ?, ?, NULL, NULL);
+                    """,
+                    [
+                        table_name,
+                        ("ofds_id" if property_key == "id" else property_key),
+                        property_value.get("title", property_key),
+                        property_value.get("title", property_key),
+                        property_value.get("description"),
+                    ],
+                )
 
         if has_network_id:
             columns.append({"name": "network_id", "type": "text", "title": "Network ID"})
@@ -108,6 +129,35 @@ class Builder:
         self.connection = sqlite3.connect(sqlite_filename)
         self.cursor = self.connection.cursor()
         self.information_out = {"tables": {}}
+        # Create extension tables
+        # Create gpkg_data_columns per https://www.geopackage.org/spec120/#gpkg_data_columns_sql
+        # EXCEPT don't make the name column UNIQUE, this causes us clashes
+        # https://www.geopackage.org/spec120/#gpkg_data_columns_cols says "A human-readable identifier (e.g. short name) for the column_name content" so why unique?
+        # And indeed this is changed in the unreleased version https://www.geopackage.org/spec/#gpkg_data_columns_sql
+        self.cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS gpkg_data_columns (
+                table_name TEXT NOT NULL, column_name TEXT NOT NULL, name TEXT, title TEXT, description TEXT, mime_type TEXT, constraint_name TEXT,
+                CONSTRAINT pk_gdc PRIMARY KEY (table_name, column_name),
+                CONSTRAINT fk_gdc_tn FOREIGN KEY (table_name) REFERENCES gpkg_contents(table_name)
+            );
+        """
+        )
+        # Create gpkg_data_column_constraints per https://www.geopackage.org/spec120/#gpkg_data_column_constraints_sql
+        self.cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS gpkg_data_column_constraints (
+                constraint_name TEXT NOT NULL, constraint_type TEXT NOT NULL, value TEXT, min NUMERIC, min_is_inclusive BOOLEAN, max NUMERIC, max_is_inclusive BOOLEAN, description TEXT, CONSTRAINT gdcc_ntv UNIQUE (constraint_name, constraint_type, value)
+            );
+        """
+        )
+        # Register extensions
+        self.cursor.execute(
+            "INSERT OR IGNORE INTO gpkg_extensions (table_name, column_name, extension_name, definition, scope) VALUES ('gpkg_data_columns', NULL, 'gpkg_schema','http://www.geopackage.org/spec120/#extension_schema', 'read-write');"
+        )
+        self.cursor.execute(
+            "INSERT OR IGNORE INTO gpkg_extensions (table_name, column_name, extension_name, definition, scope) VALUES ('gpkg_data_column_constraints', NULL, 'gpkg_schema','http://www.geopackage.org/spec120/#extension_schema', 'read-write');"
+        )
         # Create Tables
         self.create_table_from_json_schema(jsonschema, table_name="networks")
         self.create_table_from_json_schema(

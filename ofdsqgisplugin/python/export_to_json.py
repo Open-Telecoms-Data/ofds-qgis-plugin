@@ -15,10 +15,12 @@ START_OF_NETWORK = {
     "phases": [],
     "organisations": [],
     "contracts": [],
-    "links": {
-        "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__3__0/schema/network-schema.json",
-        "rel": "describedby",
-    },
+    "links": [
+        {
+            "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__3__0/schema/network-schema.json",
+            "rel": "describedby",
+        }
+    ],
     "crs": {
         "name": "urn:ogc:def:crs:OGC::CRS84",
         "uri": "http://www.opengis.net/def/crs/OGC/1.3/CRS84",

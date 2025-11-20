@@ -4,7 +4,9 @@
 
 Create `schema_0_3` directories under both `buildofdsqgisplugin` and `ofdsqgisplugin`
 
-Copy all the codelists from the data standard under `buildofdsqgisplugin/schema_0_3/codelists`
+Copy the Open codelists from the data standard under `buildofdsqgisplugin/schema_0_3/codelists/open`
+
+Copy the Closed codelists from the data standard under `buildofdsqgisplugin/schema_0_3/codelists/closed`
 
 Use CompileToJSONSchema tool ( https://github.com/OpenDataServices/compile-to-json-schema ) to compile one complete schema file:
 

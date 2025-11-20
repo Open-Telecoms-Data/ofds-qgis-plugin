@@ -79,7 +79,7 @@ def export_callable_to_json(callable):
         for data in callable(table_name):
             out = {}
             network_id = data["network_id"] or default_network_id
-            out["id"] = data["ofds_id"]
+            out["id"] = data["ofds_id"] or str(uuid.uuid4())
             for column_info in schema_information["tables"][table_name]["columns"]:
                 if column_info["name"] not in ["ofds_id", "network_id"]:
                     set_key_in_dict_for_export(

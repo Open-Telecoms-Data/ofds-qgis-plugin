@@ -48,3 +48,10 @@ def add_layers(filename):
         for field_idx, field_info in enumerate(table_info["columns"]):
             if field_info["title"]:
                 layers[table_name].setFieldAlias(field_idx + 1, field_info["title"])
+            if field_info["type"] == "boolean":
+                layers[table_name].setEditorWidgetSetup(
+                    field_idx + 1,
+                    QgsEditorWidgetSetup(
+                        "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}
+                    ),
+                )

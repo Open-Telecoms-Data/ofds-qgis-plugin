@@ -72,6 +72,7 @@ def export_callable_to_json(callable):
                     networks[default_network_id],
                     column_info["name"],
                     data[column_info["name"]],
+                    type=column_info["type"],
                 )
     # Other tables
     for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:
@@ -85,6 +86,7 @@ def export_callable_to_json(callable):
                         out,
                         column_info["name"],
                         data[column_info["name"]],
+                        type=column_info["type"],
                     )
             if schema_information["tables"][table_name]["geographic_field"]:
                 out[schema_information["tables"][table_name]["geographic_field"]] = (

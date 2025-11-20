@@ -32,6 +32,17 @@ class Builder:
                         "title": property_value.get("title"),
                     }
                 )
+            elif property_value["type"] == "boolean":
+                columns.append(
+                    {
+                        "name": property_key,
+                        "type": "boolean",
+                        "sqlite_type": "text",
+                        "title": property_value.get("title"),
+                    }
+                )
+
+            if property_value["type"] in ["string", "boolean"]:
                 self.cursor.execute(
                     """
                     INSERT INTO gpkg_data_columns (
@@ -55,9 +66,13 @@ class Builder:
                 )
 
         if has_network_id:
-            columns.append({"name": "network_id", "type": "text", "title": "Network ID"})
+            columns.append(
+                {"name": "network_id", "type": "text", "title": "Network ID"}
+            )
 
-        fields_sql = [i["name"] + " " + i["type"] for i in columns]
+        fields_sql = [
+            i["name"] + " " + i.get("sqlite_type", i["type"]) for i in columns
+        ]
         self.cursor.execute(
             """
             CREATE TABLE {} (

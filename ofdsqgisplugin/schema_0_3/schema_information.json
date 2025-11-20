@@ -59,6 +59,18 @@
           "title": "Status"
         },
         {
+          "name": "accessPoint",
+          "type": "boolean",
+          "sqlite_type": "text",
+          "title": "Access point"
+        },
+        {
+          "name": "power",
+          "type": "boolean",
+          "sqlite_type": "text",
+          "title": "Power availability"
+        },
+        {
           "name": "network_id",
           "type": "text",
           "title": "Network ID"
@@ -98,6 +110,18 @@
           "name": "end",
           "type": "text",
           "title": "End"
+        },
+        {
+          "name": "directed",
+          "type": "boolean",
+          "sqlite_type": "text",
+          "title": "Directed"
+        },
+        {
+          "name": "darkFibre",
+          "type": "boolean",
+          "sqlite_type": "text",
+          "title": "Dark fibre availability"
         },
         {
           "name": "fibreType",

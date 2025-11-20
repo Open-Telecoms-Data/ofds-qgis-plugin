@@ -1,3 +1,4 @@
+import csv
 import json
 import os
 import shutil
@@ -35,6 +36,36 @@ class Builder:
                         "type": "date",
                         "sqlite_type": "text",
                         "title": property_value.get("title"),
+                    }
+                )
+                adding_column = True
+            elif property_value["type"] == "string" and property_value.get("codelist"):
+                with open(
+                    os.path.join(
+                        self.root_directory,
+                        "buildofdsqgisplugin",
+                        "schema_0_3",
+                        "codelists",
+                        "open" if property_value.get("openCodelist") else "closed",
+                        property_value["codelist"],
+                    )
+                ) as csvfile:
+                    csvreader = csv.reader(csvfile)
+                    headers = next(csvreader)
+                    values = []
+                    for line in csvreader:
+                        values.append({line[1]: line[0]})
+                columns.append(
+                    {
+                        "name": property_key,
+                        "type": (
+                            "opencodelist"
+                            if property_value.get("openCodelist")
+                            else "closedcodelist"
+                        ),
+                        "sqlite_type": "text",
+                        "title": property_value.get("title"),
+                        "values": values,
                     }
                 )
                 adding_column = True

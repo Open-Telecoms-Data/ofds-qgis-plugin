@@ -69,3 +69,8 @@ def add_layers(filename):
                         },
                     ),
                 )
+            elif field_info["type"] == "opencodelist" or field_info["type"] == "closedcodelist":
+                layers[table_name].setEditorWidgetSetup(
+                    field_idx + 1,
+                    QgsEditorWidgetSetup("ValueMap", {"map": field_info["values"]}),
+                )

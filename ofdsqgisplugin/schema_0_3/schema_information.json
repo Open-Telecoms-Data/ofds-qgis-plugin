@@ -611,6 +611,15 @@
           "title": "Node name"
         },
         {
+          "name": "phase",
+          "type": "foreignkey",
+          "sqlite_type": "text",
+          "title": "Phase",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "phases"
+        },
+        {
           "name": "status",
           "type": "closedcodelist",
           "sqlite_type": "text",
@@ -649,6 +658,15 @@
           "title": "Power availability"
         },
         {
+          "name": "physicalInfrastructureProvider",
+          "type": "foreignkey",
+          "sqlite_type": "text",
+          "title": "Physical infrastructure provider",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "organisations"
+        },
+        {
           "name": "network_id",
           "type": "text",
           "title": "Network ID"
@@ -668,6 +686,15 @@
           "name": "name",
           "type": "text",
           "title": "Span name"
+        },
+        {
+          "name": "phase",
+          "type": "foreignkey",
+          "sqlite_type": "text",
+          "title": "Phase",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "phases"
         },
         {
           "name": "status",
@@ -716,6 +743,24 @@
           "type": "boolean",
           "sqlite_type": "text",
           "title": "Directed"
+        },
+        {
+          "name": "physicalInfrastructureProvider",
+          "type": "foreignkey",
+          "sqlite_type": "text",
+          "title": "Physical infrastructure provider",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "organisations"
+        },
+        {
+          "name": "supplier",
+          "type": "foreignkey",
+          "sqlite_type": "text",
+          "title": "Supplier",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "organisations"
         },
         {
           "name": "darkFibre",

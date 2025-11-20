@@ -15,6 +15,8 @@ def set_key_in_dict_for_export(data, key, value, type=""):
         data[final_key] = int(value)
     elif type == "number":
         data[final_key] = float(value)
+    elif type == "foreignkey":
+        data[final_key] = {"id": value}
     else:
         data[final_key] = value
 

@@ -69,8 +69,35 @@ def add_layers(filename):
                         },
                     ),
                 )
-            elif field_info["type"] == "opencodelist" or field_info["type"] == "closedcodelist":
+            elif (
+                field_info["type"] == "opencodelist"
+                or field_info["type"] == "closedcodelist"
+            ):
                 layers[table_name].setEditorWidgetSetup(
                     field_idx + 1,
                     QgsEditorWidgetSetup("ValueMap", {"map": field_info["values"]}),
+                )
+            elif field_info["type"] == "foreignkey":
+                layers[table_name].setEditorWidgetSetup(
+                    field_idx + 1,
+                    QgsEditorWidgetSetup(
+                        "ValueRelation",
+                        {
+                            "AllowMulti": False,
+                            "AllowNull": True,
+                            "Description": None,
+                            "FilterExpression": None,
+                            "Key": field_info["foreignkey_key"],
+                            "Layer": layers[field_info["foreignkey_layer"]].id(),
+                            "LayerName": field_info["foreignkey_layer"],
+                            "LayerProviderName": "ogr",
+                            "LayerSource": "{}|layername={}".format(
+                                filename, field_info["foreignkey_layer"]
+                            ),
+                            "NofColumns": 1,
+                            "OrderByValue": False,
+                            "UseCompleter": False,
+                            "Value": field_info["foreignkey_value"],
+                        },
+                    ),
                 )

@@ -14,6 +14,11 @@ class Builder:
         self.connection = None
         self.cursor = None
         self.information_out = None
+        self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS = {
+            "Phase": "phases",
+            "Physical infrastructure provider": "organisations",
+            "Supplier": "organisations",
+        }
 
     def create_table_from_json_schema(
         self,
@@ -66,6 +71,26 @@ class Builder:
                         "sqlite_type": "text",
                         "title": property_value.get("title"),
                         "values": values,
+                    }
+                )
+                adding_column = True
+            elif (
+                property_value["type"] == "object"
+                and list(property_value["properties"].keys()) == ["id", "name"]
+                and property_value["title"]
+                in self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS.keys()
+            ):
+                columns.append(
+                    {
+                        "name": ("ofds_id" if property_key == "id" else property_key),
+                        "type": "foreignkey",
+                        "sqlite_type": "text",
+                        "title": property_value.get("title"),
+                        "foreignkey_key": "ofds_id",
+                        "foreignkey_value": "name",
+                        "foreignkey_layer": self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS[
+                            property_value["title"]
+                        ],
                     }
                 )
                 adding_column = True

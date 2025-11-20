@@ -19,12 +19,14 @@
         },
         {
           "name": "publicationDate",
-          "type": "text",
+          "type": "date",
+          "sqlite_type": "text",
           "title": "Publication date"
         },
         {
           "name": "collectionDate",
-          "type": "text",
+          "type": "date",
+          "sqlite_type": "text",
           "title": "Collection date"
         },
         {
@@ -98,7 +100,8 @@
         },
         {
           "name": "readyForServiceDate",
-          "type": "text",
+          "type": "date",
+          "sqlite_type": "text",
           "title": "Ready for service date"
         },
         {
@@ -228,7 +231,8 @@
         },
         {
           "name": "dateSigned",
-          "type": "text",
+          "type": "date",
+          "sqlite_type": "text",
           "title": "Date signed"
         },
         {

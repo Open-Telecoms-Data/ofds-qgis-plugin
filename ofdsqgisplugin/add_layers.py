@@ -55,3 +55,17 @@ def add_layers(filename):
                         "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}
                     ),
                 )
+            elif field_info["type"] == "date":
+                layers[table_name].setEditorWidgetSetup(
+                    field_idx + 1,
+                    QgsEditorWidgetSetup(
+                        "DateTime",
+                        {
+                            "allow_null": True,
+                            "calendar_popup": True,
+                            "display_format": "yyyy-MM-dd",
+                            "field_format": "yyyy-MM-dd",
+                            "field_iso_format": False,
+                        },
+                    ),
+                )

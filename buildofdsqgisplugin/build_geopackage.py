@@ -24,7 +24,21 @@ class Builder:
     ):
         columns = []
         for property_key, property_value in json_schema["properties"].items():
-            if property_value["type"] == "string":
+            adding_column = False
+            if (
+                property_value["type"] == "string"
+                and property_value.get("format") == "date"
+            ):
+                columns.append(
+                    {
+                        "name": property_key,
+                        "type": "date",
+                        "sqlite_type": "text",
+                        "title": property_value.get("title"),
+                    }
+                )
+                adding_column = True
+            elif property_value["type"] == "string":
                 columns.append(
                     {
                         "name": ("ofds_id" if property_key == "id" else property_key),
@@ -32,6 +46,7 @@ class Builder:
                         "title": property_value.get("title"),
                     }
                 )
+                adding_column = True
             elif property_value["type"] == "boolean":
                 columns.append(
                     {
@@ -41,8 +56,9 @@ class Builder:
                         "title": property_value.get("title"),
                     }
                 )
+                adding_column = True
 
-            if property_value["type"] in ["string", "boolean"]:
+            if adding_column:
                 self.cursor.execute(
                     """
                     INSERT INTO gpkg_data_columns (

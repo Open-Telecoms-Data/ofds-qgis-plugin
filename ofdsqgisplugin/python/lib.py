@@ -21,7 +21,7 @@ def set_key_in_dict_for_export(data, key, value, type=""):
         data[final_key] = value
 
 
-def get_deep_key_from_data_for_import(data, key):
+def get_deep_key_from_data_for_import(data, key, type=""):
     key_bits = key.split("/")
     final_key = key_bits.pop(-1)
     for key_bit in key_bits:
@@ -29,4 +29,8 @@ def get_deep_key_from_data_for_import(data, key):
             data = data[key_bit]
         else:
             return None
-    return data.get(final_key)
+    out = data.get(final_key)
+    if type == "foreignkey" and isinstance(out, dict):
+        return out.get("id")
+    else:
+        return out

@@ -34,7 +34,13 @@ def test_import_1():
                     "name": "Network 1",
                     "organisations": [{"id": "orga", "name": "Org A"}],
                     "publisher": { "name": "Publisher"},
-                    "accuracy": 2.3
+                    "accuracy": 2.3,
+                    "nodes": [
+                        {
+                            "id": "node1",
+                            "physicalInfrastructureProvider": {"id": "orga"}
+                        }
+                    ]
                 },
                 {
                     "id": "network2",
@@ -63,4 +69,10 @@ def test_import_1():
     assert 2 == len(rows)
     assert ("orga", "Org A", "network1") == rows[0]
     assert ("orgb", "Org B", "network2") == rows[1]
+    # networks
+    cursor.execute("SELECT ofds_id, physicalInfrastructureProvider FROM nodes ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("node1", "orga") == rows[0]
+    # wrapup
     connection.close()

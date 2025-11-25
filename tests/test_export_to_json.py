@@ -34,7 +34,7 @@ def test_export_network_with_id():
     # Set Some data
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO networks (ofds_id, name, publisher__name) VALUES ('netty', 'Network', 'Publisher')")
+    cursor.execute("INSERT INTO networks (ofds_id, name, publisher__name, accuracy) VALUES ('netty', 'Network', 'Publisher', 1.2)")
     connection.commit()
     connection.close()
 
@@ -45,6 +45,7 @@ def test_export_network_with_id():
     assert data["networks"][0]["id"] == "netty"
     assert data["networks"][0]["name"] == "Network"
     assert data["networks"][0]["publisher"]["name"] == "Publisher"
+    assert data["networks"][0]["accuracy"] == 1.2
 
 
 def test_export_network_with_no_id():

@@ -191,6 +191,11 @@ class Builder:
                 column["sqlite_type"] = "text"
                 columns.append(column)
 
+            elif property_value["type"] == "number":
+                column["type"] = "number"
+                column["sqlite_type"] = "real"
+                columns.append(column)
+
             elif property_value["type"] == "object":
                 # First, check for any special cases we ignore because they are handled elsewhere
                 if table_name == "networks" and property_key == "crs":

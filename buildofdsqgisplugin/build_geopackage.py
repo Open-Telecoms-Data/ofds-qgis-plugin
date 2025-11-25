@@ -18,6 +18,8 @@ class Builder:
             "Phase": "phases",
             "Physical infrastructure provider": "organisations",
             "Supplier": "organisations",
+            "Start": "nodes",
+            "End": "nodes",
         }
 
     def _create_table_from_json_schema(
@@ -37,7 +39,11 @@ class Builder:
             columns.append(
                 {
                     "name": "network_id",
-                    "type": "text",
+                    "type": "foreign_key",
+                    "sqlite_type": "text",
+                    "foreignkey_key": "ofds_id",
+                    "foreignkey_value": "name",
+                    "foreignkey_layer": "networks",
                     "title": "Network ID",
                     "description": "",
                 }
@@ -173,7 +179,21 @@ class Builder:
                 and property_value["title"]
                 in self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS.keys()
             ):
-                column["type"] = "foreignkey"
+                column["type"] = "foreign_key_id_name_dict"
+                column["sqlite_type"] = "text"
+                column["foreignkey_key"] = "ofds_id"
+                column["foreignkey_value"] = "name"
+                column["foreignkey_layer"] = self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS[
+                    property_value["title"]
+                ]
+                columns.append(column)
+
+            elif (
+                property_value["type"] == "string"
+                and property_value["title"]
+                in self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS.keys()
+            ):
+                column["type"] = "foreign_key"
                 column["sqlite_type"] = "text"
                 column["foreignkey_key"] = "ofds_id"
                 column["foreignkey_value"] = "name"

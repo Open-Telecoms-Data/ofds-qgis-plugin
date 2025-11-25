@@ -2256,7 +2256,7 @@
           "name": "phase",
           "title": "Phase",
           "description": "The phase to which this node belongs.",
-          "type": "foreignkey",
+          "type": "foreign_key_id_name_dict",
           "sqlite_type": "text",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
@@ -3090,7 +3090,7 @@
           "name": "physicalInfrastructureProvider",
           "title": "Physical infrastructure provider",
           "description": "The organisation that owns the passive network infrastructure for this node, i.e. the non-electrical elements, such as dark fibre, ducts and physical sites.",
-          "type": "foreignkey",
+          "type": "foreign_key_id_name_dict",
           "sqlite_type": "text",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
@@ -3098,7 +3098,11 @@
         },
         {
           "name": "network_id",
-          "type": "text",
+          "type": "foreign_key",
+          "sqlite_type": "text",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "networks",
           "title": "Network ID",
           "description": ""
         }
@@ -3124,7 +3128,7 @@
           "name": "phase",
           "title": "Phase",
           "description": "The phase to which this span belongs.",
-          "type": "foreignkey",
+          "type": "foreign_key_id_name_dict",
           "sqlite_type": "text",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
@@ -3168,13 +3172,21 @@
           "name": "start",
           "title": "Start",
           "description": "The identifier of one of two nodes that this span connects. It must match the `.id` of a node in the `nodes` array. If `directed == true`, it represents the starting point of the span. Otherwise, the distinction between `start` and `end` is arbitrary.",
-          "type": "text"
+          "type": "foreign_key",
+          "sqlite_type": "text",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "nodes"
         },
         {
           "name": "end",
           "title": "End",
           "description": "The identifier of one of two nodes that this span connects. It must match the `.id` of a node in the `nodes` array. If `directed == true`, it represents the end point of the span. Otherwise, the distinction between `start` and `end` is arbitrary.",
-          "type": "text"
+          "type": "foreign_key",
+          "sqlite_type": "text",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "nodes"
         },
         {
           "name": "directed",
@@ -3187,7 +3199,7 @@
           "name": "physicalInfrastructureProvider",
           "title": "Physical infrastructure provider",
           "description": "The organisation that owns the passive network infrastructure for this span, i.e. the non-electrical elements, such as dark fibre, ducts and physical sites.",
-          "type": "foreignkey",
+          "type": "foreign_key_id_name_dict",
           "sqlite_type": "text",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
@@ -3197,7 +3209,7 @@
           "name": "supplier",
           "title": "Supplier",
           "description": "The organisation responsible for installing the cable for this span.",
-          "type": "foreignkey",
+          "type": "foreign_key_id_name_dict",
           "sqlite_type": "text",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
@@ -3280,7 +3292,11 @@
         },
         {
           "name": "network_id",
-          "type": "text",
+          "type": "foreign_key",
+          "sqlite_type": "text",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "networks",
           "title": "Network ID",
           "description": ""
         }
@@ -3310,7 +3326,11 @@
         },
         {
           "name": "network_id",
-          "type": "text",
+          "type": "foreign_key",
+          "sqlite_type": "text",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "networks",
           "title": "Network ID",
           "description": ""
         }
@@ -5731,7 +5751,11 @@
         },
         {
           "name": "network_id",
-          "type": "text",
+          "type": "foreign_key",
+          "sqlite_type": "text",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "networks",
           "title": "Network ID",
           "description": ""
         }
@@ -6714,7 +6738,11 @@
         },
         {
           "name": "network_id",
-          "type": "text",
+          "type": "foreign_key",
+          "sqlite_type": "text",
+          "foreignkey_key": "ofds_id",
+          "foreignkey_value": "name",
+          "foreignkey_layer": "networks",
           "title": "Network ID",
           "description": ""
         }

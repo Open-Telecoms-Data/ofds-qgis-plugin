@@ -15,7 +15,7 @@ def set_key_in_dict_for_export(data, key, value, type=""):
         data[final_key] = int(value)
     elif type == "number":
         data[final_key] = float(value)
-    elif type == "foreignkey":
+    elif type == "foreign_key_id_name_dict":
         data[final_key] = {"id": value}
     else:
         data[final_key] = value
@@ -30,7 +30,7 @@ def get_deep_key_from_data_for_import(data, key, type=""):
         else:
             return None
     out = data.get(final_key)
-    if type == "foreignkey" and isinstance(out, dict):
+    if type == "foreign_key_id_name_dict" and isinstance(out, dict):
         return out.get("id")
     else:
         return out

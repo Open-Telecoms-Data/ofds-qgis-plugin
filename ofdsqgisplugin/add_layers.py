@@ -77,7 +77,10 @@ def add_layers(filename):
                     field_idx + 1,
                     QgsEditorWidgetSetup("ValueMap", {"map": field_info["values"]}),
                 )
-            elif field_info["type"] == "foreignkey":
+            elif (
+                field_info["type"] == "foreign_key_id_name_dict"
+                or field_info["type"] == "foreign_key"
+            ):
                 layers[table_name].setEditorWidgetSetup(
                     field_idx + 1,
                     QgsEditorWidgetSetup(

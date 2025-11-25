@@ -19,10 +19,17 @@ def find_layers():
         schema_information = json.load(fp)
     # Look
     layers = {}
+    relation_tables_names = []
+    for table in schema_information["tables"].values():
+        for relation in table["relations"]:
+            relation_tables_names.append(relation["mapping_table"])
     for k, v in QgsProject.instance().mapLayers().items():
         if isinstance(v, QgsVectorLayer):
             possible_layer = v.customProperty("ofdslayer")
-            if possible_layer and possible_layer in schema_information["tables"].keys():
+            if possible_layer and (
+                possible_layer in schema_information["tables"].keys()
+                or possible_layer in relation_tables_names
+            ):
                 layers[possible_layer] = v
     # If any of the layers are missing, return None.
     # That way downstream code can raise an alert on a simple "if" check

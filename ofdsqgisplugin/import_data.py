@@ -29,15 +29,23 @@ def import_json(layers, json_data_to_import):
         for d in data:
             if d[0] != "geom":
                 feature.setAttribute(d[0], d[1])
-        if schema_information["tables"][table_name]["geographic_field"]:
+        if schema_information["tables"].get(table_name, {}).get("geographic_field"):
             geom_data = [d[1] for d in data if d[0] == "geom"]
             if geom_data and geom_data[0]:
                 feature.setGeometry(QgsJsonUtils.geometryFromGeoJson(geom_data[0]))
         if not layers[table_name].addFeature(feature):
             raise Exception("Could not add to table_name layer")
+        return feature.attribute("id") if "id" in feature.fields().names() else None
 
     import_json_to_callable(json_data_to_import, callable)
     # Commit
+    # Hacky time ... we had errors commiting some layers when relations introduced. So ...
+    # First, just try and commit each layer and ignore errors
     for layer_id in layers:
-        if not layers[layer_id].commitChanges():
-            raise Exception("Could not commit {} layer".format(layer_id))
+        if layers[layer_id].isEditable():
+            layers[layer_id].commitChanges()
+    # Now do a second pass and this time report errors, as we want to make sure every layers commited in the end.
+    for layer_id in layers:
+        if layers[layer_id].isEditable():
+            if not layers[layer_id].commitChanges():
+                raise Exception("Could not commit {} layer".format(layer_id))

@@ -2,8 +2,9 @@ import csv
 import json
 import os
 
-from qgis.core import (QgsDefaultValue, QgsEditorWidgetSetup,
-                       QgsLayerTreeLayer, QgsProject, QgsVectorLayer)
+from qgis.core import (Qgis, QgsAttributeEditorRelation, QgsDefaultValue,
+                       QgsEditorWidgetSetup, QgsLayerTreeLayer, QgsMapLayer,
+                       QgsProject, QgsRelation, QgsVectorLayer)
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -115,3 +116,48 @@ def add_layers(filename):
                 layers[table_name].setDefaultValueDefinition(
                     field_idx + 1, QgsDefaultValue("ltrim(rtrim(uuid(),'}'),'{')")
                 )
+
+        # Relations
+        for relation in table_info["relations"]:
+
+            # Load join table
+            layers[relation["mapping_table"]] = QgsVectorLayer(
+                filename + "|layername=" + relation["mapping_table"],
+                relation["mapping_table"],
+                "ogr",
+            )
+            layers[relation["mapping_table"]].setCustomProperty(
+                "ofdslayer", relation["mapping_table"]
+            )
+            layers[relation["mapping_table"]].setFlags(QgsMapLayer.Private)
+            group.insertChildNode(
+                -1, QgsLayerTreeLayer(layers[relation["mapping_table"]])
+            )
+            QgsProject.instance().addMapLayer(layers[relation["mapping_table"]], False)
+
+            # Create relationships
+            join_to_base = QgsRelation()
+            join_to_base.setName("join_to_base_" + relation["name"])
+            join_to_base.setId("join_to_base_" + relation["name"])
+            join_to_base.setReferencingLayer(layers[relation["mapping_table"]].id())
+            join_to_base.setReferencedLayer(layers[table_name].id())
+            join_to_base.addFieldPair("base_id", "id")
+            QgsProject.instance().relationManager().addRelation(join_to_base)
+
+            join_to_related = QgsRelation()
+            join_to_related.setName("join_to_related_" + relation["name"])
+            join_to_related.setId("join_to_related_" + relation["name"])
+            join_to_related.setReferencingLayer(layers[relation["mapping_table"]].id())
+            join_to_related.setReferencedLayer(layers[relation["related_table"]].id())
+            join_to_related.addFieldPair("related_id", "id")
+            QgsProject.instance().relationManager().addRelation(join_to_related)
+
+            # Set up form widget
+            form_config = layers[table_name].editFormConfig()
+            relation_editor = QgsAttributeEditorRelation(join_to_base, None)
+            relation_editor.setLabel(relation["title"])
+            form_config.invisibleRootContainer().addChildElement(relation_editor)
+            layers[table_name].setEditFormConfig(form_config)
+
+    # Project Properties
+    QgsProject.instance().setTransactionMode(Qgis.TransactionMode.AutomaticGroups)

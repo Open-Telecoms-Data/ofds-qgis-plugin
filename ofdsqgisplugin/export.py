@@ -26,7 +26,10 @@ def get_json(layers):
             data = {}
             for field_name in layers[table_name].fields().names():
                 data[field_name] = f.attribute(field_name)
-            if schema_information["tables"][table_name]["geographic_field"]:
+            if (
+                table_name in schema_information["tables"]
+                and schema_information["tables"][table_name]["geographic_field"]
+            ):
                 data["geom"] = f.geometry().asJson()
             out.append(data)
         return out

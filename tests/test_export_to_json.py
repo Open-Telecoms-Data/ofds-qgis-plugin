@@ -68,7 +68,8 @@ def test_export_network_with_no_id():
     assert data["networks"][0]["name"] == "Network"
 
 
-def test_export_network_with_id_and_organisation():
+def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linked():
+    """Tests a network with an org and a node. The org is in the node's networkProviders."""
     sqlite_filename = _get_and_setup_sqlite_filename()
 
     # Set Some data
@@ -77,6 +78,13 @@ def test_export_network_with_id_and_organisation():
     cursor.execute("INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network')")
     cursor.execute(
         "INSERT INTO organisations (ofds_id, name, network_id) VALUES ('orga', 'Org A', 'netty')"
+    )
+    cursor.execute(
+        "INSERT INTO nodes (ofds_id, name, network_id, geom) VALUES ('nodea', 'Node A', 'netty', '{}')"
+    )
+    # TODO Hard coding the id's is a bit of an assumption but we are getting away with it
+    cursor.execute(
+        "INSERT INTO relation_nodes_networkProviders(base_id, related_id) VALUES (1, 1)"
     )
     connection.commit()
     connection.close()
@@ -88,3 +96,6 @@ def test_export_network_with_id_and_organisation():
     assert data["networks"][0]["id"] == "netty"
     assert data["networks"][0]["name"] == "Network"
     assert data["networks"][0]["organisations"][0] == {"id": "orga", "name": "Org A"}
+    assert data["networks"][0]["nodes"][0]["id"] == "nodea"
+    assert data["networks"][0]["nodes"][0]["name"] == "Node A"
+    assert data["networks"][0]["nodes"][0]["networkProviders"][0]["id"] == "orga"

@@ -88,6 +88,7 @@
           "codelist": "language.csv"
         }
       ],
+      "relations": [],
       "geographic_type": null,
       "geographic_field": null
     },
@@ -188,6 +189,15 @@
           "foreignkey_layer": "networks",
           "title": "Network ID",
           "description": ""
+        }
+      ],
+      "relations": [
+        {
+          "standard_field": "networkProviders",
+          "name": "nodes_networkProviders",
+          "related_table": "organisations",
+          "mapping_table": "relation_nodes_networkProviders",
+          "title": "Network providers"
         }
       ],
       "geographic_type": "POINT",
@@ -350,6 +360,15 @@
           "description": ""
         }
       ],
+      "relations": [
+        {
+          "standard_field": "networkProviders",
+          "name": "spans_networkProviders",
+          "related_table": "organisations",
+          "mapping_table": "relation_spans_networkProviders",
+          "title": "Network providers"
+        }
+      ],
       "geographic_type": "LINESTRING",
       "geographic_field": "route"
     },
@@ -384,6 +403,7 @@
           "description": ""
         }
       ],
+      "relations": [],
       "geographic_type": null,
       "geographic_field": null
     },
@@ -464,6 +484,7 @@
           "description": ""
         }
       ],
+      "relations": [],
       "geographic_type": null,
       "geographic_field": null
     },
@@ -528,6 +549,7 @@
           "description": ""
         }
       ],
+      "relations": [],
       "geographic_type": null,
       "geographic_field": null
     }

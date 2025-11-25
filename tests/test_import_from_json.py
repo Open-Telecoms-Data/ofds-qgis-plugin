@@ -69,10 +69,82 @@ def test_import_1():
     assert 2 == len(rows)
     assert ("orga", "Org A", "network1") == rows[0]
     assert ("orgb", "Org B", "network2") == rows[1]
-    # networks
+    # nodes
     cursor.execute("SELECT ofds_id, physicalInfrastructureProvider FROM nodes ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 1 == len(rows)
     assert ("node1", "orga") == rows[0]
+    # wrapup
+    connection.close()
+
+
+def test_import_nodes_network_providers_1():
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "organisations": [{"id": "orga", "name": "Org A"}, {"id": "orgb", "name": "Org B"}],
+                    "nodes": [{"id": "node1", "networkProviders": [{"id": "orga"}]}, {"id": "node2", "networkProviders": [{"id": "orgb"}]}],
+                },
+            ]
+        },
+        sqlite_filename,
+    )
+
+    # Test the database contents
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    # networks
+    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("network1", "Network 1") == rows[0]
+    # organisations
+    cursor.execute(
+        "SELECT ofds_id, name, network_id FROM organisations ORDER BY ofds_id ASC"
+    )
+    rows = cursor.fetchall()
+    assert 2 == len(rows)
+    assert ("orga", "Org A", "network1") == rows[0]
+    assert ("orgb", "Org B", "network1") == rows[1]
+    # nodes
+    cursor.execute("SELECT ofds_id FROM nodes ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 2 == len(rows)
+    assert ("node1",) == rows[0]
+    assert ("node2",) == rows[1]
+    # nodes network providers
+    cursor.execute(
+        """
+        SELECT nodes.ofds_id, organisations.ofds_id
+        FROM relation_nodes_networkProviders
+        JOIN nodes ON nodes.id == relation_nodes_networkProviders.base_id
+        JOIN organisations ON organisations.id = relation_nodes_networkProviders.related_id
+        ORDER BY nodes.ofds_id ASC
+        """
+    )
+    rows = cursor.fetchall()
+    assert 2 == len(rows)
+    assert ("node1", "orga") == rows[0]
+    assert ("node2", "orgb") == rows[1]
     # wrapup
     connection.close()

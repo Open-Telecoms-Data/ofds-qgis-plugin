@@ -21,6 +21,9 @@ class Builder:
             "Start": "nodes",
             "End": "nodes",
         }
+        self.MAPPING_MANY_TO_MANY_KEY_NAMES_TO_LAYERS = {
+            "Network providers": "organisations",
+        }
 
     def _create_table_from_json_schema(
         self,
@@ -113,6 +116,7 @@ class Builder:
 
         self.information_out["tables"][table_name] = {
             "columns": columns,
+            "relations": [],
             "geographic_type": geographic_type,
             "geographic_field": geographic_field,
         }
@@ -278,6 +282,112 @@ class Builder:
         # We're done, return
         return columns
 
+    def _create_relations_from_json_schema(
+        self,
+        json_schema,
+        table_name,
+    ):
+
+        relations = self._for_create_relations_get_relations_from_json_schema(
+            json_schema, table_name
+        )
+
+        for relation in relations:
+
+            # Create mapping table per GeoPackage spec
+            self.cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS {} (
+                    base_id TEXT NOT NULL,
+                    related_id TEXT NOT NULL,
+                    PRIMARY KEY (base_id, related_id),
+                    FOREIGN KEY (base_id) REFERENCES {}(id),
+                    FOREIGN KEY (related_id) REFERENCES {}(id)
+                );
+                """.format(
+                    relation["mapping_table"], table_name, relation["related_table"]
+                )
+            )
+
+            # Add to contents
+            self.cursor.execute(
+                """
+                INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id)
+                VALUES ('{}', 'attributes', '{}', 4326);
+                """.format(
+                    relation["mapping_table"],
+                    relation["mapping_table"],
+                )
+            )
+
+            # Add mapping table to gpkg_extensions per GeoPackage spec
+            self.cursor.execute(
+                """
+                INSERT OR IGNORE INTO gpkg_extensions (table_name, column_name, extension_name, definition, "scope")
+                VALUES (?, null, 'gpkg_related_tables','http://docs.opengeospatial.org/is/18-000/18-000.html', 'read-write');
+                """,
+                [relation["mapping_table"]],
+            )
+
+            # Add the relationship to gpkgext_relations
+            self.cursor.execute(
+                """
+                INSERT INTO gpkgext_relations (
+                    base_table_name,
+                    base_primary_column,
+                    related_table_name,
+                    related_primary_column,
+                    relation_type,
+                    mapping_table_name
+                )
+                VALUES  (
+                    ?,
+                    'id',
+                    ?,
+                    'id',
+                    ?,
+                    ?
+                );
+                """,
+                [
+                    table_name,
+                    relation["related_table"],
+                    relation["name"],
+                    relation["mapping_table"],
+                ],
+            )
+
+        self.information_out["tables"][table_name]["relations"] = relations
+
+    def _for_create_relations_get_relations_from_json_schema(
+        self,
+        json_schema,
+        table_name,
+    ):
+        relations = []
+        for property_key, property_value in json_schema["properties"].items():
+
+            if (
+                property_value["type"] == "array"
+                and property_value["items"]["type"] == "object"
+                and property_value["title"]
+                in self.MAPPING_MANY_TO_MANY_KEY_NAMES_TO_LAYERS.keys()
+            ):
+
+                relations.append(
+                    {
+                        "standard_field": property_key,
+                        "name": table_name + "_" + property_key,
+                        "related_table": self.MAPPING_MANY_TO_MANY_KEY_NAMES_TO_LAYERS[
+                            property_value["title"]
+                        ],
+                        "mapping_table": "relation_" + table_name + "_" + property_key,
+                        "title": property_value["title"],
+                    }
+                )
+
+        return relations
+
     def go(self):
         # Load JSON Schema
         jsonschema_filename = os.path.join(
@@ -312,6 +422,13 @@ class Builder:
             "closed_codelists": {},
         }
         # Create extension tables
+        self.cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS gpkgext_relations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, base_table_name TEXT NOT NULL, base_primary_column TEXT NOT NULL, related_table_name TEXT NOT NULL, related_primary_column TEXT NOT NULL, relation_type TEXT NOT NULL, mapping_table_name TEXT UNIQUE
+            );
+        """
+        )
         # Create gpkg_data_columns per https://www.geopackage.org/spec120/#gpkg_data_columns_sql
         # EXCEPT don't make the name column UNIQUE, this causes us clashes
         # https://www.geopackage.org/spec120/#gpkg_data_columns_cols says "A human-readable identifier (e.g. short name) for the column_name content" so why unique?
@@ -334,6 +451,9 @@ class Builder:
         """
         )
         # Register extensions
+        self.cursor.execute(
+            "INSERT OR IGNORE INTO gpkg_extensions (table_name, column_name, extension_name, definition, scope) VALUES ('gpkgext_relations', NULL, 'gpkg_related_tables','http://docs.opengeospatial.org/is/18-000/18-000.html', 'read-write');"
+        )
         self.cursor.execute(
             "INSERT OR IGNORE INTO gpkg_extensions (table_name, column_name, extension_name, definition, scope) VALUES ('gpkg_data_columns', NULL, 'gpkg_schema','http://www.geopackage.org/spec120/#extension_schema', 'read-write');"
         )
@@ -370,6 +490,15 @@ class Builder:
             jsonschema["properties"]["contracts"]["items"],
             table_name="contracts",
             has_network_id=True,
+        )
+        # Create relations
+        self._create_relations_from_json_schema(
+            jsonschema["properties"]["nodes"]["items"],
+            table_name="nodes",
+        )
+        self._create_relations_from_json_schema(
+            jsonschema["properties"]["spans"]["items"],
+            table_name="spans",
         )
         # Wrapup
         self.connection.commit()

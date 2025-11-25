@@ -76,11 +76,20 @@ def export_callable_to_json(callable):
                     data[column_info["name"]],
                     type=column_info["type"],
                 )
-    # Other tables
+    # Other tables - first load geopackage id's to json id mapping
+    geopackage_id_to_standard_info_mappings = {}
+    for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:
+        geopackage_id_to_standard_info_mappings[table_name] = {}
+        for data in callable(table_name):
+            geopackage_id_to_standard_info_mappings[table_name][data["id"]] = {
+                "id": data["ofds_id"]
+            }
+    # Other tables - now process
     for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:
         for data in callable(table_name):
             out = {}
             network_id = data["network_id"] or default_network_id
+            # Normal fields
             out["id"] = data["ofds_id"] or str(uuid.uuid4())
             for column_info in schema_information["tables"][table_name]["columns"]:
                 if column_info["name"] not in ["ofds_id", "network_id"]:
@@ -94,7 +103,27 @@ def export_callable_to_json(callable):
                 out[schema_information["tables"][table_name]["geographic_field"]] = (
                     json.loads(data["geom"])
                 )
+            # relations
+            # This is an inefficient way of doing this, as we loop within loop - but will do for first pass and the small data sizes we expect
+            for relation in schema_information["tables"][table_name].get(
+                "relations", []
+            ):
+                values = []
+                for relation_data in callable(relation["mapping_table"]):
+                    # We convert relation_data columns to ints as currently it's text column types ... if they become int column types later we can remove this
+                    if int(relation_data["base_id"]) == data["id"]:
+                        values.append(
+                            {
+                                "id": geopackage_id_to_standard_info_mappings[
+                                    relation["related_table"]
+                                ][int(relation_data["related_id"])]["id"]
+                            }
+                        )
+                if values:
+                    out[relation["standard_field"]] = values
+            # wrap up
             networks[network_id][table_name].append(out)
+
     # Clear empty arrays out of networks
     for network in networks.values():
         for key in ["nodes", "spans", "phases", "organisations", "contracts"]:

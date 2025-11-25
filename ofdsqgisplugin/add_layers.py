@@ -2,8 +2,8 @@ import csv
 import json
 import os
 
-from qgis.core import (QgsEditorWidgetSetup, QgsLayerTreeLayer, QgsProject,
-                       QgsVectorLayer)
+from qgis.core import (QgsDefaultValue, QgsEditorWidgetSetup,
+                       QgsLayerTreeLayer, QgsProject, QgsVectorLayer)
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -100,4 +100,8 @@ def add_layers(filename):
                             "Value": field_info["foreignkey_value"],
                         },
                     ),
+                )
+            if field_info["type"] == "text" and field_info["name"] == "ofds_id":
+                layers[table_name].setDefaultValueDefinition(
+                    field_idx + 1, QgsDefaultValue("ltrim(rtrim(uuid(),'}'),'{')")
                 )

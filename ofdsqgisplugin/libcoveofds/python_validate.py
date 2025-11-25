@@ -86,8 +86,40 @@ class SpansMustHaveValidNodesAdditionalCheckForNetwork(AdditionalCheckForNetwork
         return True
 
 
+class IsNodeUsedInSpanAdditionalCheckForNetwork(AdditionalCheckForNetwork):
+    def __init__(self):
+        super().__init__()
+        self._node_ids_used_in_spans: list = []
+
+    def check_span_first_pass(self, span: dict, path: str):
+        start = span.get("start")
+        if start and start not in self._node_ids_used_in_spans:
+            self._node_ids_used_in_spans.append(start)
+        end = span.get("end")
+        if end and end not in self._node_ids_used_in_spans:
+            self._node_ids_used_in_spans.append(end)
+
+    def check_node_second_pass(self, node: dict, path: str):
+        id = node.get("id")
+        if id and id not in self._node_ids_used_in_spans:
+            self._additional_check_results.append(
+                {
+                    "type": "node_not_used_in_any_spans",
+                    "node_id": node.get("id"),
+                    "path": path,
+                }
+            )
+
+    def skip_if_any_links_have_external_node_data(self) -> bool:
+        return True
+
+    def skip_if_any_links_have_external_span_data(self) -> bool:
+        return True
+
+
 ADDITIONAL_CHECK_CLASSES_FOR_NETWORK = [
     SpansMustHaveValidNodesAdditionalCheckForNetwork,
+    IsNodeUsedInSpanAdditionalCheckForNetwork,
 ]
 
 

@@ -72,7 +72,7 @@ def export_callable_to_json(callable):
             if column_info["name"] != "ofds_id":
                 set_key_in_dict_for_export(
                     networks[default_network_id],
-                    column_info["name"],
+                    column_info["name"].replace("__", "/"),
                     data[column_info["name"]],
                     type=column_info["type"],
                 )
@@ -86,7 +86,7 @@ def export_callable_to_json(callable):
                 if column_info["name"] not in ["ofds_id", "network_id"]:
                     set_key_in_dict_for_export(
                         out,
-                        column_info["name"],
+                        column_info["name"].replace("__", "/"),
                         data[column_info["name"]],
                         type=column_info["type"],
                     )

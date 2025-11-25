@@ -57,7 +57,7 @@ def import_json_to_callable(json_data_to_import, callable):
                         (
                             column_info["name"],
                             get_deep_key_from_data_for_import(
-                                network, column_info["name"]
+                                network, column_info["name"].replace("__", "/")
                             ),
                         )
                     )
@@ -83,7 +83,8 @@ def import_json_to_callable(json_data_to_import, callable):
                                     (
                                         column_info["name"],
                                         get_deep_key_from_data_for_import(
-                                            table_data, column_info["name"]
+                                            table_data,
+                                            column_info["name"].replace("__", "/"),
                                         ),
                                     )
                                 )

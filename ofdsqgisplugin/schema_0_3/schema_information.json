@@ -4,41 +4,1674 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text",
-          "title": "Identifier"
+          "title": "Identifier",
+          "description": "A universally unique identifier for this network, as defined by [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122). For more information, see the [identifier reference](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/identifiers.html).",
+          "type": "text"
         },
         {
           "name": "name",
-          "type": "text",
-          "title": "Network name"
+          "title": "Network name",
+          "description": "A name for this network.",
+          "type": "text"
         },
         {
           "name": "website",
-          "type": "text",
-          "title": "Website"
+          "title": "Website",
+          "description": "The URL of the website for this network.",
+          "type": "text"
+        },
+        {
+          "name": "publisher__name",
+          "title": "Publisher Name",
+          "description": "The publisher of this network. A name for this organisation.",
+          "type": "text"
+        },
+        {
+          "name": "publisher__identifier__id",
+          "title": "Publisher Organisation identifier Identifier",
+          "description": "The publisher of this network. An identifier for this organisation. The identifier assigned to the organisation in the register identified in `.scheme`.",
+          "type": "text"
+        },
+        {
+          "name": "publisher__identifier__scheme",
+          "title": "Publisher Organisation identifier Scheme",
+          "description": "The publisher of this network. An identifier for this organisation. The register from which the identifier in `.id` is drawn, from the open [organisationIdentifierScheme codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#organisationidentifierscheme).",
+          "type": "opencodelist",
+          "sqlite_type": "text",
+          "values": [
+            {
+              "Andorra Chart of Accounts": "AD-COA"
+            },
+            {
+              "Ajman Chamber of Commerce and Industry": "AE-ACCI"
+            },
+            {
+              "Abu Dhabi Commercial Directory": "AE-ADCD"
+            },
+            {
+              "Ajman Free Zone Authority": "AE-AFZ"
+            },
+            {
+              "United Arab Emirates (the) Chart of Accounts": "AE-COA"
+            },
+            {
+              "Dubai Chamber of Commerce and Industry": "AE-DCCI"
+            },
+            {
+              "Dubai Financial Services Authority": "AE-DFSA"
+            },
+            {
+              "Dubai International Financial Centre": "AE-DIFC"
+            },
+            {
+              "Dubai Multi Commodities Centre": "AE-DMCC"
+            },
+            {
+              "Fujairah Chamber of Commerce and Industry": "AE-FCCI"
+            },
+            {
+              "Fujairah Free Zone Company Listing": "AE-FFZ"
+            },
+            {
+              "Hamriyah Free Zone Authority": "AE-HFZA"
+            },
+            {
+              "Ras al-Khaimah Investment Authority": "AE-RAKIA"
+            },
+            {
+              "Ras al-Khaimah Chamber of Commerce and Industry": "AE-RK_CR"
+            },
+            {
+              "Sharjah Airport International Free Zone": "AE-SAIF"
+            },
+            {
+              "Sharjah Chamber of Commerce and Industry": "AE-SCCI"
+            },
+            {
+              "Umm al-Quwain Chamber of Commerce and Industry": "AE-UQCCI"
+            },
+            {
+              "Afghanistan Central Business Registry": "AF-CBR"
+            },
+            {
+              "Afghanistan Chart of Accounts": "AF-COA"
+            },
+            {
+              "Ministry of Economy NGO Department": "AF-MOE"
+            },
+            {
+              "Afghanistan Tax Identification Number": "AF-TIN"
+            },
+            {
+              "Antigua and Barbuda Chart of Accounts": "AG-COA"
+            },
+            {
+              "Anguilla Chart of Accounts": "AI-COA"
+            },
+            {
+              "Albania Chart of Accounts": "AL-COA"
+            },
+            {
+              "Albanian National Business Center": "AL-QKB"
+            },
+            {
+              "Armenia Chart of Accounts": "AM-COA"
+            },
+            {
+              "State Register Agency of Legal Entities of Armenia": "AM-SRALE"
+            },
+            {
+              "Angola Chart of Accounts": "AO-COA"
+            },
+            {
+              "Antarctica Chart of Accounts": "AQ-COA"
+            },
+            {
+              "The National Centre of Community Organisations (Argentina)": "AR-CENOC"
+            },
+            {
+              "Argentina Chart of Accounts": "AR-COA"
+            },
+            {
+              "Unique Tax Identification Code (Argentina)": "AR-CUIT"
+            },
+            {
+              "American Samoa Chart of Accounts": "AS-COA"
+            },
+            {
+              "Austria Chart of Accounts": "AT-COA"
+            },
+            {
+              "Austria Company Register": "AT-FB"
+            },
+            {
+              "VAT number (Austria Company Register)": "AT-UID"
+            },
+            {
+              "Austrian Central Register of Associations": "AT-ZVR"
+            },
+            {
+              "Australian Business Register": "AU-ABN"
+            },
+            {
+              "Australian Charities and Not-for-profits Commission": "AU-ACNC"
+            },
+            {
+              "Australia Chart of Accounts": "AU-COA"
+            },
+            {
+              "Aruba Chart of Accounts": "AW-COA"
+            },
+            {
+              "\u00c5land Islands Chart of Accounts": "AX-COA"
+            },
+            {
+              "Azerbaijan Chart of Accounts": "AZ-COA"
+            },
+            {
+              "State Register of Commercial Entities (Ministry of Taxes of Azerbaijan Republic)": "AZ-IVI"
+            },
+            {
+              "Bosnia and Herzegovina Chart of Accounts": "BA-COA"
+            },
+            {
+              "Barbados Chart of Accounts": "BB-COA"
+            },
+            {
+              "Bangladesh Chart of Accounts": "BD-COA"
+            },
+            {
+              "Bangladesh NGO Affairs Bureau": "BD-NAB"
+            },
+            {
+              "Bangladesh Office of the Register of Joint Stock Companies and Firms": "BD-ROC"
+            },
+            {
+              "Crossroads Bank for Enterprises": "BE-BCE_KBO"
+            },
+            {
+              "Belgium Chart of Accounts": "BE-COA"
+            },
+            {
+              "Au Greffe du Tribunal de Commerce Francophone de Bruxelles": "BE-GTCF"
+            },
+            {
+              "Burkina Faso Chart of Accounts": "BF-COA"
+            },
+            {
+              "Ministry of Territorial Administration and Decentralisation": "BF-MATD"
+            },
+            {
+              "Bulgaria Chart of Accounts": "BG-COA"
+            },
+            {
+              "Commercial Register": "BG-EIK"
+            },
+            {
+              "Bahrain Chart of Accounts": "BH-COA"
+            },
+            {
+              "Burundi Chart of Accounts": "BI-COA"
+            },
+            {
+              "Tax Identification Number, Burundi": "BI-NIF"
+            },
+            {
+              "Benin Chart of Accounts": "BJ-COA"
+            },
+            {
+              "Unique Tax Identifier": "BJ-IFU"
+            },
+            {
+              "Saint Barth\u00e9lemy Chart of Accounts": "BL-COA"
+            },
+            {
+              "Bermuda Chart of Accounts": "BM-COA"
+            },
+            {
+              "Brunei Darussalam Chart of Accounts": "BN-COA"
+            },
+            {
+              "Bolivia Institutional Classifier": "BO-CINS"
+            },
+            {
+              "Bolivia (Plurinational State of) Chart of Accounts": "BO-COA"
+            },
+            {
+              "Tax Identification Number": "BO-NIT"
+            },
+            {
+              "Bonaire, Sint Eustatius and Saba Chart of Accounts": "BQ-COA"
+            },
+            {
+              "National Registry of Legal Entities": "BR-CNPJ"
+            },
+            {
+              "Brazil Chart of Accounts": "BR-COA"
+            },
+            {
+              "Bahamas (the) Chart of Accounts": "BS-COA"
+            },
+            {
+              "Bhutan Chart of Accounts": "BT-COA"
+            },
+            {
+              "Bouvet Island Chart of Accounts": "BV-COA"
+            },
+            {
+              "Companies and Intellectual Property Authority (Botswana)": "BW-CIPA"
+            },
+            {
+              "Botswana Chart of Accounts": "BW-COA"
+            },
+            {
+              "Botswana Taxpayers Identification Number": "BW-TIN"
+            },
+            {
+              "Unified State Register of Legal Entities and Individual Entrepreneurs (Ministry of Justice of the Republic of Belarus)": "BY-ADR"
+            },
+            {
+              "Belarus Chart of Accounts": "BY-COA"
+            },
+            {
+              "Belize Chart of Accounts": "BZ-COA"
+            },
+            {
+              "Corporations Canada": "CA-CC"
+            },
+            {
+              "Canada Chart of Accounts": "CA-COA"
+            },
+            {
+              "Canadian Revenue Agency": "CA-CRA_ACR"
+            },
+            {
+              "List of legal department names (Government of Canada)": "CA-GOV"
+            },
+            {
+              "Corporate Registry Office": "CA_AB-ABT"
+            },
+            {
+              "British Columbia Corporate Registry": "CA_BC-BRC_CBR"
+            },
+            {
+              "Manitoba Companies Office, Department of Entrepreneurship, Training and Trade": "CA_MB-MTB"
+            },
+            {
+              "Corporate Registry": "CA_NB-NWB_NOB"
+            },
+            {
+              "Registry of Companies, Department of Government Services": "CA_NL-NFL_TNL"
+            },
+            {
+              "Nova Scotia Registry of Joint Stock Companies": "CA_NS-NVS_NVE"
+            },
+            {
+              "Canadian Provincial Corporate Registration - Northwest Territories": "CA_NT-NWT_TNO"
+            },
+            {
+              "Nunavut Department of Justice - Corporate Registries": "CA_NU-NNV"
+            },
+            {
+              "ServiceOntario, Ministry of Government Services": "CA_ON-ONT"
+            },
+            {
+              "Prince Edward Island Corporate": "CA_PE-PEI_IPE"
+            },
+            {
+              "Quebec Business Registrar": "CA_QC-QBC"
+            },
+            {
+              "Saskatchewan Corporate Registry": "CA_SK-SKN"
+            },
+            {
+              "Yukon Corporate Affairs": "CA_YT-YKT"
+            },
+            {
+              "Cocos (Keeling) Islands (the) Chart of Accounts": "CC-COA"
+            },
+            {
+              "Congo (the Democratic Republic of the) Chart of Accounts": "CD-COA"
+            },
+            {
+              "Central African Republic (the) Chart of Accounts": "CF-COA"
+            },
+            {
+              "Congo (the) Chart of Accounts": "CG-COA"
+            },
+            {
+              "Commercial Register of the Canton of Basel-Stadt, Switzerland": "CH_BS-CR"
+            },
+            {
+              "Switzerland Chart of Accounts": "CH-COA"
+            },
+            {
+              "Commercial Registry, Federal Office of Justice (Switzerland)": "CH-FDJP"
+            },
+            {
+              "C\u00f4te d'Ivoire Chart of Accounts": "CI-COA"
+            },
+            {
+              "Ministry of the Interior (Ivory Coast)": "CI-MOI"
+            },
+            {
+              "Cook Islands (the) Chart of Accounts": "CK-COA"
+            },
+            {
+              "Chile Chart of Accounts": "CL-COA"
+            },
+            {
+              "Public Market Suppliers and Buyer Units, Chile": "CL-MP"
+            },
+            {
+              "Rol \u00danico Tributario de Chile (Taxpayer Number)": "CL-RUT"
+            },
+            {
+              "Cameroon Chart of Accounts": "CM-COA"
+            },
+            {
+              "Tax Identification Number (Cameroon)": "CM-NIU"
+            },
+            {
+              "China Chart of Accounts": "CN-COA"
+            },
+            {
+              "State Administration for Industry and Commerce (SAIC)": "CN-SAIC"
+            },
+            {
+              "Unified Social Credit Identifier": "CN-USCI"
+            },
+            {
+              "Bogota Chamber of Commerce": "CO-CCB"
+            },
+            {
+              "Colombia Chart of Accounts": "CO-COA"
+            },
+            {
+              "Unified Commercial and Social Registry (RUES)": "CO-RUE"
+            },
+            {
+              "Costa Rica Chart of Accounts": "CR-COA"
+            },
+            {
+              "Registro de Personas Jur\u00eddicas (Costa Rica)": "CR-RPJ"
+            },
+            {
+              "Cuba Chart of Accounts": "CU-COA"
+            },
+            {
+              "Cabo Verde Chart of Accounts": "CV-COA"
+            },
+            {
+              "Cura\u00e7ao Chart of Accounts": "CW-COA"
+            },
+            {
+              "Christmas Island Chart of Accounts": "CX-COA"
+            },
+            {
+              "Cyprus Chart of Accounts": "CY-COA"
+            },
+            {
+              "Cyprus Department of Registrar of Companies and Official Receiver (DRCOR)": "CY-DRCOR"
+            },
+            {
+              "Czechia Chart of Accounts": "CZ-COA"
+            },
+            {
+              "Tax ID (DI\u010c) Czech Republic": "CZ-DIC"
+            },
+            {
+              "Access to Registers of Economic Subjects": "CZ-ICO"
+            },
+            {
+              "Germany Chart of Accounts": "DE-COA"
+            },
+            {
+              "Common Register Portal of the German Federal States (CRP)": "DE-CR"
+            },
+            {
+              "Djibouti Chart of Accounts": "DJ-COA"
+            },
+            {
+              "Denmark Chart of Accounts": "DK-COA"
+            },
+            {
+              "Danish Central Business Register": "DK-CVR"
+            },
+            {
+              "Dominica Chart of Accounts": "DM-COA"
+            },
+            {
+              "Dominican Republic (the) Chart of Accounts": "DO-COA"
+            },
+            {
+              "Algeria Chart of Accounts": "DZ-COA"
+            },
+            {
+              "Ecuador Chart of Accounts": "EC-COA"
+            },
+            {
+              "Ecuador Unique Taxpayer Registry": "EC-RUC"
+            },
+            {
+              "Estonia Chart of Accounts": "EE-COA"
+            },
+            {
+              "e-Business Register (Estonia)": "EE-KMKR"
+            },
+            {
+              "Centre of Registers and Information Systems (RIK)": "EE-RIK"
+            },
+            {
+              "Egypt Chart of Accounts": "EG-COA"
+            },
+            {
+              "Commercial Registry, Egypt": "EG-CR"
+            },
+            {
+              "Ministry of Social Solidarity and Justice (Egypt)": "EG-MOSS"
+            },
+            {
+              "Western Sahara Chart of Accounts": "EH-COA"
+            },
+            {
+              "Eritrea Chart of Accounts": "ER-COA"
+            },
+            {
+              "Spain Chart of Accounts": "ES-COA"
+            },
+            {
+              "Common Directory of Organizational Units and Offices - DIR3": "ES-DIR3"
+            },
+            {
+              "Ministerio de Justicia": "ES-MDJ"
+            },
+            {
+              "Tax Identification Number": "ES-NIF"
+            },
+            {
+              "Central Commercial Register of the Kingdom of Spain": "ES-RMC"
+            },
+            {
+              "Ethiopia Chart of Accounts": "ET-COA"
+            },
+            {
+              "Charities and Societies Agency (Ethiopia)": "ET-CSA"
+            },
+            {
+              "Ministry of Foreign Affairs": "ET-MFA"
+            },
+            {
+              "Ministry of Trade (Ethiopia)": "ET-MOT"
+            },
+            {
+              "Finland Chart of Accounts": "FI-COA"
+            },
+            {
+              "Finnish Patent and Registration Office": "FI-PRO"
+            },
+            {
+              "Finnish Tax Administration": "FI-VERO"
+            },
+            {
+              "Fiji Chart of Accounts": "FJ-COA"
+            },
+            {
+              "Falkland Islands (the) [Malvinas] Chart of Accounts": "FK-COA"
+            },
+            {
+              "Micronesia (Federated States of) Chart of Accounts": "FM-COA"
+            },
+            {
+              "Faroe Islands (the) Chart of Accounts": "FO-COA"
+            },
+            {
+              "France Chart of Accounts": "FR-COA"
+            },
+            {
+              "The National Institute of Statistics and Economic Studies": "FR-INSEE"
+            },
+            {
+              "Trade and Companies Register": "FR-RCS"
+            },
+            {
+              "Gabon Chart of Accounts": "GA-COA"
+            },
+            {
+              "Community amateur sports clubs (CASCs) registered with HMRC": "GB-CASC"
+            },
+            {
+              "Charity Commission/Comisiwn Elusennau": "GB-CHC"
+            },
+            {
+              "United Kingdom of Great Britain and Northern Ireland (the) Chart of Accounts": "GB-COA"
+            },
+            {
+              "Companies House": "GB-COH"
+            },
+            {
+              "Register of Schools (England and Wales)": "GB-EDU"
+            },
+            {
+              "Government Organisation Register": "GB-GOR"
+            },
+            {
+              "UK Government Departments Reference Numbers (IATI Standard)": "GB-GOV"
+            },
+            {
+              "GOV.UK - UK Government Departments, Agencies & Public Bodies": "GB-GOVUK"
+            },
+            {
+              "Higher Education Statistics Agency": "GB-HESA"
+            },
+            {
+              "Schools Plus, Department of Education (Northern Ireland)": "GB-IRN"
+            },
+            {
+              "Local Authorities for England Register": "GB-LAE"
+            },
+            {
+              "Local authorities for Northern Ireland register": "GB-LANI"
+            },
+            {
+              "Scottish Local Authority Register": "GB-LAS"
+            },
+            {
+              "Mutuals Public Register": "GB-MPR"
+            },
+            {
+              "NHS Digital - Organisation Data Service": "GB-NHS"
+            },
+            {
+              "The Charity Commission for Northern Ireland": "GB-NIC"
+            },
+            {
+              "Principal Local Authority Register for Wales": "GB-PLA"
+            },
+            {
+              "HM Revenue and Customs": "GB-REV"
+            },
+            {
+              "Scottish Charity Register": "GB-SC"
+            },
+            {
+              "Register of Schools (Scotland)": "GB-SCOTEDU"
+            },
+            {
+              "Registered Social Housing Providers (England)": "GB-SHPE"
+            },
+            {
+              "Supplier Registration Service, Crown Commercial Service, UK": "GB-SRS"
+            },
+            {
+              "UK Register of Learning Providers": "GB-UKPRN"
+            },
+            {
+              "Register of Schools (Wales)": "GB-WALEDU"
+            },
+            {
+              "Grenada Chart of Accounts": "GD-COA"
+            },
+            {
+              "Georgia Chart of Accounts": "GE-COA"
+            },
+            {
+              "Register of Entrepreneurial and Non-Entrepreneurial Legal Entities, Georgia": "GE-NAPR"
+            },
+            {
+              "Georgian Revenue Service": "GE-RS"
+            },
+            {
+              "French Guiana Chart of Accounts": "GF-COA"
+            },
+            {
+              "Guernsey Chart of Accounts": "GG-COA"
+            },
+            {
+              "Guernsey Registry": "GG-RCE"
+            },
+            {
+              "Ghana Chart of Accounts": "GH-COA"
+            },
+            {
+              "Department of Social Developments": "GH-DSW"
+            },
+            {
+              "Registrar General's Department": "GH-RGD"
+            },
+            {
+              "Gibraltar Chart of Accounts": "GI-COA"
+            },
+            {
+              "Greenland Chart of Accounts": "GL-COA"
+            },
+            {
+              "Gambia (the) Chart of Accounts": "GM-COA"
+            },
+            {
+              "Guinea Chart of Accounts": "GN-COA"
+            },
+            {
+              "Guadeloupe Chart of Accounts": "GP-COA"
+            },
+            {
+              "Equatorial Guinea Chart of Accounts": "GQ-COA"
+            },
+            {
+              "Greece Chart of Accounts": "GR-COA"
+            },
+            {
+              "South Georgia and the South Sandwich Islands Chart of Accounts": "GS-COA"
+            },
+            {
+              "Public Sector Institution Classifications (Guetmala)": "GT-CISP"
+            },
+            {
+              "Guatemala Chart of Accounts": "GT-COA"
+            },
+            {
+              "Guatemala Tax Identification Number": "GT-NIT"
+            },
+            {
+              "Registry for Legal Entities (Guatemala)": "GT-RPJ"
+            },
+            {
+              "Guam Chart of Accounts": "GU-COA"
+            },
+            {
+              "Guinea-Bissau Chart of Accounts": "GW-COA"
+            },
+            {
+              "Guyana Chart of Accounts": "GY-COA"
+            },
+            {
+              "Hong Kong Chart of Accounts": "HK-COA"
+            },
+            {
+              "Hong Kong Companies Register": "HK-CR"
+            },
+            {
+              "Heard Island and McDonald Islands Chart of Accounts": "HM-COA"
+            },
+            {
+              "Honduras Chart of Accounts": "HN-COA"
+            },
+            {
+              "National Tax Registry": "HN-RTN"
+            },
+            {
+              "Croatia Chart of Accounts": "HR-COA"
+            },
+            {
+              "Croatian Court Business Register": "HR-MBS"
+            },
+            {
+              "Croatia Court Register": "HR-OIB"
+            },
+            {
+              "Haiti Chart of Accounts": "HT-COA"
+            },
+            {
+              "Information and Electronic Company Registration Service": "HU-AFA"
+            },
+            {
+              "Hungary Chart of Accounts": "HU-COA"
+            },
+            {
+              "Indonesia Chart of Accounts": "ID-COA"
+            },
+            {
+              "Director General of Taxes": "ID-DJP"
+            },
+            {
+              "Ministry of Home Affairs": "ID-KDN"
+            },
+            {
+              "Ministry of Justice & Human Rights": "ID-KHH"
+            },
+            {
+              "Ministry of Foreign affairs": "ID-KLN"
+            },
+            {
+              "Indonesia - NGOs registered at Provinicial Level": "ID-PRO"
+            },
+            {
+              "The SMERU Research Institute": "ID-SMR"
+            },
+            {
+              "Charities Regulatory Authority of Ireland": "IE-CHY"
+            },
+            {
+              "Ireland Chart of Accounts": "IE-COA"
+            },
+            {
+              "Irish CompaniesRegistration Office": "IE-CRO"
+            },
+            {
+              "Israel Chart of Accounts": "IL-COA"
+            },
+            {
+              "Israel Charity Registry": "IL-RA"
+            },
+            {
+              "Registrar of Companies (Israel)": "IL-ROC"
+            },
+            {
+              "Isle of Man Chart of Accounts": "IM-COA"
+            },
+            {
+              "Isle of Man Companies Registry": "IM-CR"
+            },
+            {
+              "Isle of Man Index of Registered Charities": "IM-GR"
+            },
+            {
+              "India Chart of Accounts": "IN-COA"
+            },
+            {
+              "Government of India, Ministry of Corporate Affairs": "IN-MCA"
+            },
+            {
+              "Ministry of Home Affairs (India) Foreign Contributions (Regulation) Act Register": "IN-MHA"
+            },
+            {
+              "British Indian Ocean Territory (the) Chart of Accounts": "IO-COA"
+            },
+            {
+              "Iraq Chart of Accounts": "IQ-COA"
+            },
+            {
+              "NGO Directorate (Republic of Iraq)": "IQ-NGO"
+            },
+            {
+              "Iran (Islamic Republic of) Chart of Accounts": "IR-COA"
+            },
+            {
+              "Iceland Chart of Accounts": "IS-COA"
+            },
+            {
+              "Italian Tax Code / VAT Number": "IT-CF"
+            },
+            {
+              "Italy Chart of Accounts": "IT-COA"
+            },
+            {
+              "Unique Organizational Unit Code": "IT-CUUO"
+            },
+            {
+              "Business Register of the Italian Chambers of Commerce": "IT-RI"
+            },
+            {
+              "Jersey Chart of Accounts": "JE-COA"
+            },
+            {
+              "Jersey Financial Services Commission (JFSC)": "JE-FSC"
+            },
+            {
+              "Jersey Charity Register": "JE-JCR"
+            },
+            {
+              "Jersey Overseas Aid Commission": "JE-OAC"
+            },
+            {
+              "Jamaica Chart of Accounts": "JM-COA"
+            },
+            {
+              "Companies Control Department (Jordan)": "JO-CCD"
+            },
+            {
+              "Jordan Chart of Accounts": "JO-COA"
+            },
+            {
+              "Register of Associations, Jordan": "JO-MSD"
+            },
+            {
+              "Japan Chart of Accounts": "JP-COA"
+            },
+            {
+              "National Tax Agency Corporate Number Publication Site": "JP-JCN"
+            },
+            {
+              "Kenya Chart of Accounts": "KE-COA"
+            },
+            {
+              "Kenya Revenue Authority PIN": "KE-KRA"
+            },
+            {
+              "NGO's Coordination Board": "KE-NCB"
+            },
+            {
+              "Registar of Companies": "KE-RCO"
+            },
+            {
+              "Registrar of Societies": "KE-RSO"
+            },
+            {
+              "Kyrgyzstan Chart of Accounts": "KG-COA"
+            },
+            {
+              "Electronic database of legal entities and branches (Krygyzstan)": "KG-ID"
+            },
+            {
+              "Kyrgyz Republic Register of Legal Entities": "KG-INN"
+            },
+            {
+              "Electronic database of legal entities and branches (Krygyzstan) OKPO codes": "KG-OKPO"
+            },
+            {
+              "Electronic database of legal entities and branches (Krygyzstan) TIN": "KG-TIN"
+            },
+            {
+              "Cambodia Chart of Accounts": "KH-COA"
+            },
+            {
+              "Ministry of Foreign Affairs": "KH-INGO"
+            },
+            {
+              "Ministry of Interior National NGO Registrar": "KH-NNGO"
+            },
+            {
+              "Kiribati Chart of Accounts": "KI-COA"
+            },
+            {
+              "Comoros (the) Chart of Accounts": "KM-COA"
+            },
+            {
+              "Saint Kitts and Nevis Chart of Accounts": "KN-COA"
+            },
+            {
+              "Korea (the Democratic People's Republic of) Chart of Accounts": "KP-COA"
+            },
+            {
+              "National Tax Service Business Registration Number": "KR-BRN"
+            },
+            {
+              "Korea (the Republic of) Chart of Accounts": "KR-COA"
+            },
+            {
+              "Kuwait Chart of Accounts": "KW-COA"
+            },
+            {
+              "Cayman Islands (the) Chart of Accounts": "KY-COA"
+            },
+            {
+              "Business Identification Number (BIN)": "KZ-BIN"
+            },
+            {
+              "Kazakhstan Chart of Accounts": "KZ-COA"
+            },
+            {
+              "Lao People's Democratic Republic (the) Chart of Accounts": "LA-COA"
+            },
+            {
+              "Lebanon Chart of Accounts": "LB-COA"
+            },
+            {
+              "Lebanese Ministry of Justice, Commercial Register": "LB-CR"
+            },
+            {
+              "Ministry of Interior (Lebanon)": "LB-MOI"
+            },
+            {
+              "Saint Lucia Chart of Accounts": "LC-COA"
+            },
+            {
+              "Liechtenstein Chart of Accounts": "LI-COA"
+            },
+            {
+              "Sri Lanka Chart of Accounts": "LK-COA"
+            },
+            {
+              "Department of the Registrar of Companies (Sri Lanka)": "LK-DRC"
+            },
+            {
+              "Sri Lanka - National Secretariat for Non-Governmental Organisations": "LK-NGO"
+            },
+            {
+              "Liberia Chart of Accounts": "LR-COA"
+            },
+            {
+              "Ministry of Finance and Development Planning NGO": "LR-MFDPNGO"
+            },
+            {
+              "Lesotho Chart of Accounts": "LS-COA"
+            },
+            {
+              "Lesotho Council of Non Governmental Organisations": "LS-LCN"
+            },
+            {
+              "Lithuania Chart of Accounts": "LT-COA"
+            },
+            {
+              "Lithuanian State Tax Inspectorate (PVM)": "LT-PVM"
+            },
+            {
+              "Information Platform of Legal Entities (Lithuania)": "LT-RC"
+            },
+            {
+              "Luxembourg Chart of Accounts": "LU-COA"
+            },
+            {
+              "Luxembourg Trade and Companies Register": "LU-RCS"
+            },
+            {
+              "Latvia Chart of Accounts": "LV-COA"
+            },
+            {
+              "Register of Enterprises of the Republic of Latvia": "LV-RE"
+            },
+            {
+              "Libya Chart of Accounts": "LY-COA"
+            },
+            {
+              "Morocco Chart of Accounts": "MA-COA"
+            },
+            {
+              "Monaco Chart of Accounts": "MC-COA"
+            },
+            {
+              "Trade and Industry Registry Number": "MC-RCI"
+            },
+            {
+              "Moldova (the Republic of) Chart of Accounts": "MD-COA"
+            },
+            {
+              "Legal entity registration number (IDNO) Moldova": "MD-IDNO"
+            },
+            {
+              "Montenegro Chart of Accounts": "ME-COA"
+            },
+            {
+              "Saint Martin (French part) Chart of Accounts": "MF-COA"
+            },
+            {
+              "Madagascar Chart of Accounts": "MG-COA"
+            },
+            {
+              "Marshall Islands (the) Chart of Accounts": "MH-COA"
+            },
+            {
+              "North Macedonia Chart of Accounts": "MK-COA"
+            },
+            {
+              "The Chamber of Commerce and Industry of Mali": "ML-CCIM"
+            },
+            {
+              "Mali Chart of Accounts": "ML-COA"
+            },
+            {
+              "Ministere de l'Administration Territoriale": "ML-MAT"
+            },
+            {
+              "Tax Identification Number": "ML-NIF"
+            },
+            {
+              "Myanmar Chart of Accounts": "MM-COA"
+            },
+            {
+              "Ministry of Home Affairs - Central Committee for the Registration and Supervision of Organisations": "MM-MHA"
+            },
+            {
+              "Mongolia Chart of Accounts": "MN-COA"
+            },
+            {
+              "Macao Chart of Accounts": "MO-COA"
+            },
+            {
+              "Northern Mariana Islands (the) Chart of Accounts": "MP-COA"
+            },
+            {
+              "Martinique Chart of Accounts": "MQ-COA"
+            },
+            {
+              "Mauritania Chart of Accounts": "MR-COA"
+            },
+            {
+              "Montserrat Chart of Accounts": "MS-COA"
+            },
+            {
+              "Malta Chart of Accounts": "MT-COA"
+            },
+            {
+              "Mauritius Chart of Accounts": "MU-COA"
+            },
+            {
+              "Companies and Businesses Registration Integrated System, Mauritius": "MU-CR"
+            },
+            {
+              "Maldives Chart of Accounts": "MV-COA"
+            },
+            {
+              "The Council for Non Governmental Organisations in Malawi": "MW-CNM"
+            },
+            {
+              "Malawi Chart of Accounts": "MW-COA"
+            },
+            {
+              "Malawi Revenue Authority": "MW-MRA"
+            },
+            {
+              "NGO Board of Malawi": "MW-NBM"
+            },
+            {
+              "Registrar General, Department of Justice": "MW-RG"
+            },
+            {
+              "Budget Classification of Public Entities (Mexico City)": "MX-CMX_CPA"
+            },
+            {
+              "Mexico Chart of Accounts": "MX-COA"
+            },
+            {
+              "Budget Classification of Public Entities (Mexico)": "MX-CPA"
+            },
+            {
+              "Federal Taxpayers Registry": "MX-RFC"
+            },
+            {
+              "Malaysia Chart of Accounts": "MY-COA"
+            },
+            {
+              "Companies Commission of Malaysia": "MY-SSM"
+            },
+            {
+              "Mozambique Chart of Accounts": "MZ-COA"
+            },
+            {
+              "Mozambique Commercial Registry": "MZ-CR"
+            },
+            {
+              "Mozambique Ministry of Justice": "MZ-MOJ"
+            },
+            {
+              "Taxpayer Single Identification Number (Mozambique)": "MZ-NUIT"
+            },
+            {
+              "Namibia Chart of Accounts": "NA-COA"
+            },
+            {
+              "Namibia Revenue Agency": "NA-NAMRA"
+            },
+            {
+              "New Caledonia Chart of Accounts": "NC-COA"
+            },
+            {
+              "Niger (the) Chart of Accounts": "NE-COA"
+            },
+            {
+              "Norfolk Island Chart of Accounts": "NF-COA"
+            },
+            {
+              "Bureau of Public Procurement (BPP) Contractor Registration System (Nigeria)": "NG-BPP"
+            },
+            {
+              "Nigerian Corporate Affairs Commission": "NG-CAC"
+            },
+            {
+              "Nigeria Chart of Accounts": "NG-COA"
+            },
+            {
+              "Taxpayer Identification Number": "NG-TIN"
+            },
+            {
+              "Nicaragua Chart of Accounts": "NI-COA"
+            },
+            {
+              "Netherlands (the) Chart of Accounts": "NL-COA"
+            },
+            {
+              "Chamber of Commerce (Netherlands)": "NL-KVK"
+            },
+            {
+              "Overheid.nl Web Metadata Standard": "NL-OWMS"
+            },
+            {
+              "Br\u00f8nn\u00f8ysundregistrene": "NO-BRC"
+            },
+            {
+              "Norway Chart of Accounts": "NO-COA"
+            },
+            {
+              "Nepal Chart of Accounts": "NP-COA"
+            },
+            {
+              "Company Registrar Office": "NP-CRO"
+            },
+            {
+              "Inland Revenue Department": "NP-IRD"
+            },
+            {
+              "Social Welfare Council Nepal": "NP-SWC"
+            },
+            {
+              "Nauru Chart of Accounts": "NR-COA"
+            },
+            {
+              "Niue Chart of Accounts": "NU-COA"
+            },
+            {
+              "New Zealand Chart of Accounts": "NZ-COA"
+            },
+            {
+              "Oman Chart of Accounts": "OM-COA"
+            },
+            {
+              "Panama Chart of Accounts": "PA-COA"
+            },
+            {
+              "Public Registry of Panama": "PA-PRP"
+            },
+            {
+              "Peru Chart of Accounts": "PE-COA"
+            },
+            {
+              "RUC Number (Peru)": "PE-RUC"
+            },
+            {
+              "Peruvian National Superintendency of Public Registries - Registered Legal Entities": "PE-SUNARP"
+            },
+            {
+              "French Polynesia Chart of Accounts": "PF-COA"
+            },
+            {
+              "Papua New Guinea Chart of Accounts": "PG-COA"
+            },
+            {
+              "Philippines (the) Chart of Accounts": "PH-COA"
+            },
+            {
+              "Securities and Exchange Commission (Philippines)": "PH-SEC"
+            },
+            {
+              "Pakistan Chart of Accounts": "PK-COA"
+            },
+            {
+              "Pakistan National Tax Number": "PK-NTN"
+            },
+            {
+              "Pakistan Centre for Philanthropy": "PK-PCP"
+            },
+            {
+              "Securities and Exchange Commission of Pakistan": "PK-SEC"
+            },
+            {
+              "Pakistan Voluntary Social Welfare Agency": "PK-VSWA"
+            },
+            {
+              "Poland Chart of Accounts": "PL-COA"
+            },
+            {
+              "The National Court Register (Poland)": "PL-KRS"
+            },
+            {
+              "Tax Identification Number (Poland)": "PL-NIP"
+            },
+            {
+              "REGON - Statistical number of an economy entity": "PL-REGON"
+            },
+            {
+              "Saint Pierre and Miquelon Chart of Accounts": "PM-COA"
+            },
+            {
+              "Pitcairn Chart of Accounts": "PN-COA"
+            },
+            {
+              "Puerto Rico Chart of Accounts": "PR-COA"
+            },
+            {
+              "Palestine, State of Chart of Accounts": "PS-COA"
+            },
+            {
+              "Ministry of Interior (Palestine)": "PS-MOI"
+            },
+            {
+              "Portugal Chart of Accounts": "PT-COA"
+            },
+            {
+              "Portal of Public Services": "PT-NIPPC"
+            },
+            {
+              "Palau Chart of Accounts": "PW-COA"
+            },
+            {
+              "Paraguay Chart of Accounts": "PY-COA"
+            },
+            {
+              "Classification of Entities in the National Budget for Paraguay": "PY-PGN"
+            },
+            {
+              "Unique Taxpayer Registry, Paraguay": "PY-RUC"
+            },
+            {
+              "Qatar Chart of Accounts": "QA-COA"
+            },
+            {
+              "R\u00e9union Chart of Accounts": "RE-COA"
+            },
+            {
+              "Romania Chart of Accounts": "RO-COA"
+            },
+            {
+              "National Trade Register (Romania)": "RO-CUI"
+            },
+            {
+              "Serbian Business Registrations Agency": "RS-APR"
+            },
+            {
+              "Serbia Chart of Accounts": "RS-COA"
+            },
+            {
+              "Tax identification number register": "RS-PIB"
+            },
+            {
+              "Russian Federation (the) Chart of Accounts": "RU-COA"
+            },
+            {
+              "Uniform State Register of Legal Entities of Russian Federation": "RU-INN"
+            },
+            {
+              "Unified State Register of Legal Entities (USRLE), Russian Federation": "RU-OGRN"
+            },
+            {
+              "Rwanda Chart of Accounts": "RW-COA"
+            },
+            {
+              "Rwanda Governance Board": "RW-RGB"
+            },
+            {
+              "Rwanda Revenue Authority": "RW-RRA"
+            },
+            {
+              "Saudi Arabia Chart of Accounts": "SA-COA"
+            },
+            {
+              "Solomon Islands Chart of Accounts": "SB-COA"
+            },
+            {
+              "Seychelles Chart of Accounts": "SC-COA"
+            },
+            {
+              "Sudan (the) Chart of Accounts": "SD-COA"
+            },
+            {
+              "Bolagsverket": "SE-BLV"
+            },
+            {
+              "Sweden Chart of Accounts": "SE-COA"
+            },
+            {
+              "Legal, Financial and Administrative Services Agency (Sweden)": "SE-KK"
+            },
+            {
+              "Business Registration Number (Organisationsnummer), Sweden": "SE-ON"
+            },
+            {
+              "Accounting and Corporate Regulatory Authority (ACRA)": "SG-ACRA"
+            },
+            {
+              "Commissioner of Charities": "SG-COC"
+            },
+            {
+              "Singapore Chart of Accounts": "SG-COA"
+            },
+            {
+              "Saint Helena, Ascension and Tristan da Cunha Chart of Accounts": "SH-COA"
+            },
+            {
+              "Slovenia Chart of Accounts": "SI-COA"
+            },
+            {
+              "Slovenian Business Register": "SI-PRS"
+            },
+            {
+              "Tax Identification Number (Slovenia)": "SI-TIN"
+            },
+            {
+              "Svalbard and Jan Mayen Chart of Accounts": "SJ-COA"
+            },
+            {
+              "Slovakia Chart of Accounts": "SK-COA"
+            },
+            {
+              "Organization Identification Number - Register and identifier of legal entities, entrepreneurs and public authorities": "SK-ICO"
+            },
+            {
+              "Ministry of Justice Business Register": "SK-ORSR"
+            },
+            {
+              "Slovakia Ministry Of Interior Trade Register": "SK-ZRSR"
+            },
+            {
+              "Sierra Leone Chart of Accounts": "SL-COA"
+            },
+            {
+              "National Revenue Agency": "SL-NRA"
+            },
+            {
+              "Office of Administrator and Registrar General": "SL-OARG"
+            },
+            {
+              "San Marino Chart of Accounts": "SM-COA"
+            },
+            {
+              "Senegal Chart of Accounts": "SN-COA"
+            },
+            {
+              "National Identification Number of Companies and Associations (NINEA), Senegal": "SN-NINEA"
+            },
+            {
+              "Somalia Chart of Accounts": "SO-COA"
+            },
+            {
+              "General Register for Non-Governmental Organizations (Somaliland)": "SO-MPND"
+            },
+            {
+              "Suriname Chart of Accounts": "SR-COA"
+            },
+            {
+              "South Sudan Chart of Accounts": "SS-COA"
+            },
+            {
+              "South Sudan Relief and Rehabilitation Commission": "SS-RRC"
+            },
+            {
+              "Sao Tome and Principe Chart of Accounts": "ST-COA"
+            },
+            {
+              "El Salvador Chart of Accounts": "SV-COA"
+            },
+            {
+              "Tax Identification Number (El Salvador)": "SV-NIT"
+            },
+            {
+              "Sint Maarten (Dutch part) Chart of Accounts": "SX-COA"
+            },
+            {
+              "Syrian Arab Republic (the) Chart of Accounts": "SY-COA"
+            },
+            {
+              "Eswatini Chart of Accounts": "SZ-COA"
+            },
+            {
+              "Turks and Caicos Islands (the) Chart of Accounts": "TC-COA"
+            },
+            {
+              "Chad Chart of Accounts": "TD-COA"
+            },
+            {
+              "French Southern Territories (the) Chart of Accounts": "TF-COA"
+            },
+            {
+              "Togo Chart of Accounts": "TG-COA"
+            },
+            {
+              "Thailand Chart of Accounts": "TH-COA"
+            },
+            {
+              "Ministry of Interior of the Kingdom of Thailand": "TH-MOI"
+            },
+            {
+              "Thai Revenue Department - Tax Identification Number": "TH-TIN"
+            },
+            {
+              "Tajikistan Chart of Accounts": "TJ-COA"
+            },
+            {
+              "Tokelau Chart of Accounts": "TK-COA"
+            },
+            {
+              "Timor-Leste Chart of Accounts": "TL-COA"
+            },
+            {
+              "Turkmenistan Chart of Accounts": "TM-COA"
+            },
+            {
+              "Tunisia Chart of Accounts": "TN-COA"
+            },
+            {
+              "The National Register of Companies, Tunisia": "TN-RNE"
+            },
+            {
+              "Tonga Chart of Accounts": "TO-COA"
+            },
+            {
+              "Turkey Chart of Accounts": "TR-COA"
+            },
+            {
+              "MERSIS - Central Trade Registry System": "TR-MERSIS"
+            },
+            {
+              "Department of Associations (Ministry of Interior, Turkey)": "TR-MOI"
+            },
+            {
+              "Trinidad and Tobago Chart of Accounts": "TT-COA"
+            },
+            {
+              "Tuvalu Chart of Accounts": "TV-COA"
+            },
+            {
+              "Taiwan (Province of China) Chart of Accounts": "TW-COA"
+            },
+            {
+              "Tanzania Business Registrations and Licensing Agency": "TZ-BRLA"
+            },
+            {
+              "Tanzania, the United Republic of Chart of Accounts": "TZ-COA"
+            },
+            {
+              "Tanzania National NGO Coordination Board": "TZ-NNCB"
+            },
+            {
+              "Tanzania Revenue Agency": "TZ-TRA"
+            },
+            {
+              "Ukraine Chart of Accounts": "UA-COA"
+            },
+            {
+              "United State Register": "UA-EDR"
+            },
+            {
+              "CBO Registration number, Uganda (Jinja District)": "UG-204CBO"
+            },
+            {
+              "Uganda Chart of Accounts": "UG-COA"
+            },
+            {
+              "NGO Board, Ministry of Internal Affairs (Uganda)": "UG-NGB"
+            },
+            {
+              "National Bureau for NGOs (Uganda)": "UG-NGO"
+            },
+            {
+              "Registration Services Bureau": "UG-RSB"
+            },
+            {
+              "United States Minor Outlying Islands (the) Chart of Accounts": "UM-COA"
+            },
+            {
+              "United States of America (the) Chart of Accounts": "US-COA"
+            },
+            {
+              "Corporation registration is the responsibility of each state (see link)": "US-DOS"
+            },
+            {
+              "Employer Identification Number - Internal Revenue Service": "US-EIN"
+            },
+            {
+              "Index of U.S. Government Departments and Agencies": "US-USAGOV"
+            },
+            {
+              "Uruguay Chart of Accounts": "UY-COA"
+            },
+            {
+              "Uzbekistan Chart of Accounts": "UZ-COA"
+            },
+            {
+              "United State Register of Corporate Entites": "UZ-KTUT"
+            },
+            {
+              "Holy See (the) Chart of Accounts": "VA-COA"
+            },
+            {
+              "Saint Vincent and the Grenadines Chart of Accounts": "VC-COA"
+            },
+            {
+              "Venezuela (Bolivarian Republic of) Chart of Accounts": "VE-COA"
+            },
+            {
+              "Virgin Islands (British) Chart of Accounts": "VG-COA"
+            },
+            {
+              "Virgin Islands (U.S.) Chart of Accounts": "VI-COA"
+            },
+            {
+              "Viet Nam Chart of Accounts": "VN-COA"
+            },
+            {
+              "Ministry of Science and Technology": "VN-MOST"
+            },
+            {
+              "Vanuatu Chart of Accounts": "VU-COA"
+            },
+            {
+              "Wallis and Futuna Chart of Accounts": "WF-COA"
+            },
+            {
+              "Samoa Chart of Accounts": "WS-COA"
+            },
+            {
+              "Example Data Prefix": "XE-EXAMPLE"
+            },
+            {
+              "Basic Registry of Identified Global Entities": "XI-BRIDGE"
+            },
+            {
+              "D-U-N-S Number": "XI-DUNS"
+            },
+            {
+              "Economic Operators Identification and Registration system": "XI-EORI"
+            },
+            {
+              "Global Research Identifiers Database": "XI-GRID"
+            },
+            {
+              "International Aid Transparency Initiative Organisation Identifier": "XI-IATI"
+            },
+            {
+              "Global Legal Entity Identifier Index": "XI-LEI"
+            },
+            {
+              "Public Bodies - Open Knowledge Foundation": "XI-PB"
+            },
+            {
+              "PermID: Thompson Reuters Permanent Identifier": "XI-PID"
+            },
+            {
+              "Research Organization Registry": "XI-ROR"
+            },
+            {
+              "Wikidata": "XI-WIKIDATA"
+            },
+            {
+              "Kosovo Chart of Accounts": "XK-COA"
+            },
+            {
+              "OECD Development Assistance Committee": "XM-DAC"
+            },
+            {
+              "United Nations Office for the Coordination of Humanitarian Affairs - Humanitarian Programme Cycle Identifiers": "XM-OCHA"
+            },
+            {
+              "European Union Corporate Bodies authority list": "XR-EUCB"
+            },
+            {
+              "NUTS - European Union Nomenclature of Territorial Units for Statistics": "XR-NUTS"
+            },
+            {
+              "Yemen Chart of Accounts": "YE-COA"
+            },
+            {
+              "Ministry of Social Affairs and Labour": "YE-MSAL"
+            },
+            {
+              "Mayotte Chart of Accounts": "YT-COA"
+            },
+            {
+              "Companies and Intellectual Property Commission (CIPC)": "ZA-CIP"
+            },
+            {
+              "South African Corporate Income Tax (CIT) number": "ZA-CIT"
+            },
+            {
+              "South Africa Chart of Accounts": "ZA-COA"
+            },
+            {
+              "Nonprofit Organisation Directorate - South African Department of Social Development": "ZA-NPO"
+            },
+            {
+              "SA Revenue Service Tax Exemption Unit": "ZA-PBO"
+            },
+            {
+              "Zambia Chart of Accounts": "ZM-COA"
+            },
+            {
+              "Patents and Companies Registration Agency": "ZM-PCR"
+            },
+            {
+              "Department of Registrar for NGOs": "ZM-RNGO"
+            },
+            {
+              "Zimbabwe Chart of Accounts": "ZW-COA"
+            },
+            {
+              "Private Voluntary Organisations Council (Zimbabwe)": "ZW-PVO"
+            },
+            {
+              "Registrar of Deeds": "ZW-ROD"
+            },
+            {
+              "European Business Identifier (EBID)": "ZZ-EBID"
+            }
+          ]
+        },
+        {
+          "name": "publisher__identifier__legalName",
+          "title": "Publisher Organisation identifier Legal name",
+          "description": "The publisher of this network. An identifier for this organisation. The legally registered name of the organisation",
+          "type": "text"
+        },
+        {
+          "name": "publisher__identifier__uri",
+          "title": "Publisher Organisation identifier URI",
+          "description": "The publisher of this network. An identifier for this organisation. A canonical URI for this identifier, such as those provided by Open Corporates. Do not use this field to provide the website of the organisation: instead, use `Organisation.website`.",
+          "type": "text"
         },
         {
           "name": "publicationDate",
+          "title": "Publication date",
+          "description": "The date when this network was published.",
           "type": "date",
-          "sqlite_type": "text",
-          "title": "Publication date"
+          "sqlite_type": "text"
         },
         {
           "name": "collectionDate",
+          "title": "Collection date",
+          "description": "The date when the location data was collected. If a dataset was produced by digitising a map, the date that the data for the map was collected.",
           "type": "date",
-          "sqlite_type": "text",
-          "title": "Collection date"
+          "sqlite_type": "text"
         },
         {
           "name": "accuracyDetails",
-          "type": "text",
-          "title": "Accuracy details"
+          "title": "Accuracy details",
+          "description": "Further details about the accuracy specified in `accuracy`. For example, the confidence level of the accuracy measurement, the methodology used to calculate the accuracy, or a local classification of accuracy.",
+          "type": "text"
         },
         {
           "name": "language",
+          "title": "Language",
+          "description": "The default language of this network,from the open [language codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#language). A [BCP47 language tag](https://www.w3.org/International/articles/language-tags/) is allowed, if there is a user need for the additional information.",
           "type": "opencodelist",
           "sqlite_type": "text",
-          "title": "Language",
           "values": [
             {
               "Afar": "aa"
@@ -602,28 +2235,32 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text",
-          "title": "Identifier"
+          "title": "Identifier",
+          "description": "An identifier for this node. The identifier must be unique within the scope of the `nodes` array.",
+          "type": "text"
         },
         {
           "name": "name",
-          "type": "text",
-          "title": "Node name"
+          "title": "Node name",
+          "description": "A name for this node.",
+          "type": "text"
         },
         {
           "name": "phase",
+          "title": "Phase",
+          "description": "The phase to which this node belongs.",
           "type": "foreignkey",
           "sqlite_type": "text",
-          "title": "Phase",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
           "foreignkey_layer": "phases"
         },
         {
           "name": "status",
+          "title": "Status",
+          "description": "The status of this node, from the closed [nodeStatus codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#nodestatus).",
           "type": "closedcodelist",
           "sqlite_type": "text",
-          "title": "Status",
           "values": [
             {
               "Proposed": "proposed"
@@ -646,22 +2283,808 @@
           ]
         },
         {
-          "name": "accessPoint",
-          "type": "boolean",
+          "name": "address__streetAddress",
+          "title": "Node address Street address",
+          "description": "The physical address of this node. The street address. For example, 1600 Amphitheatre Pkwy.",
+          "type": "text"
+        },
+        {
+          "name": "address__locality",
+          "title": "Node address Locality",
+          "description": "The physical address of this node. The locality. For example, Mountain View.",
+          "type": "text"
+        },
+        {
+          "name": "address__region",
+          "title": "Node address Region",
+          "description": "The physical address of this node. The region. For example, CA.",
+          "type": "text"
+        },
+        {
+          "name": "address__postalCode",
+          "title": "Node address Postal code",
+          "description": "The physical address of this node. The postal code. For example, 94043.",
+          "type": "text"
+        },
+        {
+          "name": "address__country",
+          "title": "Node address Country",
+          "description": "The physical address of this node. The country in which the address is physically located, from the closed [country codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#country).",
+          "type": "closedcodelist",
           "sqlite_type": "text",
-          "title": "Access point"
+          "values": [
+            {
+              "Andorra": "AD"
+            },
+            {
+              "United Arab Emirates": "AE"
+            },
+            {
+              "Afghanistan": "AF"
+            },
+            {
+              "Antigua and Barbuda": "AG"
+            },
+            {
+              "Anguilla": "AI"
+            },
+            {
+              "Albania": "AL"
+            },
+            {
+              "Armenia": "AM"
+            },
+            {
+              "Angola": "AO"
+            },
+            {
+              "Antarctica": "AQ"
+            },
+            {
+              "Argentina": "AR"
+            },
+            {
+              "American Samoa": "AS"
+            },
+            {
+              "Austria": "AT"
+            },
+            {
+              "Australia": "AU"
+            },
+            {
+              "Aruba": "AW"
+            },
+            {
+              "\u00c5land Islands": "AX"
+            },
+            {
+              "Azerbaijan": "AZ"
+            },
+            {
+              "Bosnia and Herzegovina": "BA"
+            },
+            {
+              "Barbados": "BB"
+            },
+            {
+              "Bangladesh": "BD"
+            },
+            {
+              "Belgium": "BE"
+            },
+            {
+              "Burkina Faso": "BF"
+            },
+            {
+              "Bulgaria": "BG"
+            },
+            {
+              "Bahrain": "BH"
+            },
+            {
+              "Burundi": "BI"
+            },
+            {
+              "Benin": "BJ"
+            },
+            {
+              "Saint Barth\u00e9lemy": "BL"
+            },
+            {
+              "Bermuda": "BM"
+            },
+            {
+              "Brunei Darussalam": "BN"
+            },
+            {
+              "Bolivia (Plurinational State of)": "BO"
+            },
+            {
+              "Bonaire, Sint Eustatius and Saba": "BQ"
+            },
+            {
+              "Brazil": "BR"
+            },
+            {
+              "Bahamas": "BS"
+            },
+            {
+              "Bhutan": "BT"
+            },
+            {
+              "Bouvet Island": "BV"
+            },
+            {
+              "Botswana": "BW"
+            },
+            {
+              "Belarus": "BY"
+            },
+            {
+              "Belize": "BZ"
+            },
+            {
+              "Canada": "CA"
+            },
+            {
+              "Cocos (Keeling) Islands": "CC"
+            },
+            {
+              "Congo (the Democratic Republic of the)": "CD"
+            },
+            {
+              "Central African Republic": "CF"
+            },
+            {
+              "Congo": "CG"
+            },
+            {
+              "Switzerland": "CH"
+            },
+            {
+              "C\u00f4te d'Ivoire": "CI"
+            },
+            {
+              "Cook Islands": "CK"
+            },
+            {
+              "Chile": "CL"
+            },
+            {
+              "Cameroon": "CM"
+            },
+            {
+              "China": "CN"
+            },
+            {
+              "Colombia": "CO"
+            },
+            {
+              "Costa Rica": "CR"
+            },
+            {
+              "Cuba": "CU"
+            },
+            {
+              "Cabo Verde": "CV"
+            },
+            {
+              "Cura\u00e7ao": "CW"
+            },
+            {
+              "Christmas Island": "CX"
+            },
+            {
+              "Cyprus": "CY"
+            },
+            {
+              "Czechia": "CZ"
+            },
+            {
+              "Germany": "DE"
+            },
+            {
+              "Djibouti": "DJ"
+            },
+            {
+              "Denmark": "DK"
+            },
+            {
+              "Dominica": "DM"
+            },
+            {
+              "Dominican Republic": "DO"
+            },
+            {
+              "Algeria": "DZ"
+            },
+            {
+              "Ecuador": "EC"
+            },
+            {
+              "Estonia": "EE"
+            },
+            {
+              "Egypt": "EG"
+            },
+            {
+              "Western Sahara": "EH"
+            },
+            {
+              "Eritrea": "ER"
+            },
+            {
+              "Spain": "ES"
+            },
+            {
+              "Ethiopia": "ET"
+            },
+            {
+              "Finland": "FI"
+            },
+            {
+              "Fiji": "FJ"
+            },
+            {
+              "Falkland Islands [Malvinas]": "FK"
+            },
+            {
+              "Micronesia (Federated States of)": "FM"
+            },
+            {
+              "Faroe Islands": "FO"
+            },
+            {
+              "France": "FR"
+            },
+            {
+              "Gabon": "GA"
+            },
+            {
+              "United Kingdom of Great Britain and Northern Ireland": "GB"
+            },
+            {
+              "Grenada": "GD"
+            },
+            {
+              "Georgia": "GE"
+            },
+            {
+              "French Guiana": "GF"
+            },
+            {
+              "Guernsey": "GG"
+            },
+            {
+              "Ghana": "GH"
+            },
+            {
+              "Gibraltar": "GI"
+            },
+            {
+              "Greenland": "GL"
+            },
+            {
+              "Gambia": "GM"
+            },
+            {
+              "Guinea": "GN"
+            },
+            {
+              "Guadeloupe": "GP"
+            },
+            {
+              "Equatorial Guinea": "GQ"
+            },
+            {
+              "Greece": "GR"
+            },
+            {
+              "South Georgia and the South Sandwich Islands": "GS"
+            },
+            {
+              "Guatemala": "GT"
+            },
+            {
+              "Guam": "GU"
+            },
+            {
+              "Guinea-Bissau": "GW"
+            },
+            {
+              "Guyana": "GY"
+            },
+            {
+              "Hong Kong": "HK"
+            },
+            {
+              "Heard Island and McDonald Islands": "HM"
+            },
+            {
+              "Honduras": "HN"
+            },
+            {
+              "Croatia": "HR"
+            },
+            {
+              "Haiti": "HT"
+            },
+            {
+              "Hungary": "HU"
+            },
+            {
+              "Indonesia": "ID"
+            },
+            {
+              "Ireland": "IE"
+            },
+            {
+              "Israel": "IL"
+            },
+            {
+              "Isle of Man": "IM"
+            },
+            {
+              "India": "IN"
+            },
+            {
+              "British Indian Ocean Territory": "IO"
+            },
+            {
+              "Iraq": "IQ"
+            },
+            {
+              "Iran (Islamic Republic of)": "IR"
+            },
+            {
+              "Iceland": "IS"
+            },
+            {
+              "Italy": "IT"
+            },
+            {
+              "Jersey": "JE"
+            },
+            {
+              "Jamaica": "JM"
+            },
+            {
+              "Jordan": "JO"
+            },
+            {
+              "Japan": "JP"
+            },
+            {
+              "Kenya": "KE"
+            },
+            {
+              "Kyrgyzstan": "KG"
+            },
+            {
+              "Cambodia": "KH"
+            },
+            {
+              "Kiribati": "KI"
+            },
+            {
+              "Comoros": "KM"
+            },
+            {
+              "Saint Kitts and Nevis": "KN"
+            },
+            {
+              "Korea (the Democratic People's Republic of)": "KP"
+            },
+            {
+              "Korea (the Republic of)": "KR"
+            },
+            {
+              "Kuwait": "KW"
+            },
+            {
+              "Cayman Islands": "KY"
+            },
+            {
+              "Kazakhstan": "KZ"
+            },
+            {
+              "Lao People's Democratic Republic": "LA"
+            },
+            {
+              "Lebanon": "LB"
+            },
+            {
+              "Saint Lucia": "LC"
+            },
+            {
+              "Liechtenstein": "LI"
+            },
+            {
+              "Sri Lanka": "LK"
+            },
+            {
+              "Liberia": "LR"
+            },
+            {
+              "Lesotho": "LS"
+            },
+            {
+              "Lithuania": "LT"
+            },
+            {
+              "Luxembourg": "LU"
+            },
+            {
+              "Latvia": "LV"
+            },
+            {
+              "Libya": "LY"
+            },
+            {
+              "Morocco": "MA"
+            },
+            {
+              "Monaco": "MC"
+            },
+            {
+              "Moldova (the Republic of)": "MD"
+            },
+            {
+              "Montenegro": "ME"
+            },
+            {
+              "Saint Martin (French part)": "MF"
+            },
+            {
+              "Madagascar": "MG"
+            },
+            {
+              "Marshall Islands": "MH"
+            },
+            {
+              "North Macedonia": "MK"
+            },
+            {
+              "Mali": "ML"
+            },
+            {
+              "Myanmar": "MM"
+            },
+            {
+              "Mongolia": "MN"
+            },
+            {
+              "Macao": "MO"
+            },
+            {
+              "Northern Mariana Islands": "MP"
+            },
+            {
+              "Martinique": "MQ"
+            },
+            {
+              "Mauritania": "MR"
+            },
+            {
+              "Montserrat": "MS"
+            },
+            {
+              "Malta": "MT"
+            },
+            {
+              "Mauritius": "MU"
+            },
+            {
+              "Maldives": "MV"
+            },
+            {
+              "Malawi": "MW"
+            },
+            {
+              "Mexico": "MX"
+            },
+            {
+              "Malaysia": "MY"
+            },
+            {
+              "Mozambique": "MZ"
+            },
+            {
+              "Namibia": "NA"
+            },
+            {
+              "New Caledonia": "NC"
+            },
+            {
+              "Niger": "NE"
+            },
+            {
+              "Norfolk Island": "NF"
+            },
+            {
+              "Nigeria": "NG"
+            },
+            {
+              "Nicaragua": "NI"
+            },
+            {
+              "Netherlands (Kingdom of the)": "NL"
+            },
+            {
+              "Norway": "NO"
+            },
+            {
+              "Nepal": "NP"
+            },
+            {
+              "Nauru": "NR"
+            },
+            {
+              "Niue": "NU"
+            },
+            {
+              "New Zealand": "NZ"
+            },
+            {
+              "Oman": "OM"
+            },
+            {
+              "Panama": "PA"
+            },
+            {
+              "Peru": "PE"
+            },
+            {
+              "French Polynesia": "PF"
+            },
+            {
+              "Papua New Guinea": "PG"
+            },
+            {
+              "Philippines": "PH"
+            },
+            {
+              "Pakistan": "PK"
+            },
+            {
+              "Poland": "PL"
+            },
+            {
+              "Saint Pierre and Miquelon": "PM"
+            },
+            {
+              "Pitcairn": "PN"
+            },
+            {
+              "Puerto Rico": "PR"
+            },
+            {
+              "Palestine, State of": "PS"
+            },
+            {
+              "Portugal": "PT"
+            },
+            {
+              "Palau": "PW"
+            },
+            {
+              "Paraguay": "PY"
+            },
+            {
+              "Qatar": "QA"
+            },
+            {
+              "R\u00e9union": "RE"
+            },
+            {
+              "Romania": "RO"
+            },
+            {
+              "Serbia": "RS"
+            },
+            {
+              "Russian Federation": "RU"
+            },
+            {
+              "Rwanda": "RW"
+            },
+            {
+              "Saudi Arabia": "SA"
+            },
+            {
+              "Solomon Islands": "SB"
+            },
+            {
+              "Seychelles": "SC"
+            },
+            {
+              "Sudan": "SD"
+            },
+            {
+              "Sweden": "SE"
+            },
+            {
+              "Singapore": "SG"
+            },
+            {
+              "Saint Helena, Ascension and Tristan da Cunha": "SH"
+            },
+            {
+              "Slovenia": "SI"
+            },
+            {
+              "Svalbard and Jan Mayen": "SJ"
+            },
+            {
+              "Slovakia": "SK"
+            },
+            {
+              "Sierra Leone": "SL"
+            },
+            {
+              "San Marino": "SM"
+            },
+            {
+              "Senegal": "SN"
+            },
+            {
+              "Somalia": "SO"
+            },
+            {
+              "Suriname": "SR"
+            },
+            {
+              "South Sudan": "SS"
+            },
+            {
+              "Sao Tome and Principe": "ST"
+            },
+            {
+              "El Salvador": "SV"
+            },
+            {
+              "Sint Maarten (Dutch part)": "SX"
+            },
+            {
+              "Syrian Arab Republic": "SY"
+            },
+            {
+              "Eswatini": "SZ"
+            },
+            {
+              "Turks and Caicos Islands": "TC"
+            },
+            {
+              "Chad": "TD"
+            },
+            {
+              "French Southern Territories": "TF"
+            },
+            {
+              "Togo": "TG"
+            },
+            {
+              "Thailand": "TH"
+            },
+            {
+              "Tajikistan": "TJ"
+            },
+            {
+              "Tokelau": "TK"
+            },
+            {
+              "Timor-Leste": "TL"
+            },
+            {
+              "Turkmenistan": "TM"
+            },
+            {
+              "Tunisia": "TN"
+            },
+            {
+              "Tonga": "TO"
+            },
+            {
+              "T\u00fcrkiye": "TR"
+            },
+            {
+              "Trinidad and Tobago": "TT"
+            },
+            {
+              "Tuvalu": "TV"
+            },
+            {
+              "Taiwan (Province of China)": "TW"
+            },
+            {
+              "Tanzania, the United Republic of": "TZ"
+            },
+            {
+              "Ukraine": "UA"
+            },
+            {
+              "Uganda": "UG"
+            },
+            {
+              "United States Minor Outlying Islands": "UM"
+            },
+            {
+              "United States of America": "US"
+            },
+            {
+              "Uruguay": "UY"
+            },
+            {
+              "Uzbekistan": "UZ"
+            },
+            {
+              "Holy See": "VA"
+            },
+            {
+              "Saint Vincent and the Grenadines": "VC"
+            },
+            {
+              "Venezuela (Bolivarian Republic of)": "VE"
+            },
+            {
+              "Virgin Islands (British)": "VG"
+            },
+            {
+              "Virgin Islands (U.S.)": "VI"
+            },
+            {
+              "Viet Nam": "VN"
+            },
+            {
+              "Vanuatu": "VU"
+            },
+            {
+              "Wallis and Futuna": "WF"
+            },
+            {
+              "Samoa": "WS"
+            },
+            {
+              "Kosovo": "XK"
+            },
+            {
+              "Yemen": "YE"
+            },
+            {
+              "Mayotte": "YT"
+            },
+            {
+              "South Africa": "ZA"
+            },
+            {
+              "Zambia": "ZM"
+            },
+            {
+              "Zimbabwe": "ZW"
+            }
+          ]
+        },
+        {
+          "name": "accessPoint",
+          "title": "Access point",
+          "description": "Whether active or passive transmission equipment is installed at this node which is capable of providing access to the network.",
+          "type": "boolean",
+          "sqlite_type": "text"
         },
         {
           "name": "power",
+          "title": "Power availability",
+          "description": "Whether power for active network equipment is available at this node.",
           "type": "boolean",
-          "sqlite_type": "text",
-          "title": "Power availability"
+          "sqlite_type": "text"
         },
         {
           "name": "physicalInfrastructureProvider",
+          "title": "Physical infrastructure provider",
+          "description": "The organisation that owns the passive network infrastructure for this node, i.e. the non-electrical elements, such as dark fibre, ducts and physical sites.",
           "type": "foreignkey",
           "sqlite_type": "text",
-          "title": "Physical infrastructure provider",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
           "foreignkey_layer": "organisations"
@@ -669,7 +3092,8 @@
         {
           "name": "network_id",
           "type": "text",
-          "title": "Network ID"
+          "title": "Network ID",
+          "description": ""
         }
       ],
       "geographic_type": "POINT",
@@ -679,28 +3103,32 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text",
-          "title": "Identifier"
+          "title": "Identifier",
+          "description": "An identifier for this span. The identifier must be unique within the scope of the `spans` array.",
+          "type": "text"
         },
         {
           "name": "name",
-          "type": "text",
-          "title": "Span name"
+          "title": "Span name",
+          "description": "A name for this span.",
+          "type": "text"
         },
         {
           "name": "phase",
+          "title": "Phase",
+          "description": "The phase to which this span belongs.",
           "type": "foreignkey",
           "sqlite_type": "text",
-          "title": "Phase",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
           "foreignkey_layer": "phases"
         },
         {
           "name": "status",
+          "title": "Span status",
+          "description": "The status of the network infrastructure for this span, from the closed [spanStatus codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#spanstatus).",
           "type": "closedcodelist",
           "sqlite_type": "text",
-          "title": "Span status",
           "values": [
             {
               "Proposed": "proposed"
@@ -724,55 +3152,69 @@
         },
         {
           "name": "readyForServiceDate",
+          "title": "Ready for service date",
+          "description": "The date this span was ready to carry traffic. For spans with multiple network providers, the earliest of the dates at which each provider's network was ready to carry traffic on this span.",
           "type": "date",
-          "sqlite_type": "text",
-          "title": "Ready for service date"
+          "sqlite_type": "text"
         },
         {
           "name": "start",
-          "type": "text",
-          "title": "Start"
+          "title": "Start",
+          "description": "The identifier of one of two nodes that this span connects. It must match the `.id` of a node in the `nodes` array. If `directed == true`, it represents the starting point of the span. Otherwise, the distinction between `start` and `end` is arbitrary.",
+          "type": "text"
         },
         {
           "name": "end",
-          "type": "text",
-          "title": "End"
+          "title": "End",
+          "description": "The identifier of one of two nodes that this span connects. It must match the `.id` of a node in the `nodes` array. If `directed == true`, it represents the end point of the span. Otherwise, the distinction between `start` and `end` is arbitrary.",
+          "type": "text"
         },
         {
           "name": "directed",
+          "title": "Directed",
+          "description": "Whether this span is directed. If `True`, then `.start` represents the start of the span and `.end` represents the end. Otherwise, `.start` and `.end` reference this span's endpoints with no direction implied.",
           "type": "boolean",
-          "sqlite_type": "text",
-          "title": "Directed"
+          "sqlite_type": "text"
         },
         {
           "name": "physicalInfrastructureProvider",
+          "title": "Physical infrastructure provider",
+          "description": "The organisation that owns the passive network infrastructure for this span, i.e. the non-electrical elements, such as dark fibre, ducts and physical sites.",
           "type": "foreignkey",
           "sqlite_type": "text",
-          "title": "Physical infrastructure provider",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
           "foreignkey_layer": "organisations"
         },
         {
           "name": "supplier",
+          "title": "Supplier",
+          "description": "The organisation responsible for installing the cable for this span.",
           "type": "foreignkey",
           "sqlite_type": "text",
-          "title": "Supplier",
           "foreignkey_key": "ofds_id",
           "foreignkey_value": "name",
           "foreignkey_layer": "organisations"
         },
         {
+          "name": "deploymentDetails__description",
+          "title": "Deployment details Description",
+          "description": "Further details of this span's deployment. A description of this span's deployment.",
+          "type": "text"
+        },
+        {
           "name": "darkFibre",
+          "title": "Dark fibre availability",
+          "description": "Whether access to dark fibre is available on this span.",
           "type": "boolean",
-          "sqlite_type": "text",
-          "title": "Dark fibre availability"
+          "sqlite_type": "text"
         },
         {
           "name": "fibreType",
+          "title": "Fibre type",
+          "description": "The type of fibre used in this span, from the closed [fibreType codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#fibretype). Further details of the span's fibre type can be provided in `.fibreTypeDetails`.",
           "type": "closedcodelist",
           "sqlite_type": "text",
-          "title": "Fibre type",
           "values": [
             {
               "G.651.1": "G.651.1"
@@ -798,9 +3240,28 @@
           ]
         },
         {
+          "name": "fibreTypeDetails__fibreSubtype",
+          "title": "Fibre type details Fibre subtype",
+          "description": "Further details about this span's fibre type. The sub-category of the fibre type. For example, G.652.B.",
+          "type": "text"
+        },
+        {
+          "name": "fibreTypeDetails__description",
+          "title": "Fibre type details Description",
+          "description": "Further details about this span's fibre type. A description of this span's fibre type.",
+          "type": "text"
+        },
+        {
+          "name": "capacityDetails__description",
+          "title": "Capacity details Description",
+          "description": "Further details about this span's capacity A description of this span's capacity.",
+          "type": "text"
+        },
+        {
           "name": "network_id",
           "type": "text",
-          "title": "Network ID"
+          "title": "Network ID",
+          "description": ""
         }
       ],
       "geographic_type": "LINESTRING",
@@ -810,23 +3271,27 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text",
-          "title": "Identifier"
+          "title": "Identifier",
+          "description": "An identifier for this phase. The identifier must be unique within the scope of the `phases` array.",
+          "type": "text"
         },
         {
           "name": "name",
-          "type": "text",
-          "title": "Name"
+          "title": "Name",
+          "description": "A name for this phase.",
+          "type": "text"
         },
         {
           "name": "description",
-          "type": "text",
-          "title": "Description"
+          "title": "Description",
+          "description": "A description for this phase.",
+          "type": "text"
         },
         {
           "name": "network_id",
           "type": "text",
-          "title": "Network ID"
+          "title": "Network ID",
+          "description": ""
         }
       ],
       "geographic_type": null,
@@ -836,19 +3301,1642 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text",
-          "title": "Local identifier"
+          "title": "Local identifier",
+          "description": "A local identifier for this organisation. The identifier must be unique within the scope of the `organisations` array.",
+          "type": "text"
         },
         {
           "name": "name",
-          "type": "text",
-          "title": "Name"
+          "title": "Name",
+          "description": "A name for this organisation.",
+          "type": "text"
+        },
+        {
+          "name": "identifier__id",
+          "title": "Organisation identifier Identifier",
+          "description": "An identifier for this organisation. The identifier assigned to the organisation in the register identified in `.scheme`.",
+          "type": "text"
+        },
+        {
+          "name": "identifier__scheme",
+          "title": "Organisation identifier Scheme",
+          "description": "An identifier for this organisation. The register from which the identifier in `.id` is drawn, from the open [organisationIdentifierScheme codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#organisationidentifierscheme).",
+          "type": "opencodelist",
+          "sqlite_type": "text",
+          "values": [
+            {
+              "Andorra Chart of Accounts": "AD-COA"
+            },
+            {
+              "Ajman Chamber of Commerce and Industry": "AE-ACCI"
+            },
+            {
+              "Abu Dhabi Commercial Directory": "AE-ADCD"
+            },
+            {
+              "Ajman Free Zone Authority": "AE-AFZ"
+            },
+            {
+              "United Arab Emirates (the) Chart of Accounts": "AE-COA"
+            },
+            {
+              "Dubai Chamber of Commerce and Industry": "AE-DCCI"
+            },
+            {
+              "Dubai Financial Services Authority": "AE-DFSA"
+            },
+            {
+              "Dubai International Financial Centre": "AE-DIFC"
+            },
+            {
+              "Dubai Multi Commodities Centre": "AE-DMCC"
+            },
+            {
+              "Fujairah Chamber of Commerce and Industry": "AE-FCCI"
+            },
+            {
+              "Fujairah Free Zone Company Listing": "AE-FFZ"
+            },
+            {
+              "Hamriyah Free Zone Authority": "AE-HFZA"
+            },
+            {
+              "Ras al-Khaimah Investment Authority": "AE-RAKIA"
+            },
+            {
+              "Ras al-Khaimah Chamber of Commerce and Industry": "AE-RK_CR"
+            },
+            {
+              "Sharjah Airport International Free Zone": "AE-SAIF"
+            },
+            {
+              "Sharjah Chamber of Commerce and Industry": "AE-SCCI"
+            },
+            {
+              "Umm al-Quwain Chamber of Commerce and Industry": "AE-UQCCI"
+            },
+            {
+              "Afghanistan Central Business Registry": "AF-CBR"
+            },
+            {
+              "Afghanistan Chart of Accounts": "AF-COA"
+            },
+            {
+              "Ministry of Economy NGO Department": "AF-MOE"
+            },
+            {
+              "Afghanistan Tax Identification Number": "AF-TIN"
+            },
+            {
+              "Antigua and Barbuda Chart of Accounts": "AG-COA"
+            },
+            {
+              "Anguilla Chart of Accounts": "AI-COA"
+            },
+            {
+              "Albania Chart of Accounts": "AL-COA"
+            },
+            {
+              "Albanian National Business Center": "AL-QKB"
+            },
+            {
+              "Armenia Chart of Accounts": "AM-COA"
+            },
+            {
+              "State Register Agency of Legal Entities of Armenia": "AM-SRALE"
+            },
+            {
+              "Angola Chart of Accounts": "AO-COA"
+            },
+            {
+              "Antarctica Chart of Accounts": "AQ-COA"
+            },
+            {
+              "The National Centre of Community Organisations (Argentina)": "AR-CENOC"
+            },
+            {
+              "Argentina Chart of Accounts": "AR-COA"
+            },
+            {
+              "Unique Tax Identification Code (Argentina)": "AR-CUIT"
+            },
+            {
+              "American Samoa Chart of Accounts": "AS-COA"
+            },
+            {
+              "Austria Chart of Accounts": "AT-COA"
+            },
+            {
+              "Austria Company Register": "AT-FB"
+            },
+            {
+              "VAT number (Austria Company Register)": "AT-UID"
+            },
+            {
+              "Austrian Central Register of Associations": "AT-ZVR"
+            },
+            {
+              "Australian Business Register": "AU-ABN"
+            },
+            {
+              "Australian Charities and Not-for-profits Commission": "AU-ACNC"
+            },
+            {
+              "Australia Chart of Accounts": "AU-COA"
+            },
+            {
+              "Aruba Chart of Accounts": "AW-COA"
+            },
+            {
+              "\u00c5land Islands Chart of Accounts": "AX-COA"
+            },
+            {
+              "Azerbaijan Chart of Accounts": "AZ-COA"
+            },
+            {
+              "State Register of Commercial Entities (Ministry of Taxes of Azerbaijan Republic)": "AZ-IVI"
+            },
+            {
+              "Bosnia and Herzegovina Chart of Accounts": "BA-COA"
+            },
+            {
+              "Barbados Chart of Accounts": "BB-COA"
+            },
+            {
+              "Bangladesh Chart of Accounts": "BD-COA"
+            },
+            {
+              "Bangladesh NGO Affairs Bureau": "BD-NAB"
+            },
+            {
+              "Bangladesh Office of the Register of Joint Stock Companies and Firms": "BD-ROC"
+            },
+            {
+              "Crossroads Bank for Enterprises": "BE-BCE_KBO"
+            },
+            {
+              "Belgium Chart of Accounts": "BE-COA"
+            },
+            {
+              "Au Greffe du Tribunal de Commerce Francophone de Bruxelles": "BE-GTCF"
+            },
+            {
+              "Burkina Faso Chart of Accounts": "BF-COA"
+            },
+            {
+              "Ministry of Territorial Administration and Decentralisation": "BF-MATD"
+            },
+            {
+              "Bulgaria Chart of Accounts": "BG-COA"
+            },
+            {
+              "Commercial Register": "BG-EIK"
+            },
+            {
+              "Bahrain Chart of Accounts": "BH-COA"
+            },
+            {
+              "Burundi Chart of Accounts": "BI-COA"
+            },
+            {
+              "Tax Identification Number, Burundi": "BI-NIF"
+            },
+            {
+              "Benin Chart of Accounts": "BJ-COA"
+            },
+            {
+              "Unique Tax Identifier": "BJ-IFU"
+            },
+            {
+              "Saint Barth\u00e9lemy Chart of Accounts": "BL-COA"
+            },
+            {
+              "Bermuda Chart of Accounts": "BM-COA"
+            },
+            {
+              "Brunei Darussalam Chart of Accounts": "BN-COA"
+            },
+            {
+              "Bolivia Institutional Classifier": "BO-CINS"
+            },
+            {
+              "Bolivia (Plurinational State of) Chart of Accounts": "BO-COA"
+            },
+            {
+              "Tax Identification Number": "BO-NIT"
+            },
+            {
+              "Bonaire, Sint Eustatius and Saba Chart of Accounts": "BQ-COA"
+            },
+            {
+              "National Registry of Legal Entities": "BR-CNPJ"
+            },
+            {
+              "Brazil Chart of Accounts": "BR-COA"
+            },
+            {
+              "Bahamas (the) Chart of Accounts": "BS-COA"
+            },
+            {
+              "Bhutan Chart of Accounts": "BT-COA"
+            },
+            {
+              "Bouvet Island Chart of Accounts": "BV-COA"
+            },
+            {
+              "Companies and Intellectual Property Authority (Botswana)": "BW-CIPA"
+            },
+            {
+              "Botswana Chart of Accounts": "BW-COA"
+            },
+            {
+              "Botswana Taxpayers Identification Number": "BW-TIN"
+            },
+            {
+              "Unified State Register of Legal Entities and Individual Entrepreneurs (Ministry of Justice of the Republic of Belarus)": "BY-ADR"
+            },
+            {
+              "Belarus Chart of Accounts": "BY-COA"
+            },
+            {
+              "Belize Chart of Accounts": "BZ-COA"
+            },
+            {
+              "Corporations Canada": "CA-CC"
+            },
+            {
+              "Canada Chart of Accounts": "CA-COA"
+            },
+            {
+              "Canadian Revenue Agency": "CA-CRA_ACR"
+            },
+            {
+              "List of legal department names (Government of Canada)": "CA-GOV"
+            },
+            {
+              "Corporate Registry Office": "CA_AB-ABT"
+            },
+            {
+              "British Columbia Corporate Registry": "CA_BC-BRC_CBR"
+            },
+            {
+              "Manitoba Companies Office, Department of Entrepreneurship, Training and Trade": "CA_MB-MTB"
+            },
+            {
+              "Corporate Registry": "CA_NB-NWB_NOB"
+            },
+            {
+              "Registry of Companies, Department of Government Services": "CA_NL-NFL_TNL"
+            },
+            {
+              "Nova Scotia Registry of Joint Stock Companies": "CA_NS-NVS_NVE"
+            },
+            {
+              "Canadian Provincial Corporate Registration - Northwest Territories": "CA_NT-NWT_TNO"
+            },
+            {
+              "Nunavut Department of Justice - Corporate Registries": "CA_NU-NNV"
+            },
+            {
+              "ServiceOntario, Ministry of Government Services": "CA_ON-ONT"
+            },
+            {
+              "Prince Edward Island Corporate": "CA_PE-PEI_IPE"
+            },
+            {
+              "Quebec Business Registrar": "CA_QC-QBC"
+            },
+            {
+              "Saskatchewan Corporate Registry": "CA_SK-SKN"
+            },
+            {
+              "Yukon Corporate Affairs": "CA_YT-YKT"
+            },
+            {
+              "Cocos (Keeling) Islands (the) Chart of Accounts": "CC-COA"
+            },
+            {
+              "Congo (the Democratic Republic of the) Chart of Accounts": "CD-COA"
+            },
+            {
+              "Central African Republic (the) Chart of Accounts": "CF-COA"
+            },
+            {
+              "Congo (the) Chart of Accounts": "CG-COA"
+            },
+            {
+              "Commercial Register of the Canton of Basel-Stadt, Switzerland": "CH_BS-CR"
+            },
+            {
+              "Switzerland Chart of Accounts": "CH-COA"
+            },
+            {
+              "Commercial Registry, Federal Office of Justice (Switzerland)": "CH-FDJP"
+            },
+            {
+              "C\u00f4te d'Ivoire Chart of Accounts": "CI-COA"
+            },
+            {
+              "Ministry of the Interior (Ivory Coast)": "CI-MOI"
+            },
+            {
+              "Cook Islands (the) Chart of Accounts": "CK-COA"
+            },
+            {
+              "Chile Chart of Accounts": "CL-COA"
+            },
+            {
+              "Public Market Suppliers and Buyer Units, Chile": "CL-MP"
+            },
+            {
+              "Rol \u00danico Tributario de Chile (Taxpayer Number)": "CL-RUT"
+            },
+            {
+              "Cameroon Chart of Accounts": "CM-COA"
+            },
+            {
+              "Tax Identification Number (Cameroon)": "CM-NIU"
+            },
+            {
+              "China Chart of Accounts": "CN-COA"
+            },
+            {
+              "State Administration for Industry and Commerce (SAIC)": "CN-SAIC"
+            },
+            {
+              "Unified Social Credit Identifier": "CN-USCI"
+            },
+            {
+              "Bogota Chamber of Commerce": "CO-CCB"
+            },
+            {
+              "Colombia Chart of Accounts": "CO-COA"
+            },
+            {
+              "Unified Commercial and Social Registry (RUES)": "CO-RUE"
+            },
+            {
+              "Costa Rica Chart of Accounts": "CR-COA"
+            },
+            {
+              "Registro de Personas Jur\u00eddicas (Costa Rica)": "CR-RPJ"
+            },
+            {
+              "Cuba Chart of Accounts": "CU-COA"
+            },
+            {
+              "Cabo Verde Chart of Accounts": "CV-COA"
+            },
+            {
+              "Cura\u00e7ao Chart of Accounts": "CW-COA"
+            },
+            {
+              "Christmas Island Chart of Accounts": "CX-COA"
+            },
+            {
+              "Cyprus Chart of Accounts": "CY-COA"
+            },
+            {
+              "Cyprus Department of Registrar of Companies and Official Receiver (DRCOR)": "CY-DRCOR"
+            },
+            {
+              "Czechia Chart of Accounts": "CZ-COA"
+            },
+            {
+              "Tax ID (DI\u010c) Czech Republic": "CZ-DIC"
+            },
+            {
+              "Access to Registers of Economic Subjects": "CZ-ICO"
+            },
+            {
+              "Germany Chart of Accounts": "DE-COA"
+            },
+            {
+              "Common Register Portal of the German Federal States (CRP)": "DE-CR"
+            },
+            {
+              "Djibouti Chart of Accounts": "DJ-COA"
+            },
+            {
+              "Denmark Chart of Accounts": "DK-COA"
+            },
+            {
+              "Danish Central Business Register": "DK-CVR"
+            },
+            {
+              "Dominica Chart of Accounts": "DM-COA"
+            },
+            {
+              "Dominican Republic (the) Chart of Accounts": "DO-COA"
+            },
+            {
+              "Algeria Chart of Accounts": "DZ-COA"
+            },
+            {
+              "Ecuador Chart of Accounts": "EC-COA"
+            },
+            {
+              "Ecuador Unique Taxpayer Registry": "EC-RUC"
+            },
+            {
+              "Estonia Chart of Accounts": "EE-COA"
+            },
+            {
+              "e-Business Register (Estonia)": "EE-KMKR"
+            },
+            {
+              "Centre of Registers and Information Systems (RIK)": "EE-RIK"
+            },
+            {
+              "Egypt Chart of Accounts": "EG-COA"
+            },
+            {
+              "Commercial Registry, Egypt": "EG-CR"
+            },
+            {
+              "Ministry of Social Solidarity and Justice (Egypt)": "EG-MOSS"
+            },
+            {
+              "Western Sahara Chart of Accounts": "EH-COA"
+            },
+            {
+              "Eritrea Chart of Accounts": "ER-COA"
+            },
+            {
+              "Spain Chart of Accounts": "ES-COA"
+            },
+            {
+              "Common Directory of Organizational Units and Offices - DIR3": "ES-DIR3"
+            },
+            {
+              "Ministerio de Justicia": "ES-MDJ"
+            },
+            {
+              "Tax Identification Number": "ES-NIF"
+            },
+            {
+              "Central Commercial Register of the Kingdom of Spain": "ES-RMC"
+            },
+            {
+              "Ethiopia Chart of Accounts": "ET-COA"
+            },
+            {
+              "Charities and Societies Agency (Ethiopia)": "ET-CSA"
+            },
+            {
+              "Ministry of Foreign Affairs": "ET-MFA"
+            },
+            {
+              "Ministry of Trade (Ethiopia)": "ET-MOT"
+            },
+            {
+              "Finland Chart of Accounts": "FI-COA"
+            },
+            {
+              "Finnish Patent and Registration Office": "FI-PRO"
+            },
+            {
+              "Finnish Tax Administration": "FI-VERO"
+            },
+            {
+              "Fiji Chart of Accounts": "FJ-COA"
+            },
+            {
+              "Falkland Islands (the) [Malvinas] Chart of Accounts": "FK-COA"
+            },
+            {
+              "Micronesia (Federated States of) Chart of Accounts": "FM-COA"
+            },
+            {
+              "Faroe Islands (the) Chart of Accounts": "FO-COA"
+            },
+            {
+              "France Chart of Accounts": "FR-COA"
+            },
+            {
+              "The National Institute of Statistics and Economic Studies": "FR-INSEE"
+            },
+            {
+              "Trade and Companies Register": "FR-RCS"
+            },
+            {
+              "Gabon Chart of Accounts": "GA-COA"
+            },
+            {
+              "Community amateur sports clubs (CASCs) registered with HMRC": "GB-CASC"
+            },
+            {
+              "Charity Commission/Comisiwn Elusennau": "GB-CHC"
+            },
+            {
+              "United Kingdom of Great Britain and Northern Ireland (the) Chart of Accounts": "GB-COA"
+            },
+            {
+              "Companies House": "GB-COH"
+            },
+            {
+              "Register of Schools (England and Wales)": "GB-EDU"
+            },
+            {
+              "Government Organisation Register": "GB-GOR"
+            },
+            {
+              "UK Government Departments Reference Numbers (IATI Standard)": "GB-GOV"
+            },
+            {
+              "GOV.UK - UK Government Departments, Agencies & Public Bodies": "GB-GOVUK"
+            },
+            {
+              "Higher Education Statistics Agency": "GB-HESA"
+            },
+            {
+              "Schools Plus, Department of Education (Northern Ireland)": "GB-IRN"
+            },
+            {
+              "Local Authorities for England Register": "GB-LAE"
+            },
+            {
+              "Local authorities for Northern Ireland register": "GB-LANI"
+            },
+            {
+              "Scottish Local Authority Register": "GB-LAS"
+            },
+            {
+              "Mutuals Public Register": "GB-MPR"
+            },
+            {
+              "NHS Digital - Organisation Data Service": "GB-NHS"
+            },
+            {
+              "The Charity Commission for Northern Ireland": "GB-NIC"
+            },
+            {
+              "Principal Local Authority Register for Wales": "GB-PLA"
+            },
+            {
+              "HM Revenue and Customs": "GB-REV"
+            },
+            {
+              "Scottish Charity Register": "GB-SC"
+            },
+            {
+              "Register of Schools (Scotland)": "GB-SCOTEDU"
+            },
+            {
+              "Registered Social Housing Providers (England)": "GB-SHPE"
+            },
+            {
+              "Supplier Registration Service, Crown Commercial Service, UK": "GB-SRS"
+            },
+            {
+              "UK Register of Learning Providers": "GB-UKPRN"
+            },
+            {
+              "Register of Schools (Wales)": "GB-WALEDU"
+            },
+            {
+              "Grenada Chart of Accounts": "GD-COA"
+            },
+            {
+              "Georgia Chart of Accounts": "GE-COA"
+            },
+            {
+              "Register of Entrepreneurial and Non-Entrepreneurial Legal Entities, Georgia": "GE-NAPR"
+            },
+            {
+              "Georgian Revenue Service": "GE-RS"
+            },
+            {
+              "French Guiana Chart of Accounts": "GF-COA"
+            },
+            {
+              "Guernsey Chart of Accounts": "GG-COA"
+            },
+            {
+              "Guernsey Registry": "GG-RCE"
+            },
+            {
+              "Ghana Chart of Accounts": "GH-COA"
+            },
+            {
+              "Department of Social Developments": "GH-DSW"
+            },
+            {
+              "Registrar General's Department": "GH-RGD"
+            },
+            {
+              "Gibraltar Chart of Accounts": "GI-COA"
+            },
+            {
+              "Greenland Chart of Accounts": "GL-COA"
+            },
+            {
+              "Gambia (the) Chart of Accounts": "GM-COA"
+            },
+            {
+              "Guinea Chart of Accounts": "GN-COA"
+            },
+            {
+              "Guadeloupe Chart of Accounts": "GP-COA"
+            },
+            {
+              "Equatorial Guinea Chart of Accounts": "GQ-COA"
+            },
+            {
+              "Greece Chart of Accounts": "GR-COA"
+            },
+            {
+              "South Georgia and the South Sandwich Islands Chart of Accounts": "GS-COA"
+            },
+            {
+              "Public Sector Institution Classifications (Guetmala)": "GT-CISP"
+            },
+            {
+              "Guatemala Chart of Accounts": "GT-COA"
+            },
+            {
+              "Guatemala Tax Identification Number": "GT-NIT"
+            },
+            {
+              "Registry for Legal Entities (Guatemala)": "GT-RPJ"
+            },
+            {
+              "Guam Chart of Accounts": "GU-COA"
+            },
+            {
+              "Guinea-Bissau Chart of Accounts": "GW-COA"
+            },
+            {
+              "Guyana Chart of Accounts": "GY-COA"
+            },
+            {
+              "Hong Kong Chart of Accounts": "HK-COA"
+            },
+            {
+              "Hong Kong Companies Register": "HK-CR"
+            },
+            {
+              "Heard Island and McDonald Islands Chart of Accounts": "HM-COA"
+            },
+            {
+              "Honduras Chart of Accounts": "HN-COA"
+            },
+            {
+              "National Tax Registry": "HN-RTN"
+            },
+            {
+              "Croatia Chart of Accounts": "HR-COA"
+            },
+            {
+              "Croatian Court Business Register": "HR-MBS"
+            },
+            {
+              "Croatia Court Register": "HR-OIB"
+            },
+            {
+              "Haiti Chart of Accounts": "HT-COA"
+            },
+            {
+              "Information and Electronic Company Registration Service": "HU-AFA"
+            },
+            {
+              "Hungary Chart of Accounts": "HU-COA"
+            },
+            {
+              "Indonesia Chart of Accounts": "ID-COA"
+            },
+            {
+              "Director General of Taxes": "ID-DJP"
+            },
+            {
+              "Ministry of Home Affairs": "ID-KDN"
+            },
+            {
+              "Ministry of Justice & Human Rights": "ID-KHH"
+            },
+            {
+              "Ministry of Foreign affairs": "ID-KLN"
+            },
+            {
+              "Indonesia - NGOs registered at Provinicial Level": "ID-PRO"
+            },
+            {
+              "The SMERU Research Institute": "ID-SMR"
+            },
+            {
+              "Charities Regulatory Authority of Ireland": "IE-CHY"
+            },
+            {
+              "Ireland Chart of Accounts": "IE-COA"
+            },
+            {
+              "Irish CompaniesRegistration Office": "IE-CRO"
+            },
+            {
+              "Israel Chart of Accounts": "IL-COA"
+            },
+            {
+              "Israel Charity Registry": "IL-RA"
+            },
+            {
+              "Registrar of Companies (Israel)": "IL-ROC"
+            },
+            {
+              "Isle of Man Chart of Accounts": "IM-COA"
+            },
+            {
+              "Isle of Man Companies Registry": "IM-CR"
+            },
+            {
+              "Isle of Man Index of Registered Charities": "IM-GR"
+            },
+            {
+              "India Chart of Accounts": "IN-COA"
+            },
+            {
+              "Government of India, Ministry of Corporate Affairs": "IN-MCA"
+            },
+            {
+              "Ministry of Home Affairs (India) Foreign Contributions (Regulation) Act Register": "IN-MHA"
+            },
+            {
+              "British Indian Ocean Territory (the) Chart of Accounts": "IO-COA"
+            },
+            {
+              "Iraq Chart of Accounts": "IQ-COA"
+            },
+            {
+              "NGO Directorate (Republic of Iraq)": "IQ-NGO"
+            },
+            {
+              "Iran (Islamic Republic of) Chart of Accounts": "IR-COA"
+            },
+            {
+              "Iceland Chart of Accounts": "IS-COA"
+            },
+            {
+              "Italian Tax Code / VAT Number": "IT-CF"
+            },
+            {
+              "Italy Chart of Accounts": "IT-COA"
+            },
+            {
+              "Unique Organizational Unit Code": "IT-CUUO"
+            },
+            {
+              "Business Register of the Italian Chambers of Commerce": "IT-RI"
+            },
+            {
+              "Jersey Chart of Accounts": "JE-COA"
+            },
+            {
+              "Jersey Financial Services Commission (JFSC)": "JE-FSC"
+            },
+            {
+              "Jersey Charity Register": "JE-JCR"
+            },
+            {
+              "Jersey Overseas Aid Commission": "JE-OAC"
+            },
+            {
+              "Jamaica Chart of Accounts": "JM-COA"
+            },
+            {
+              "Companies Control Department (Jordan)": "JO-CCD"
+            },
+            {
+              "Jordan Chart of Accounts": "JO-COA"
+            },
+            {
+              "Register of Associations, Jordan": "JO-MSD"
+            },
+            {
+              "Japan Chart of Accounts": "JP-COA"
+            },
+            {
+              "National Tax Agency Corporate Number Publication Site": "JP-JCN"
+            },
+            {
+              "Kenya Chart of Accounts": "KE-COA"
+            },
+            {
+              "Kenya Revenue Authority PIN": "KE-KRA"
+            },
+            {
+              "NGO's Coordination Board": "KE-NCB"
+            },
+            {
+              "Registar of Companies": "KE-RCO"
+            },
+            {
+              "Registrar of Societies": "KE-RSO"
+            },
+            {
+              "Kyrgyzstan Chart of Accounts": "KG-COA"
+            },
+            {
+              "Electronic database of legal entities and branches (Krygyzstan)": "KG-ID"
+            },
+            {
+              "Kyrgyz Republic Register of Legal Entities": "KG-INN"
+            },
+            {
+              "Electronic database of legal entities and branches (Krygyzstan) OKPO codes": "KG-OKPO"
+            },
+            {
+              "Electronic database of legal entities and branches (Krygyzstan) TIN": "KG-TIN"
+            },
+            {
+              "Cambodia Chart of Accounts": "KH-COA"
+            },
+            {
+              "Ministry of Foreign Affairs": "KH-INGO"
+            },
+            {
+              "Ministry of Interior National NGO Registrar": "KH-NNGO"
+            },
+            {
+              "Kiribati Chart of Accounts": "KI-COA"
+            },
+            {
+              "Comoros (the) Chart of Accounts": "KM-COA"
+            },
+            {
+              "Saint Kitts and Nevis Chart of Accounts": "KN-COA"
+            },
+            {
+              "Korea (the Democratic People's Republic of) Chart of Accounts": "KP-COA"
+            },
+            {
+              "National Tax Service Business Registration Number": "KR-BRN"
+            },
+            {
+              "Korea (the Republic of) Chart of Accounts": "KR-COA"
+            },
+            {
+              "Kuwait Chart of Accounts": "KW-COA"
+            },
+            {
+              "Cayman Islands (the) Chart of Accounts": "KY-COA"
+            },
+            {
+              "Business Identification Number (BIN)": "KZ-BIN"
+            },
+            {
+              "Kazakhstan Chart of Accounts": "KZ-COA"
+            },
+            {
+              "Lao People's Democratic Republic (the) Chart of Accounts": "LA-COA"
+            },
+            {
+              "Lebanon Chart of Accounts": "LB-COA"
+            },
+            {
+              "Lebanese Ministry of Justice, Commercial Register": "LB-CR"
+            },
+            {
+              "Ministry of Interior (Lebanon)": "LB-MOI"
+            },
+            {
+              "Saint Lucia Chart of Accounts": "LC-COA"
+            },
+            {
+              "Liechtenstein Chart of Accounts": "LI-COA"
+            },
+            {
+              "Sri Lanka Chart of Accounts": "LK-COA"
+            },
+            {
+              "Department of the Registrar of Companies (Sri Lanka)": "LK-DRC"
+            },
+            {
+              "Sri Lanka - National Secretariat for Non-Governmental Organisations": "LK-NGO"
+            },
+            {
+              "Liberia Chart of Accounts": "LR-COA"
+            },
+            {
+              "Ministry of Finance and Development Planning NGO": "LR-MFDPNGO"
+            },
+            {
+              "Lesotho Chart of Accounts": "LS-COA"
+            },
+            {
+              "Lesotho Council of Non Governmental Organisations": "LS-LCN"
+            },
+            {
+              "Lithuania Chart of Accounts": "LT-COA"
+            },
+            {
+              "Lithuanian State Tax Inspectorate (PVM)": "LT-PVM"
+            },
+            {
+              "Information Platform of Legal Entities (Lithuania)": "LT-RC"
+            },
+            {
+              "Luxembourg Chart of Accounts": "LU-COA"
+            },
+            {
+              "Luxembourg Trade and Companies Register": "LU-RCS"
+            },
+            {
+              "Latvia Chart of Accounts": "LV-COA"
+            },
+            {
+              "Register of Enterprises of the Republic of Latvia": "LV-RE"
+            },
+            {
+              "Libya Chart of Accounts": "LY-COA"
+            },
+            {
+              "Morocco Chart of Accounts": "MA-COA"
+            },
+            {
+              "Monaco Chart of Accounts": "MC-COA"
+            },
+            {
+              "Trade and Industry Registry Number": "MC-RCI"
+            },
+            {
+              "Moldova (the Republic of) Chart of Accounts": "MD-COA"
+            },
+            {
+              "Legal entity registration number (IDNO) Moldova": "MD-IDNO"
+            },
+            {
+              "Montenegro Chart of Accounts": "ME-COA"
+            },
+            {
+              "Saint Martin (French part) Chart of Accounts": "MF-COA"
+            },
+            {
+              "Madagascar Chart of Accounts": "MG-COA"
+            },
+            {
+              "Marshall Islands (the) Chart of Accounts": "MH-COA"
+            },
+            {
+              "North Macedonia Chart of Accounts": "MK-COA"
+            },
+            {
+              "The Chamber of Commerce and Industry of Mali": "ML-CCIM"
+            },
+            {
+              "Mali Chart of Accounts": "ML-COA"
+            },
+            {
+              "Ministere de l'Administration Territoriale": "ML-MAT"
+            },
+            {
+              "Tax Identification Number": "ML-NIF"
+            },
+            {
+              "Myanmar Chart of Accounts": "MM-COA"
+            },
+            {
+              "Ministry of Home Affairs - Central Committee for the Registration and Supervision of Organisations": "MM-MHA"
+            },
+            {
+              "Mongolia Chart of Accounts": "MN-COA"
+            },
+            {
+              "Macao Chart of Accounts": "MO-COA"
+            },
+            {
+              "Northern Mariana Islands (the) Chart of Accounts": "MP-COA"
+            },
+            {
+              "Martinique Chart of Accounts": "MQ-COA"
+            },
+            {
+              "Mauritania Chart of Accounts": "MR-COA"
+            },
+            {
+              "Montserrat Chart of Accounts": "MS-COA"
+            },
+            {
+              "Malta Chart of Accounts": "MT-COA"
+            },
+            {
+              "Mauritius Chart of Accounts": "MU-COA"
+            },
+            {
+              "Companies and Businesses Registration Integrated System, Mauritius": "MU-CR"
+            },
+            {
+              "Maldives Chart of Accounts": "MV-COA"
+            },
+            {
+              "The Council for Non Governmental Organisations in Malawi": "MW-CNM"
+            },
+            {
+              "Malawi Chart of Accounts": "MW-COA"
+            },
+            {
+              "Malawi Revenue Authority": "MW-MRA"
+            },
+            {
+              "NGO Board of Malawi": "MW-NBM"
+            },
+            {
+              "Registrar General, Department of Justice": "MW-RG"
+            },
+            {
+              "Budget Classification of Public Entities (Mexico City)": "MX-CMX_CPA"
+            },
+            {
+              "Mexico Chart of Accounts": "MX-COA"
+            },
+            {
+              "Budget Classification of Public Entities (Mexico)": "MX-CPA"
+            },
+            {
+              "Federal Taxpayers Registry": "MX-RFC"
+            },
+            {
+              "Malaysia Chart of Accounts": "MY-COA"
+            },
+            {
+              "Companies Commission of Malaysia": "MY-SSM"
+            },
+            {
+              "Mozambique Chart of Accounts": "MZ-COA"
+            },
+            {
+              "Mozambique Commercial Registry": "MZ-CR"
+            },
+            {
+              "Mozambique Ministry of Justice": "MZ-MOJ"
+            },
+            {
+              "Taxpayer Single Identification Number (Mozambique)": "MZ-NUIT"
+            },
+            {
+              "Namibia Chart of Accounts": "NA-COA"
+            },
+            {
+              "Namibia Revenue Agency": "NA-NAMRA"
+            },
+            {
+              "New Caledonia Chart of Accounts": "NC-COA"
+            },
+            {
+              "Niger (the) Chart of Accounts": "NE-COA"
+            },
+            {
+              "Norfolk Island Chart of Accounts": "NF-COA"
+            },
+            {
+              "Bureau of Public Procurement (BPP) Contractor Registration System (Nigeria)": "NG-BPP"
+            },
+            {
+              "Nigerian Corporate Affairs Commission": "NG-CAC"
+            },
+            {
+              "Nigeria Chart of Accounts": "NG-COA"
+            },
+            {
+              "Taxpayer Identification Number": "NG-TIN"
+            },
+            {
+              "Nicaragua Chart of Accounts": "NI-COA"
+            },
+            {
+              "Netherlands (the) Chart of Accounts": "NL-COA"
+            },
+            {
+              "Chamber of Commerce (Netherlands)": "NL-KVK"
+            },
+            {
+              "Overheid.nl Web Metadata Standard": "NL-OWMS"
+            },
+            {
+              "Br\u00f8nn\u00f8ysundregistrene": "NO-BRC"
+            },
+            {
+              "Norway Chart of Accounts": "NO-COA"
+            },
+            {
+              "Nepal Chart of Accounts": "NP-COA"
+            },
+            {
+              "Company Registrar Office": "NP-CRO"
+            },
+            {
+              "Inland Revenue Department": "NP-IRD"
+            },
+            {
+              "Social Welfare Council Nepal": "NP-SWC"
+            },
+            {
+              "Nauru Chart of Accounts": "NR-COA"
+            },
+            {
+              "Niue Chart of Accounts": "NU-COA"
+            },
+            {
+              "New Zealand Chart of Accounts": "NZ-COA"
+            },
+            {
+              "Oman Chart of Accounts": "OM-COA"
+            },
+            {
+              "Panama Chart of Accounts": "PA-COA"
+            },
+            {
+              "Public Registry of Panama": "PA-PRP"
+            },
+            {
+              "Peru Chart of Accounts": "PE-COA"
+            },
+            {
+              "RUC Number (Peru)": "PE-RUC"
+            },
+            {
+              "Peruvian National Superintendency of Public Registries - Registered Legal Entities": "PE-SUNARP"
+            },
+            {
+              "French Polynesia Chart of Accounts": "PF-COA"
+            },
+            {
+              "Papua New Guinea Chart of Accounts": "PG-COA"
+            },
+            {
+              "Philippines (the) Chart of Accounts": "PH-COA"
+            },
+            {
+              "Securities and Exchange Commission (Philippines)": "PH-SEC"
+            },
+            {
+              "Pakistan Chart of Accounts": "PK-COA"
+            },
+            {
+              "Pakistan National Tax Number": "PK-NTN"
+            },
+            {
+              "Pakistan Centre for Philanthropy": "PK-PCP"
+            },
+            {
+              "Securities and Exchange Commission of Pakistan": "PK-SEC"
+            },
+            {
+              "Pakistan Voluntary Social Welfare Agency": "PK-VSWA"
+            },
+            {
+              "Poland Chart of Accounts": "PL-COA"
+            },
+            {
+              "The National Court Register (Poland)": "PL-KRS"
+            },
+            {
+              "Tax Identification Number (Poland)": "PL-NIP"
+            },
+            {
+              "REGON - Statistical number of an economy entity": "PL-REGON"
+            },
+            {
+              "Saint Pierre and Miquelon Chart of Accounts": "PM-COA"
+            },
+            {
+              "Pitcairn Chart of Accounts": "PN-COA"
+            },
+            {
+              "Puerto Rico Chart of Accounts": "PR-COA"
+            },
+            {
+              "Palestine, State of Chart of Accounts": "PS-COA"
+            },
+            {
+              "Ministry of Interior (Palestine)": "PS-MOI"
+            },
+            {
+              "Portugal Chart of Accounts": "PT-COA"
+            },
+            {
+              "Portal of Public Services": "PT-NIPPC"
+            },
+            {
+              "Palau Chart of Accounts": "PW-COA"
+            },
+            {
+              "Paraguay Chart of Accounts": "PY-COA"
+            },
+            {
+              "Classification of Entities in the National Budget for Paraguay": "PY-PGN"
+            },
+            {
+              "Unique Taxpayer Registry, Paraguay": "PY-RUC"
+            },
+            {
+              "Qatar Chart of Accounts": "QA-COA"
+            },
+            {
+              "R\u00e9union Chart of Accounts": "RE-COA"
+            },
+            {
+              "Romania Chart of Accounts": "RO-COA"
+            },
+            {
+              "National Trade Register (Romania)": "RO-CUI"
+            },
+            {
+              "Serbian Business Registrations Agency": "RS-APR"
+            },
+            {
+              "Serbia Chart of Accounts": "RS-COA"
+            },
+            {
+              "Tax identification number register": "RS-PIB"
+            },
+            {
+              "Russian Federation (the) Chart of Accounts": "RU-COA"
+            },
+            {
+              "Uniform State Register of Legal Entities of Russian Federation": "RU-INN"
+            },
+            {
+              "Unified State Register of Legal Entities (USRLE), Russian Federation": "RU-OGRN"
+            },
+            {
+              "Rwanda Chart of Accounts": "RW-COA"
+            },
+            {
+              "Rwanda Governance Board": "RW-RGB"
+            },
+            {
+              "Rwanda Revenue Authority": "RW-RRA"
+            },
+            {
+              "Saudi Arabia Chart of Accounts": "SA-COA"
+            },
+            {
+              "Solomon Islands Chart of Accounts": "SB-COA"
+            },
+            {
+              "Seychelles Chart of Accounts": "SC-COA"
+            },
+            {
+              "Sudan (the) Chart of Accounts": "SD-COA"
+            },
+            {
+              "Bolagsverket": "SE-BLV"
+            },
+            {
+              "Sweden Chart of Accounts": "SE-COA"
+            },
+            {
+              "Legal, Financial and Administrative Services Agency (Sweden)": "SE-KK"
+            },
+            {
+              "Business Registration Number (Organisationsnummer), Sweden": "SE-ON"
+            },
+            {
+              "Accounting and Corporate Regulatory Authority (ACRA)": "SG-ACRA"
+            },
+            {
+              "Commissioner of Charities": "SG-COC"
+            },
+            {
+              "Singapore Chart of Accounts": "SG-COA"
+            },
+            {
+              "Saint Helena, Ascension and Tristan da Cunha Chart of Accounts": "SH-COA"
+            },
+            {
+              "Slovenia Chart of Accounts": "SI-COA"
+            },
+            {
+              "Slovenian Business Register": "SI-PRS"
+            },
+            {
+              "Tax Identification Number (Slovenia)": "SI-TIN"
+            },
+            {
+              "Svalbard and Jan Mayen Chart of Accounts": "SJ-COA"
+            },
+            {
+              "Slovakia Chart of Accounts": "SK-COA"
+            },
+            {
+              "Organization Identification Number - Register and identifier of legal entities, entrepreneurs and public authorities": "SK-ICO"
+            },
+            {
+              "Ministry of Justice Business Register": "SK-ORSR"
+            },
+            {
+              "Slovakia Ministry Of Interior Trade Register": "SK-ZRSR"
+            },
+            {
+              "Sierra Leone Chart of Accounts": "SL-COA"
+            },
+            {
+              "National Revenue Agency": "SL-NRA"
+            },
+            {
+              "Office of Administrator and Registrar General": "SL-OARG"
+            },
+            {
+              "San Marino Chart of Accounts": "SM-COA"
+            },
+            {
+              "Senegal Chart of Accounts": "SN-COA"
+            },
+            {
+              "National Identification Number of Companies and Associations (NINEA), Senegal": "SN-NINEA"
+            },
+            {
+              "Somalia Chart of Accounts": "SO-COA"
+            },
+            {
+              "General Register for Non-Governmental Organizations (Somaliland)": "SO-MPND"
+            },
+            {
+              "Suriname Chart of Accounts": "SR-COA"
+            },
+            {
+              "South Sudan Chart of Accounts": "SS-COA"
+            },
+            {
+              "South Sudan Relief and Rehabilitation Commission": "SS-RRC"
+            },
+            {
+              "Sao Tome and Principe Chart of Accounts": "ST-COA"
+            },
+            {
+              "El Salvador Chart of Accounts": "SV-COA"
+            },
+            {
+              "Tax Identification Number (El Salvador)": "SV-NIT"
+            },
+            {
+              "Sint Maarten (Dutch part) Chart of Accounts": "SX-COA"
+            },
+            {
+              "Syrian Arab Republic (the) Chart of Accounts": "SY-COA"
+            },
+            {
+              "Eswatini Chart of Accounts": "SZ-COA"
+            },
+            {
+              "Turks and Caicos Islands (the) Chart of Accounts": "TC-COA"
+            },
+            {
+              "Chad Chart of Accounts": "TD-COA"
+            },
+            {
+              "French Southern Territories (the) Chart of Accounts": "TF-COA"
+            },
+            {
+              "Togo Chart of Accounts": "TG-COA"
+            },
+            {
+              "Thailand Chart of Accounts": "TH-COA"
+            },
+            {
+              "Ministry of Interior of the Kingdom of Thailand": "TH-MOI"
+            },
+            {
+              "Thai Revenue Department - Tax Identification Number": "TH-TIN"
+            },
+            {
+              "Tajikistan Chart of Accounts": "TJ-COA"
+            },
+            {
+              "Tokelau Chart of Accounts": "TK-COA"
+            },
+            {
+              "Timor-Leste Chart of Accounts": "TL-COA"
+            },
+            {
+              "Turkmenistan Chart of Accounts": "TM-COA"
+            },
+            {
+              "Tunisia Chart of Accounts": "TN-COA"
+            },
+            {
+              "The National Register of Companies, Tunisia": "TN-RNE"
+            },
+            {
+              "Tonga Chart of Accounts": "TO-COA"
+            },
+            {
+              "Turkey Chart of Accounts": "TR-COA"
+            },
+            {
+              "MERSIS - Central Trade Registry System": "TR-MERSIS"
+            },
+            {
+              "Department of Associations (Ministry of Interior, Turkey)": "TR-MOI"
+            },
+            {
+              "Trinidad and Tobago Chart of Accounts": "TT-COA"
+            },
+            {
+              "Tuvalu Chart of Accounts": "TV-COA"
+            },
+            {
+              "Taiwan (Province of China) Chart of Accounts": "TW-COA"
+            },
+            {
+              "Tanzania Business Registrations and Licensing Agency": "TZ-BRLA"
+            },
+            {
+              "Tanzania, the United Republic of Chart of Accounts": "TZ-COA"
+            },
+            {
+              "Tanzania National NGO Coordination Board": "TZ-NNCB"
+            },
+            {
+              "Tanzania Revenue Agency": "TZ-TRA"
+            },
+            {
+              "Ukraine Chart of Accounts": "UA-COA"
+            },
+            {
+              "United State Register": "UA-EDR"
+            },
+            {
+              "CBO Registration number, Uganda (Jinja District)": "UG-204CBO"
+            },
+            {
+              "Uganda Chart of Accounts": "UG-COA"
+            },
+            {
+              "NGO Board, Ministry of Internal Affairs (Uganda)": "UG-NGB"
+            },
+            {
+              "National Bureau for NGOs (Uganda)": "UG-NGO"
+            },
+            {
+              "Registration Services Bureau": "UG-RSB"
+            },
+            {
+              "United States Minor Outlying Islands (the) Chart of Accounts": "UM-COA"
+            },
+            {
+              "United States of America (the) Chart of Accounts": "US-COA"
+            },
+            {
+              "Corporation registration is the responsibility of each state (see link)": "US-DOS"
+            },
+            {
+              "Employer Identification Number - Internal Revenue Service": "US-EIN"
+            },
+            {
+              "Index of U.S. Government Departments and Agencies": "US-USAGOV"
+            },
+            {
+              "Uruguay Chart of Accounts": "UY-COA"
+            },
+            {
+              "Uzbekistan Chart of Accounts": "UZ-COA"
+            },
+            {
+              "United State Register of Corporate Entites": "UZ-KTUT"
+            },
+            {
+              "Holy See (the) Chart of Accounts": "VA-COA"
+            },
+            {
+              "Saint Vincent and the Grenadines Chart of Accounts": "VC-COA"
+            },
+            {
+              "Venezuela (Bolivarian Republic of) Chart of Accounts": "VE-COA"
+            },
+            {
+              "Virgin Islands (British) Chart of Accounts": "VG-COA"
+            },
+            {
+              "Virgin Islands (U.S.) Chart of Accounts": "VI-COA"
+            },
+            {
+              "Viet Nam Chart of Accounts": "VN-COA"
+            },
+            {
+              "Ministry of Science and Technology": "VN-MOST"
+            },
+            {
+              "Vanuatu Chart of Accounts": "VU-COA"
+            },
+            {
+              "Wallis and Futuna Chart of Accounts": "WF-COA"
+            },
+            {
+              "Samoa Chart of Accounts": "WS-COA"
+            },
+            {
+              "Example Data Prefix": "XE-EXAMPLE"
+            },
+            {
+              "Basic Registry of Identified Global Entities": "XI-BRIDGE"
+            },
+            {
+              "D-U-N-S Number": "XI-DUNS"
+            },
+            {
+              "Economic Operators Identification and Registration system": "XI-EORI"
+            },
+            {
+              "Global Research Identifiers Database": "XI-GRID"
+            },
+            {
+              "International Aid Transparency Initiative Organisation Identifier": "XI-IATI"
+            },
+            {
+              "Global Legal Entity Identifier Index": "XI-LEI"
+            },
+            {
+              "Public Bodies - Open Knowledge Foundation": "XI-PB"
+            },
+            {
+              "PermID: Thompson Reuters Permanent Identifier": "XI-PID"
+            },
+            {
+              "Research Organization Registry": "XI-ROR"
+            },
+            {
+              "Wikidata": "XI-WIKIDATA"
+            },
+            {
+              "Kosovo Chart of Accounts": "XK-COA"
+            },
+            {
+              "OECD Development Assistance Committee": "XM-DAC"
+            },
+            {
+              "United Nations Office for the Coordination of Humanitarian Affairs - Humanitarian Programme Cycle Identifiers": "XM-OCHA"
+            },
+            {
+              "European Union Corporate Bodies authority list": "XR-EUCB"
+            },
+            {
+              "NUTS - European Union Nomenclature of Territorial Units for Statistics": "XR-NUTS"
+            },
+            {
+              "Yemen Chart of Accounts": "YE-COA"
+            },
+            {
+              "Ministry of Social Affairs and Labour": "YE-MSAL"
+            },
+            {
+              "Mayotte Chart of Accounts": "YT-COA"
+            },
+            {
+              "Companies and Intellectual Property Commission (CIPC)": "ZA-CIP"
+            },
+            {
+              "South African Corporate Income Tax (CIT) number": "ZA-CIT"
+            },
+            {
+              "South Africa Chart of Accounts": "ZA-COA"
+            },
+            {
+              "Nonprofit Organisation Directorate - South African Department of Social Development": "ZA-NPO"
+            },
+            {
+              "SA Revenue Service Tax Exemption Unit": "ZA-PBO"
+            },
+            {
+              "Zambia Chart of Accounts": "ZM-COA"
+            },
+            {
+              "Patents and Companies Registration Agency": "ZM-PCR"
+            },
+            {
+              "Department of Registrar for NGOs": "ZM-RNGO"
+            },
+            {
+              "Zimbabwe Chart of Accounts": "ZW-COA"
+            },
+            {
+              "Private Voluntary Organisations Council (Zimbabwe)": "ZW-PVO"
+            },
+            {
+              "Registrar of Deeds": "ZW-ROD"
+            },
+            {
+              "European Business Identifier (EBID)": "ZZ-EBID"
+            }
+          ]
+        },
+        {
+          "name": "identifier__legalName",
+          "title": "Organisation identifier Legal name",
+          "description": "An identifier for this organisation. The legally registered name of the organisation",
+          "type": "text"
+        },
+        {
+          "name": "identifier__uri",
+          "title": "Organisation identifier URI",
+          "description": "An identifier for this organisation. A canonical URI for this identifier, such as those provided by Open Corporates. Do not use this field to provide the website of the organisation: instead, use `Organisation.website`.",
+          "type": "text"
         },
         {
           "name": "country",
+          "title": "Country",
+          "description": "The country in which this organisation is legally registered, from the closed [country codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#country).",
           "type": "closedcodelist",
           "sqlite_type": "text",
-          "title": "Country",
           "values": [
             {
               "Andorra": "AD"
@@ -1604,23 +5692,27 @@
         },
         {
           "name": "roleDetails",
-          "type": "text",
-          "title": "Role details"
+          "title": "Role details",
+          "description": "Further details about this organisation's roles in the network",
+          "type": "text"
         },
         {
           "name": "website",
-          "type": "text",
-          "title": "Website"
+          "title": "Website",
+          "description": "The URL of the website for this organisation.",
+          "type": "text"
         },
         {
           "name": "logo",
-          "type": "text",
-          "title": "Logo"
+          "title": "Logo",
+          "description": "The URL of the logo for this organisation.",
+          "type": "text"
         },
         {
           "name": "network_id",
           "type": "text",
-          "title": "Network ID"
+          "title": "Network ID",
+          "description": ""
         }
       ],
       "geographic_type": null,
@@ -1630,24 +5722,28 @@
       "columns": [
         {
           "name": "ofds_id",
-          "type": "text",
-          "title": "Identifier"
+          "title": "Identifier",
+          "description": "An identifier for this contract. The identifier must be unique within the scope of the `contracts` array.",
+          "type": "text"
         },
         {
           "name": "title",
-          "type": "text",
-          "title": "Contract title"
+          "title": "Contract title",
+          "description": "A title for this contract.",
+          "type": "text"
         },
         {
           "name": "description",
-          "type": "text",
-          "title": "Contract description"
+          "title": "Contract description",
+          "description": "A description for this contract.",
+          "type": "text"
         },
         {
           "name": "type",
+          "title": "Contract type",
+          "description": "The type of this contract, from the open [contractType codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#contracttype).",
           "type": "opencodelist",
           "sqlite_type": "text",
-          "title": "Contract type",
           "values": [
             {
               "Public Private Partnership (PPP)": "ppp"
@@ -1661,15 +5757,938 @@
           ]
         },
         {
-          "name": "dateSigned",
-          "type": "date",
+          "name": "value__currency",
+          "title": "Contract value Currency",
+          "description": "The value of this contract. The currency of this value, from the closed [currency codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#currency).",
+          "type": "closedcodelist",
           "sqlite_type": "text",
-          "title": "Date signed"
+          "values": [
+            {
+              "UAE Dirham": "AED"
+            },
+            {
+              "Afghani": "AFN"
+            },
+            {
+              "Lek": "ALL"
+            },
+            {
+              "Armenian Dram": "AMD"
+            },
+            {
+              "Netherlands Antillean Guilder": "ANG"
+            },
+            {
+              "Kwanza": "AOA"
+            },
+            {
+              "Argentine Peso": "ARS"
+            },
+            {
+              "Australian Dollar": "AUD"
+            },
+            {
+              "Aruban Florin": "AWG"
+            },
+            {
+              "Azerbaijan Manat": "AZN"
+            },
+            {
+              "Convertible Mark": "BAM"
+            },
+            {
+              "Barbados Dollar": "BBD"
+            },
+            {
+              "Taka": "BDT"
+            },
+            {
+              "Bulgarian Lev": "BGN"
+            },
+            {
+              "Bahraini Dinar": "BHD"
+            },
+            {
+              "Burundi Franc": "BIF"
+            },
+            {
+              "Bermudian Dollar": "BMD"
+            },
+            {
+              "Brunei Dollar": "BND"
+            },
+            {
+              "Boliviano": "BOB"
+            },
+            {
+              "Mvdol": "BOV"
+            },
+            {
+              "Brazilian Real": "BRL"
+            },
+            {
+              "Bahamian Dollar": "BSD"
+            },
+            {
+              "Ngultrum": "BTN"
+            },
+            {
+              "Pula": "BWP"
+            },
+            {
+              "Belarusian Ruble": "BYN"
+            },
+            {
+              "Belize Dollar": "BZD"
+            },
+            {
+              "Canadian Dollar": "CAD"
+            },
+            {
+              "Congolese Franc": "CDF"
+            },
+            {
+              "WIR Euro": "CHE"
+            },
+            {
+              "Swiss Franc": "CHF"
+            },
+            {
+              "WIR Franc": "CHW"
+            },
+            {
+              "Unidad de Fomento": "CLF"
+            },
+            {
+              "Chilean Peso": "CLP"
+            },
+            {
+              "Yuan Renminbi": "CNY"
+            },
+            {
+              "Colombian Peso": "COP"
+            },
+            {
+              "Unidad de Valor Real": "COU"
+            },
+            {
+              "Costa Rican Colon": "CRC"
+            },
+            {
+              "Peso Convertible": "CUC"
+            },
+            {
+              "Cuban Peso": "CUP"
+            },
+            {
+              "Cabo Verde Escudo": "CVE"
+            },
+            {
+              "Czech Koruna": "CZK"
+            },
+            {
+              "Djibouti Franc": "DJF"
+            },
+            {
+              "Danish Krone": "DKK"
+            },
+            {
+              "Dominican Peso": "DOP"
+            },
+            {
+              "Algerian Dinar": "DZD"
+            },
+            {
+              "Egyptian Pound": "EGP"
+            },
+            {
+              "Nakfa": "ERN"
+            },
+            {
+              "Ethiopian Birr": "ETB"
+            },
+            {
+              "Euro": "EUR"
+            },
+            {
+              "Fiji Dollar": "FJD"
+            },
+            {
+              "Falkland Islands Pound": "FKP"
+            },
+            {
+              "Pound Sterling": "GBP"
+            },
+            {
+              "Lari": "GEL"
+            },
+            {
+              "Ghana Cedi": "GHS"
+            },
+            {
+              "Gibraltar Pound": "GIP"
+            },
+            {
+              "Dalasi": "GMD"
+            },
+            {
+              "Guinean Franc": "GNF"
+            },
+            {
+              "Quetzal": "GTQ"
+            },
+            {
+              "Guyana Dollar": "GYD"
+            },
+            {
+              "Hong Kong Dollar": "HKD"
+            },
+            {
+              "Lempira": "HNL"
+            },
+            {
+              "Gourde": "HTG"
+            },
+            {
+              "Forint": "HUF"
+            },
+            {
+              "Rupiah": "IDR"
+            },
+            {
+              "New Israeli Sheqel": "ILS"
+            },
+            {
+              "Indian Rupee": "INR"
+            },
+            {
+              "Iraqi Dinar": "IQD"
+            },
+            {
+              "Iranian Rial": "IRR"
+            },
+            {
+              "Iceland Krona": "ISK"
+            },
+            {
+              "Jamaican Dollar": "JMD"
+            },
+            {
+              "Jordanian Dinar": "JOD"
+            },
+            {
+              "Yen": "JPY"
+            },
+            {
+              "Kenyan Shilling": "KES"
+            },
+            {
+              "Som": "KGS"
+            },
+            {
+              "Riel": "KHR"
+            },
+            {
+              "Comorian Franc": "KMF"
+            },
+            {
+              "North Korean Won": "KPW"
+            },
+            {
+              "Won": "KRW"
+            },
+            {
+              "Kuwaiti Dinar": "KWD"
+            },
+            {
+              "Cayman Islands Dollar": "KYD"
+            },
+            {
+              "Tenge": "KZT"
+            },
+            {
+              "Lao Kip": "LAK"
+            },
+            {
+              "Lebanese Pound": "LBP"
+            },
+            {
+              "Sri Lanka Rupee": "LKR"
+            },
+            {
+              "Liberian Dollar": "LRD"
+            },
+            {
+              "Loti": "LSL"
+            },
+            {
+              "Libyan Dinar": "LYD"
+            },
+            {
+              "Moroccan Dirham": "MAD"
+            },
+            {
+              "Moldovan Leu": "MDL"
+            },
+            {
+              "Malagasy Ariary": "MGA"
+            },
+            {
+              "Denar": "MKD"
+            },
+            {
+              "Kyat": "MMK"
+            },
+            {
+              "Tugrik": "MNT"
+            },
+            {
+              "Pataca": "MOP"
+            },
+            {
+              "Ouguiya": "MRU"
+            },
+            {
+              "Mauritius Rupee": "MUR"
+            },
+            {
+              "Rufiyaa": "MVR"
+            },
+            {
+              "Malawi Kwacha": "MWK"
+            },
+            {
+              "Mexican Peso": "MXN"
+            },
+            {
+              "Mexican Unidad de Inversion (UDI)": "MXV"
+            },
+            {
+              "Malaysian Ringgit": "MYR"
+            },
+            {
+              "Mozambique Metical": "MZN"
+            },
+            {
+              "Namibia Dollar": "NAD"
+            },
+            {
+              "Naira": "NGN"
+            },
+            {
+              "Cordoba Oro": "NIO"
+            },
+            {
+              "Norwegian Krone": "NOK"
+            },
+            {
+              "Nepalese Rupee": "NPR"
+            },
+            {
+              "New Zealand Dollar": "NZD"
+            },
+            {
+              "Rial Omani": "OMR"
+            },
+            {
+              "Balboa": "PAB"
+            },
+            {
+              "Sol": "PEN"
+            },
+            {
+              "Kina": "PGK"
+            },
+            {
+              "Philippine Peso": "PHP"
+            },
+            {
+              "Pakistan Rupee": "PKR"
+            },
+            {
+              "Zloty": "PLN"
+            },
+            {
+              "Guarani": "PYG"
+            },
+            {
+              "Qatari Rial": "QAR"
+            },
+            {
+              "Romanian Leu": "RON"
+            },
+            {
+              "Serbian Dinar": "RSD"
+            },
+            {
+              "Russian Ruble": "RUB"
+            },
+            {
+              "Rwanda Franc": "RWF"
+            },
+            {
+              "Saudi Riyal": "SAR"
+            },
+            {
+              "Solomon Islands Dollar": "SBD"
+            },
+            {
+              "Seychelles Rupee": "SCR"
+            },
+            {
+              "Sudanese Pound": "SDG"
+            },
+            {
+              "Swedish Krona": "SEK"
+            },
+            {
+              "Singapore Dollar": "SGD"
+            },
+            {
+              "Saint Helena Pound": "SHP"
+            },
+            {
+              "Leone": "SLE"
+            },
+            {
+              "Leone": "SLL"
+            },
+            {
+              "Somali Shilling": "SOS"
+            },
+            {
+              "Surinam Dollar": "SRD"
+            },
+            {
+              "South Sudanese Pound": "SSP"
+            },
+            {
+              "Dobra": "STN"
+            },
+            {
+              "El Salvador Colon": "SVC"
+            },
+            {
+              "Syrian Pound": "SYP"
+            },
+            {
+              "Lilangeni": "SZL"
+            },
+            {
+              "Baht": "THB"
+            },
+            {
+              "Somoni": "TJS"
+            },
+            {
+              "Turkmenistan New Manat": "TMT"
+            },
+            {
+              "Tunisian Dinar": "TND"
+            },
+            {
+              "Pa\u2019anga": "TOP"
+            },
+            {
+              "Turkish Lira": "TRY"
+            },
+            {
+              "Trinidad and Tobago Dollar": "TTD"
+            },
+            {
+              "New Taiwan Dollar": "TWD"
+            },
+            {
+              "Tanzanian Shilling": "TZS"
+            },
+            {
+              "Hryvnia": "UAH"
+            },
+            {
+              "Uganda Shilling": "UGX"
+            },
+            {
+              "US Dollar": "USD"
+            },
+            {
+              "US Dollar (Next day)": "USN"
+            },
+            {
+              "Uruguay Peso en Unidades Indexadas (UI)": "UYI"
+            },
+            {
+              "Peso Uruguayo": "UYU"
+            },
+            {
+              "Unidad Previsional": "UYW"
+            },
+            {
+              "Uzbekistan Sum": "UZS"
+            },
+            {
+              "Bol\u00edvar Soberano": "VED"
+            },
+            {
+              "Bol\u00edvar Soberano": "VES"
+            },
+            {
+              "Dong": "VND"
+            },
+            {
+              "Vatu": "VUV"
+            },
+            {
+              "Tala": "WST"
+            },
+            {
+              "CFA Franc BEAC": "XAF"
+            },
+            {
+              "Silver": "XAG"
+            },
+            {
+              "Gold": "XAU"
+            },
+            {
+              "Bond Markets Unit European Composite Unit (EURCO)": "XBA"
+            },
+            {
+              "Bond Markets Unit European Monetary Unit (E.M.U.-6)": "XBB"
+            },
+            {
+              "Bond Markets Unit European Unit of Account 9 (E.U.A.-9)": "XBC"
+            },
+            {
+              "Bond Markets Unit European Unit of Account 17 (E.U.A.-17)": "XBD"
+            },
+            {
+              "East Caribbean Dollar": "XCD"
+            },
+            {
+              "SDR (Special Drawing Right)": "XDR"
+            },
+            {
+              "CFA Franc BCEAO": "XOF"
+            },
+            {
+              "Palladium": "XPD"
+            },
+            {
+              "CFP Franc": "XPF"
+            },
+            {
+              "Platinum": "XPT"
+            },
+            {
+              "Sucre": "XSU"
+            },
+            {
+              "Codes specifically reserved for testing purposes": "XTS"
+            },
+            {
+              "ADB Unit of Account": "XUA"
+            },
+            {
+              "The codes assigned for transactions where no currency is involved": "XXX"
+            },
+            {
+              "Yemeni Rial": "YER"
+            },
+            {
+              "Rand": "ZAR"
+            },
+            {
+              "Zambian Kwacha": "ZMW"
+            },
+            {
+              "Zimbabwe Dollar": "ZWL"
+            },
+            {
+              "Andorran Peseta": "ADP"
+            },
+            {
+              "Afghani": "AFA"
+            },
+            {
+              "Old Lek": "ALK"
+            },
+            {
+              "Kwanza": "AOK"
+            },
+            {
+              "New Kwanza": "AON"
+            },
+            {
+              "Kwanza Reajustado": "AOR"
+            },
+            {
+              "Austral": "ARA"
+            },
+            {
+              "Peso Argentino": "ARP"
+            },
+            {
+              "Peso": "ARY"
+            },
+            {
+              "Schilling": "ATS"
+            },
+            {
+              "Azerbaijan Manat": "AYM"
+            },
+            {
+              "Azerbaijanian Manat": "AZM"
+            },
+            {
+              "Dinar": "BAD"
+            },
+            {
+              "Convertible Franc": "BEC"
+            },
+            {
+              "Belgian Franc": "BEF"
+            },
+            {
+              "Financial Franc": "BEL"
+            },
+            {
+              "Lev A/52": "BGJ"
+            },
+            {
+              "Lev A/62": "BGK"
+            },
+            {
+              "Lev": "BGL"
+            },
+            {
+              "Peso boliviano": "BOP"
+            },
+            {
+              "Cruzeiro": "BRB"
+            },
+            {
+              "Cruzado": "BRC"
+            },
+            {
+              "Cruzeiro": "BRE"
+            },
+            {
+              "New Cruzado": "BRN"
+            },
+            {
+              "Cruzeiro Real": "BRR"
+            },
+            {
+              "Kyat": "BUK"
+            },
+            {
+              "Belarusian Ruble": "BYB"
+            },
+            {
+              "Belarusian Ruble": "BYR"
+            },
+            {
+              "WIR Franc (for electronic)": "CHC"
+            },
+            {
+              "Serbian Dinar": "CSD"
+            },
+            {
+              "Krona A/53": "CSJ"
+            },
+            {
+              "Koruna": "CSK"
+            },
+            {
+              "Cyprus Pound": "CYP"
+            },
+            {
+              "Mark der DDR": "DDM"
+            },
+            {
+              "Deutsche Mark": "DEM"
+            },
+            {
+              "Sucre": "ECS"
+            },
+            {
+              "Unidad de Valor Constante (UVC)": "ECV"
+            },
+            {
+              "Kroon": "EEK"
+            },
+            {
+              "Spanish Peseta": "ESA"
+            },
+            {
+              "\"A\" Account (convertible Peseta Account)": "ESB"
+            },
+            {
+              "Spanish Peseta": "ESP"
+            },
+            {
+              "Markka": "FIM"
+            },
+            {
+              "French Franc": "FRF"
+            },
+            {
+              "Georgian Coupon": "GEK"
+            },
+            {
+              "Cedi": "GHC"
+            },
+            {
+              "Ghana Cedi": "GHP"
+            },
+            {
+              "Syli": "GNE"
+            },
+            {
+              "Syli": "GNS"
+            },
+            {
+              "Ekwele": "GQE"
+            },
+            {
+              "Drachma": "GRD"
+            },
+            {
+              "Guinea Escudo": "GWE"
+            },
+            {
+              "Guinea-Bissau Peso": "GWP"
+            },
+            {
+              "Croatian Dinar": "HRD"
+            },
+            {
+              "Kuna": "HRK"
+            },
+            {
+              "Irish Pound": "IEP"
+            },
+            {
+              "Pound": "ILP"
+            },
+            {
+              "Old Shekel": "ILR"
+            },
+            {
+              "Old Krona": "ISJ"
+            },
+            {
+              "Italian Lira": "ITL"
+            },
+            {
+              "Pathet Lao Kip": "LAJ"
+            },
+            {
+              "Loti": "LSM"
+            },
+            {
+              "Lithuanian Litas": "LTL"
+            },
+            {
+              "Talonas": "LTT"
+            },
+            {
+              "Luxembourg Convertible Franc": "LUC"
+            },
+            {
+              "Luxembourg Franc": "LUF"
+            },
+            {
+              "Luxembourg Financial Franc": "LUL"
+            },
+            {
+              "Latvian Lats": "LVL"
+            },
+            {
+              "Latvian Ruble": "LVR"
+            },
+            {
+              "Malagasy Franc": "MGF"
+            },
+            {
+              "Mali Franc": "MLF"
+            },
+            {
+              "Ouguiya": "MRO"
+            },
+            {
+              "Maltese Lira": "MTL"
+            },
+            {
+              "Maltese Pound": "MTP"
+            },
+            {
+              "Maldive Rupee": "MVQ"
+            },
+            {
+              "Mexican Peso": "MXP"
+            },
+            {
+              "Mozambique Escudo": "MZE"
+            },
+            {
+              "Mozambique Metical": "MZM"
+            },
+            {
+              "Cordoba": "NIC"
+            },
+            {
+              "Netherlands Guilder": "NLG"
+            },
+            {
+              "Sol": "PEH"
+            },
+            {
+              "Inti": "PEI"
+            },
+            {
+              "Sol": "PES"
+            },
+            {
+              "Zloty": "PLZ"
+            },
+            {
+              "Portuguese Escudo": "PTE"
+            },
+            {
+              "Rhodesian Dollar": "RHD"
+            },
+            {
+              "Leu A/52": "ROK"
+            },
+            {
+              "Old Leu": "ROL"
+            },
+            {
+              "Russian Ruble": "RUR"
+            },
+            {
+              "Sudanese Dinar": "SDD"
+            },
+            {
+              "Sudanese Pound": "SDP"
+            },
+            {
+              "Tolar": "SIT"
+            },
+            {
+              "Slovak Koruna": "SKK"
+            },
+            {
+              "Surinam Guilder": "SRG"
+            },
+            {
+              "Dobra": "STD"
+            },
+            {
+              "Rouble": "SUR"
+            },
+            {
+              "Tajik Ruble": "TJR"
+            },
+            {
+              "Turkmenistan Manat": "TMM"
+            },
+            {
+              "Timor Escudo": "TPE"
+            },
+            {
+              "Old Turkish Lira": "TRL"
+            },
+            {
+              "Karbovanet": "UAK"
+            },
+            {
+              "Uganda Shilling": "UGS"
+            },
+            {
+              "Old Shilling": "UGW"
+            },
+            {
+              "US Dollar (Same day)": "USS"
+            },
+            {
+              "Old Uruguay Peso": "UYN"
+            },
+            {
+              "Uruguayan Peso": "UYP"
+            },
+            {
+              "Bolivar": "VEB"
+            },
+            {
+              "Bol\u00edvar": "VEF"
+            },
+            {
+              "Old Dong": "VNC"
+            },
+            {
+              "European Currency Unit (E.C.U)": "XEU"
+            },
+            {
+              "Gold-Franc": "XFO"
+            },
+            {
+              "UIC-Franc": "XFU"
+            },
+            {
+              "RINET Funds Code": "XRE"
+            },
+            {
+              "Yemeni Dinar": "YDD"
+            },
+            {
+              "New Yugoslavian Dinar": "YUD"
+            },
+            {
+              "New Dinar": "YUM"
+            },
+            {
+              "Yugoslavian Dinar": "YUN"
+            },
+            {
+              "Financial Rand": "ZAL"
+            },
+            {
+              "Zambian Kwacha": "ZMK"
+            },
+            {
+              "New Zaire": "ZRN"
+            },
+            {
+              "Zaire": "ZRZ"
+            },
+            {
+              "Rhodesian Dollar": "ZWC"
+            },
+            {
+              "Zimbabwe Dollar": "ZWD"
+            },
+            {
+              "Zimbabwe Dollar (new)": "ZWN"
+            },
+            {
+              "Zimbabwe Dollar": "ZWR"
+            }
+          ]
+        },
+        {
+          "name": "dateSigned",
+          "title": "Date signed",
+          "description": "The date this contract was signed.",
+          "type": "date",
+          "sqlite_type": "text"
         },
         {
           "name": "network_id",
           "type": "text",
-          "title": "Network ID"
+          "title": "Network ID",
+          "description": ""
         }
       ],
       "geographic_type": null,

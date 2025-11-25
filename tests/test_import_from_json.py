@@ -33,6 +33,7 @@ def test_import_1():
                     "id": "network1",
                     "name": "Network 1",
                     "organisations": [{"id": "orga", "name": "Org A"}],
+                    "publisher": { "name": "Publisher"}
                 },
                 {
                     "id": "network2",
@@ -48,11 +49,11 @@ def test_import_1():
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
     # networks
-    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    cursor.execute("SELECT ofds_id, name, publisher__name FROM networks ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 2 == len(rows)
-    assert ("network1", "Network 1") == rows[0]
-    assert ("network2", "Network 2") == rows[1]
+    assert ("network1", "Network 1", "Publisher") == rows[0]
+    assert ("network2", "Network 2", None) == rows[1]
     # organisations
     cursor.execute(
         "SELECT ofds_id, name, network_id FROM organisations ORDER BY ofds_id ASC"

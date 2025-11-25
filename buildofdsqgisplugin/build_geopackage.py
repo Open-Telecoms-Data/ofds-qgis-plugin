@@ -20,7 +20,7 @@ class Builder:
             "Supplier": "organisations",
         }
 
-    def create_table_from_json_schema(
+    def _create_table_from_json_schema(
         self,
         json_schema,
         table_name,
@@ -28,95 +28,24 @@ class Builder:
         geographic_type=None,
         geographic_field=None,
     ):
-        columns = []
-        for property_key, property_value in json_schema["properties"].items():
-            adding_column = False
-            if (
-                property_value["type"] == "string"
-                and property_value.get("format") == "date"
-            ):
-                columns.append(
-                    {
-                        "name": property_key,
-                        "type": "date",
-                        "sqlite_type": "text",
-                        "title": property_value.get("title"),
-                    }
-                )
-                adding_column = True
-            elif property_value["type"] == "string" and property_value.get("codelist"):
-                with open(
-                    os.path.join(
-                        self.root_directory,
-                        "buildofdsqgisplugin",
-                        "schema_0_3",
-                        "codelists",
-                        "open" if property_value.get("openCodelist") else "closed",
-                        property_value["codelist"],
-                    )
-                ) as csvfile:
-                    csvreader = csv.reader(csvfile)
-                    headers = next(csvreader)
-                    values = []
-                    for line in csvreader:
-                        values.append({line[1]: line[0]})
-                columns.append(
-                    {
-                        "name": property_key,
-                        "type": (
-                            "opencodelist"
-                            if property_value.get("openCodelist")
-                            else "closedcodelist"
-                        ),
-                        "sqlite_type": "text",
-                        "title": property_value.get("title"),
-                        "values": values,
-                    }
-                )
-                adding_column = True
-            elif (
-                property_value["type"] == "object"
-                and list(property_value["properties"].keys()) == ["id", "name"]
-                and property_value["title"]
-                in self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS.keys()
-            ):
-                columns.append(
-                    {
-                        "name": ("ofds_id" if property_key == "id" else property_key),
-                        "type": "foreignkey",
-                        "sqlite_type": "text",
-                        "title": property_value.get("title"),
-                        "foreignkey_key": "ofds_id",
-                        "foreignkey_value": "name",
-                        "foreignkey_layer": self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS[
-                            property_value["title"]
-                        ],
-                    }
-                )
-                adding_column = True
-            elif property_value["type"] == "string":
-                columns.append(
-                    {
-                        "name": ("ofds_id" if property_key == "id" else property_key),
-                        "type": "text",
-                        "title": property_value.get("title"),
-                    }
-                )
-                adding_column = True
-            elif property_value["type"] == "boolean":
-                columns.append(
-                    {
-                        "name": property_key,
-                        "type": "boolean",
-                        "sqlite_type": "text",
-                        "title": property_value.get("title"),
-                    }
-                )
-                adding_column = True
 
-            if adding_column:
-                self.cursor.execute(
-                    """
+        columns = self._for_create_table_get_columns_from_json_schema(
+            json_schema, table_name, geographic_field
+        )
+
+        if has_network_id:
+            columns.append(
+                {
+                    "name": "network_id",
+                    "type": "text",
+                    "title": "Network ID",
+                    "description": "",
+                }
+            )
+
+        for column in columns:
+            self.cursor.execute(
+                """
                     INSERT INTO gpkg_data_columns (
                         table_name,
                         column_name,
@@ -128,22 +57,17 @@ class Builder:
                     )
                     VALUES (?, ?, ?, ?, ?, NULL, NULL);
                     """,
-                    [
-                        table_name,
-                        ("ofds_id" if property_key == "id" else property_key),
-                        property_value.get("title", property_key),
-                        property_value.get("title", property_key),
-                        property_value.get("description"),
-                    ],
-                )
-
-        if has_network_id:
-            columns.append(
-                {"name": "network_id", "type": "text", "title": "Network ID"}
+                [
+                    table_name,
+                    column["name"],
+                    column["title"],
+                    column["title"],
+                    column["description"],
+                ],
             )
 
         fields_sql = [
-            i["name"] + " " + i.get("sqlite_type", i["type"]) for i in columns
+            '"' + i["name"] + '" ' + i.get("sqlite_type", i["type"]) for i in columns
         ]
         self.cursor.execute(
             """
@@ -186,6 +110,111 @@ class Builder:
             "geographic_type": geographic_type,
             "geographic_field": geographic_field,
         }
+
+    def _for_create_table_get_columns_from_json_schema(
+        self,
+        json_schema,
+        table_name,
+        geographic_field=None,
+        name_prefix="",
+        title_prefix="",
+        description_prefix="",
+    ):
+        columns = []
+        for property_key, property_value in json_schema["properties"].items():
+            column = {
+                "name": (
+                    "ofds_id"
+                    if property_key == "id" and not name_prefix
+                    else name_prefix + property_key
+                ),
+                "title": (title_prefix + " " if title_prefix else "")
+                + property_value.get("title"),
+                "description": (description_prefix + " " if description_prefix else "")
+                + property_value.get("description", property_value.get("title")),
+            }
+
+            if (
+                property_value["type"] == "string"
+                and property_value.get("format") == "date"
+            ):
+                column["type"] = "date"
+                column["sqlite_type"] = "text"
+                columns.append(column)
+
+            elif property_value["type"] == "string" and property_value.get("codelist"):
+                with open(
+                    os.path.join(
+                        self.root_directory,
+                        "buildofdsqgisplugin",
+                        "schema_0_3",
+                        "codelists",
+                        "open" if property_value.get("openCodelist") else "closed",
+                        property_value["codelist"],
+                    )
+                ) as csvfile:
+                    csvreader = csv.reader(csvfile)
+                    headers = next(csvreader)
+                    values = []
+                    for line in csvreader:
+                        values.append({line[1]: line[0]})
+                column["type"] = (
+                    "opencodelist"
+                    if property_value.get("openCodelist")
+                    else "closedcodelist"
+                )
+                column["sqlite_type"] = "text"
+                column["values"] = values
+                columns.append(column)
+
+            elif (
+                property_value["type"] == "object"
+                and list(property_value["properties"].keys()) == ["id", "name"]
+                and property_value["title"]
+                in self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS.keys()
+            ):
+                column["type"] = "foreignkey"
+                column["sqlite_type"] = "text"
+                column["foreignkey_key"] = "ofds_id"
+                column["foreignkey_value"] = "name"
+                column["foreignkey_layer"] = self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS[
+                    property_value["title"]
+                ]
+                columns.append(column)
+
+            elif property_value["type"] == "string":
+                column["type"] = "text"
+                columns.append(column)
+
+            elif property_value["type"] == "boolean":
+                column["type"] = "boolean"
+                column["sqlite_type"] = "text"
+                columns.append(column)
+
+            elif property_value["type"] == "object":
+                # First, check for any special cases we ignore because they are handled elsewhere
+                if table_name == "networks" and property_key == "crs":
+                    continue
+                if geographic_field and geographic_field == property_key:
+                    continue
+                # Ok, we go
+                columns.extend(
+                    self._for_create_table_get_columns_from_json_schema(
+                        property_value,
+                        table_name,
+                        name_prefix=name_prefix + property_key + "__",
+                        description_prefix=(
+                            description_prefix + " " if description_prefix else ""
+                        )
+                        + property_value.get(
+                            "description", property_value.get("title")
+                        ),
+                        title_prefix=(title_prefix + " " if title_prefix else "")
+                        + property_value.get("title"),
+                    )
+                )
+
+        return columns
 
     def go(self):
         # Load JSON Schema
@@ -246,32 +275,32 @@ class Builder:
             "INSERT OR IGNORE INTO gpkg_extensions (table_name, column_name, extension_name, definition, scope) VALUES ('gpkg_data_column_constraints', NULL, 'gpkg_schema','http://www.geopackage.org/spec120/#extension_schema', 'read-write');"
         )
         # Create Tables
-        self.create_table_from_json_schema(jsonschema, table_name="networks")
-        self.create_table_from_json_schema(
+        self._create_table_from_json_schema(jsonschema, table_name="networks")
+        self._create_table_from_json_schema(
             jsonschema["properties"]["nodes"]["items"],
             table_name="nodes",
             has_network_id=True,
             geographic_field="location",
             geographic_type="POINT",
         )
-        self.create_table_from_json_schema(
+        self._create_table_from_json_schema(
             jsonschema["properties"]["spans"]["items"],
             table_name="spans",
             has_network_id=True,
             geographic_field="route",
             geographic_type="LINESTRING",
         )
-        self.create_table_from_json_schema(
+        self._create_table_from_json_schema(
             jsonschema["properties"]["phases"]["items"],
             table_name="phases",
             has_network_id=True,
         )
-        self.create_table_from_json_schema(
+        self._create_table_from_json_schema(
             jsonschema["properties"]["organisations"]["items"],
             table_name="organisations",
             has_network_id=True,
         )
-        self.create_table_from_json_schema(
+        self._create_table_from_json_schema(
             jsonschema["properties"]["contracts"]["items"],
             table_name="contracts",
             has_network_id=True,

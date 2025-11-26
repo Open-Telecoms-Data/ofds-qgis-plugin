@@ -46,6 +46,8 @@ def test_export_network_with_id():
     assert data["networks"][0]["name"] == "Network"
     assert data["networks"][0]["publisher"]["name"] == "Publisher"
     assert data["networks"][0]["accuracy"] == 1.2
+    # there are no contracts here, and empty arrays should be removed
+    assert "contracts" not in data["networks"][0].keys()
 
 
 def test_export_network_with_no_id():

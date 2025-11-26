@@ -95,6 +95,10 @@ def export_callable_to_json(callable):
                     json.loads(data["geom"])
                 )
             networks[network_id][table_name].append(out)
-
+    # Clear empty arrays out of networks
+    for network in networks.values():
+        for key in ["nodes", "spans", "phases", "organisations", "contracts"]:
+            if not network[key]:
+                del network[key]
     # Wrap up
     return {"networks": [v for v in networks.values()]}

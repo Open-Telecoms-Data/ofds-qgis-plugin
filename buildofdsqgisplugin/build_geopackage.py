@@ -128,6 +128,7 @@ class Builder:
     ):
         columns = []
         for property_key, property_value in json_schema["properties"].items():
+            # Each column has some fields the same, so set them up here to avoid code reptition
             column = {
                 "name": (
                     "ofds_id"
@@ -140,6 +141,7 @@ class Builder:
                 + property_value.get("description", property_value.get("title")),
             }
 
+            # -------- Date
             if (
                 property_value["type"] == "string"
                 and property_value.get("format") == "date"
@@ -148,7 +150,9 @@ class Builder:
                 column["sqlite_type"] = "text"
                 columns.append(column)
 
+            # --------  codelist
             elif property_value["type"] == "string" and property_value.get("codelist"):
+                # If we haven't already loaded the codelist contents, do so
                 if (
                     property_value["codelist"]
                     not in self.information_out[
@@ -183,6 +187,7 @@ class Builder:
                             else "closed_codelists"
                         )
                     ][property_value["codelist"]] = values
+                # set up field
                 column["type"] = (
                     "open_codelist"
                     if property_value.get("openCodelist")
@@ -192,6 +197,7 @@ class Builder:
                 column["codelist"] = property_value["codelist"]
                 columns.append(column)
 
+            # --------  Foreign key (the special type that's a dict with an id and name field)
             elif (
                 property_value["type"] == "object"
                 and list(property_value["properties"].keys()) == ["id", "name"]
@@ -207,6 +213,7 @@ class Builder:
                 ]
                 columns.append(column)
 
+            # -------- Foreign key (the normal type)
             elif (
                 property_value["type"] == "string"
                 and property_value["title"]
@@ -221,20 +228,24 @@ class Builder:
                 ]
                 columns.append(column)
 
+            # -------- String
             elif property_value["type"] == "string":
                 column["type"] = "text"
                 columns.append(column)
 
+            # -------- Boolean
             elif property_value["type"] == "boolean":
                 column["type"] = "boolean"
                 column["sqlite_type"] = "text"
                 columns.append(column)
 
+            # -------- Number
             elif property_value["type"] == "number":
                 column["type"] = "number"
                 column["sqlite_type"] = "real"
                 columns.append(column)
 
+            # -------- An object that we might call recursively
             elif property_value["type"] == "object":
                 # First, check for any special cases we ignore because they are handled elsewhere
                 if table_name == "networks" and property_key == "crs":
@@ -258,6 +269,7 @@ class Builder:
                     )
                 )
 
+        # We're done, return
         return columns
 
     def go(self):

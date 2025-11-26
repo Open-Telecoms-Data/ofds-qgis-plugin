@@ -11,13 +11,30 @@ def error_to_human_message(data):
             data["node_id"]
         )
     if data["type"] == "span_start_node_not_found":
-        return "A span's start node could not be found. The span's id is {} and the node id we can't find is {}".format(
+        return "A span's start node could not be found. The span's id is {} and the node id we can't find is {}.".format(
             data["span_id"], data["missing_node_id"]
         )
     if data["type"] == "span_end_node_not_found":
-        return "A span's end node could not be found. The span's id is {} and the node id we can't find is {}".format(
+        return "A span's end node could not be found. The span's id is {} and the node id we can't find is {}.".format(
             data["span_id"], data["missing_node_id"]
         )
+    if data["type"] == "node_phase_reference_id_not_found":
+        return "A node's phase reference could not be found. The node's id is {} and the phase id we can't find is {}.".format(
+            data["node_id"], data["phase_id_not_found"]
+        )
+    if data["type"] == "span_phase_reference_id_not_found":
+        return "A span's phase reference could not be found. The span's id is {} and the phase id we can't find is {}.".format(
+            data["span_id"], data["phase_id_not_found"]
+        )
+    if data["type"] == "node_organisation_reference_id_not_found":
+        return "A node's organisation reference could not be found. The node's id is {} and the organisation id we can't find is {}.".format(
+            data["node_id"], data["organisation_id_not_found"]
+        )
+    if data["type"] == "span_organisation_reference_id_not_found":
+        return "A span's organisation reference could not be found. The span's id is {} and the organisation id we can't find is {}.".format(
+            data["span_id"], data["organisation_id_not_found"]
+        )
+    return str(data)
 
 
 class ValidateDialog(QDialog):

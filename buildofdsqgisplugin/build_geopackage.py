@@ -149,28 +149,47 @@ class Builder:
                 columns.append(column)
 
             elif property_value["type"] == "string" and property_value.get("codelist"):
-                with open(
-                    os.path.join(
-                        self.root_directory,
-                        "buildofdsqgisplugin",
-                        "schema_0_3",
-                        "codelists",
-                        "open" if property_value.get("openCodelist") else "closed",
-                        property_value["codelist"],
-                    )
-                ) as csvfile:
-                    csvreader = csv.reader(csvfile)
-                    headers = next(csvreader)
-                    values = []
-                    for line in csvreader:
-                        values.append({line[1]: line[0]})
+                if (
+                    property_value["codelist"]
+                    not in self.information_out[
+                        (
+                            "open_codelists"
+                            if property_value.get("openCodelist")
+                            else "closed_codelists"
+                        )
+                    ].keys()
+                ):
+                    with open(
+                        os.path.join(
+                            self.root_directory,
+                            "buildofdsqgisplugin",
+                            "schema_0_3",
+                            "codelists",
+                            "open" if property_value.get("openCodelist") else "closed",
+                            property_value["codelist"],
+                        )
+                    ) as csvfile:
+                        csvreader = csv.reader(csvfile)
+                        headers = next(csvreader)
+                        values = []
+                        for line in csvreader:
+                            values.append({line[1] + " [" + line[0] + "]": line[0]})
+                    if len(values) > 20:
+                        values.sort(key=lambda x: list(x.keys())[0])
+                    self.information_out[
+                        (
+                            "open_codelists"
+                            if property_value.get("openCodelist")
+                            else "closed_codelists"
+                        )
+                    ][property_value["codelist"]] = values
                 column["type"] = (
-                    "opencodelist"
+                    "open_codelist"
                     if property_value.get("openCodelist")
-                    else "closedcodelist"
+                    else "closed_codelist"
                 )
                 column["sqlite_type"] = "text"
-                column["values"] = values
+                column["codelist"] = property_value["codelist"]
                 columns.append(column)
 
             elif (
@@ -269,7 +288,11 @@ class Builder:
         # Setup
         self.connection = sqlite3.connect(sqlite_filename)
         self.cursor = self.connection.cursor()
-        self.information_out = {"tables": {}}
+        self.information_out = {
+            "tables": {},
+            "open_codelists": {},
+            "closed_codelists": {},
+        }
         # Create extension tables
         # Create gpkg_data_columns per https://www.geopackage.org/spec120/#gpkg_data_columns_sql
         # EXCEPT don't make the name column UNIQUE, this causes us clashes

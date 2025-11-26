@@ -70,12 +70,19 @@ def add_layers(filename):
                     ),
                 )
             elif (
-                field_info["type"] == "opencodelist"
-                or field_info["type"] == "closedcodelist"
+                field_info["type"] == "open_codelist"
+                or field_info["type"] == "closed_codelist"
             ):
+                values = schema_information[
+                    (
+                        "open_codelists"
+                        if field_info["type"] == "open_codelist"
+                        else "closed_codelists"
+                    )
+                ][field_info["codelist"]]
                 layers[table_name].setEditorWidgetSetup(
                     field_idx + 1,
-                    QgsEditorWidgetSetup("ValueMap", {"map": field_info["values"]}),
+                    QgsEditorWidgetSetup("ValueMap", {"map": values}),
                 )
             elif (
                 field_info["type"] == "foreign_key_id_name_dict"

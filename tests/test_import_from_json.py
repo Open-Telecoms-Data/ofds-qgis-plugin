@@ -33,14 +33,14 @@ def test_import_1():
                     "id": "network1",
                     "name": "Network 1",
                     "organisations": [{"id": "orga", "name": "Org A"}],
-                    "publisher": { "name": "Publisher"},
+                    "publisher": {"name": "Publisher"},
                     "accuracy": 2.3,
                     "nodes": [
                         {
                             "id": "node1",
-                            "physicalInfrastructureProvider": {"id": "orga"}
+                            "physicalInfrastructureProvider": {"id": "orga"},
                         }
-                    ]
+                    ],
                 },
                 {
                     "id": "network2",
@@ -56,7 +56,9 @@ def test_import_1():
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
     # networks
-    cursor.execute("SELECT ofds_id, name, publisher__name, accuracy FROM networks ORDER BY ofds_id ASC")
+    cursor.execute(
+        "SELECT ofds_id, name, publisher__name, accuracy FROM networks ORDER BY ofds_id ASC"
+    )
     rows = cursor.fetchall()
     assert 2 == len(rows)
     assert ("network1", "Network 1", "Publisher", 2.3) == rows[0]
@@ -70,7 +72,9 @@ def test_import_1():
     assert ("orga", "Org A", "network1") == rows[0]
     assert ("orgb", "Org B", "network2") == rows[1]
     # nodes
-    cursor.execute("SELECT ofds_id, physicalInfrastructureProvider FROM nodes ORDER BY ofds_id ASC")
+    cursor.execute(
+        "SELECT ofds_id, physicalInfrastructureProvider FROM nodes ORDER BY ofds_id ASC"
+    )
     rows = cursor.fetchall()
     assert 1 == len(rows)
     assert ("node1", "orga") == rows[0]
@@ -102,8 +106,14 @@ def test_import_nodes_network_providers_1():
                 {
                     "id": "network1",
                     "name": "Network 1",
-                    "organisations": [{"id": "orga", "name": "Org A"}, {"id": "orgb", "name": "Org B"}],
-                    "nodes": [{"id": "node1", "networkProviders": [{"id": "orga"}]}, {"id": "node2", "networkProviders": [{"id": "orgb"}]}],
+                    "organisations": [
+                        {"id": "orga", "name": "Org A"},
+                        {"id": "orgb", "name": "Org B"},
+                    ],
+                    "nodes": [
+                        {"id": "node1", "networkProviders": [{"id": "orga"}]},
+                        {"id": "node2", "networkProviders": [{"id": "orgb"}]},
+                    ],
                 },
             ]
         },

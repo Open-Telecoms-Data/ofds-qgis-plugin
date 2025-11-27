@@ -34,6 +34,26 @@ def error_to_human_message(data):
         return "A span's organisation reference could not be found. The span's id is {} and the organisation id we can't find is {}.".format(
             data["span_id"], data["organisation_id_not_found"]
         )
+    if data["type"] == "duplicate_node_id":
+        return "A node id is used more than once. The node id is {}.".format(
+            data["node_id"]
+        )
+    if data["type"] == "duplicate_span_id":
+        return "A span id is used more than once. The span id is {}.".format(
+            data["span_id"]
+        )
+    if data["type"] == "duplicate_phase_id":
+        return "A phase id is used more than once. The phase id is {}.".format(
+            data["phase_id"]
+        )
+    if data["type"] == "duplicate_organisation_id":
+        return "A organisation id is used more than once. The organisation id is {}.".format(
+            data["organisation_id"]
+        )
+    if data["type"] == "duplicate_contract_id":
+        return "A contract id is used more than once. The contract id is {}.".format(
+            data["contract_id"]
+        )
     return str(data)
 
 

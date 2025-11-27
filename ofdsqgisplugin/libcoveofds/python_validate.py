@@ -5,6 +5,8 @@
 # We can't just use the lib cove OFDS library directly sadly, using Python packages is very hard in QGIS :-(
 #
 
+from collections import defaultdict
+
 
 class AdditionalCheckForNetwork:
     """Any check that wants to be provided should extend this abstract class and overwrite methods"""
@@ -451,11 +453,107 @@ class IsNodeUsedInSpanAdditionalCheckForNetwork(AdditionalCheckForNetwork):
         return True
 
 
+class UniqueIDsAdditionalCheckForNetwork(AdditionalCheckForNetwork):
+    def __init__(self):
+        super().__init__()
+        self._node_ids_seen: defaultdict = defaultdict(list)
+        self._span_ids_seen: defaultdict = defaultdict(list)
+        self._phase_ids_seen: defaultdict = defaultdict(list)
+        self._organisation_ids_seen: defaultdict = defaultdict(list)
+        self._contract_ids_seen: defaultdict = defaultdict(list)
+
+    def check_node_first_pass(self, node: dict, path: str):
+        id = node.get("id")
+        if id and isinstance(id, str):
+            self._node_ids_seen[id].append(path)
+
+    def check_span_first_pass(self, span: dict, path: str):
+        id = span.get("id")
+        if id and isinstance(id, str):
+            self._span_ids_seen[id].append(path)
+
+    def check_phase_first_pass(self, phase: dict, path: str):
+        id = phase.get("id")
+        if id and isinstance(id, str):
+            self._phase_ids_seen[id].append(path)
+
+    def check_organisation_first_pass(self, organisation: dict, path: str):
+        id = organisation.get("id")
+        if id and isinstance(id, str):
+            self._organisation_ids_seen[id].append(path)
+
+    def check_contract_first_pass(self, contract: dict, path: str):
+        id = contract.get("id")
+        if id and isinstance(id, str):
+            self._contract_ids_seen[id].append(path)
+
+    def get_additional_check_results(self) -> list:
+        out: list = []
+        for id, paths in self._node_ids_seen.items():
+            if len(paths) > 1:
+                for path in paths:
+                    out.append(
+                        {
+                            "type": "duplicate_node_id",
+                            "node_id": id,
+                            "path": path + "/id",
+                        }
+                    )
+        for id, paths in self._span_ids_seen.items():
+            if len(paths) > 1:
+                for path in paths:
+                    out.append(
+                        {
+                            "type": "duplicate_span_id",
+                            "span_id": id,
+                            "path": path + "/id",
+                        }
+                    )
+        for id, paths in self._phase_ids_seen.items():
+            if len(paths) > 1:
+                for path in paths:
+                    out.append(
+                        {
+                            "type": "duplicate_phase_id",
+                            "phase_id": id,
+                            "path": path + "/id",
+                        }
+                    )
+        for id, paths in self._organisation_ids_seen.items():
+            if len(paths) > 1:
+                for path in paths:
+                    out.append(
+                        {
+                            "type": "duplicate_organisation_id",
+                            "organisation_id": id,
+                            "path": path + "/id",
+                        }
+                    )
+        for id, paths in self._contract_ids_seen.items():
+            if len(paths) > 1:
+                for path in paths:
+                    out.append(
+                        {
+                            "type": "duplicate_contract_id",
+                            "contract_id": id,
+                            "path": path + "/id",
+                        }
+                    )
+        return out
+
+    def skip_if_any_links_have_external_node_data(self) -> bool:
+        return False
+
+    def skip_if_any_links_have_external_span_data(self) -> bool:
+        return False
+
+
 ADDITIONAL_CHECK_CLASSES_FOR_NETWORK = [
     SpansMustHaveValidNodesAdditionalCheckForNetwork,
     PhaseReferenceAdditionalCheckForNetwork,
     OrganisationReferenceAdditionalCheckForNetwork,
     IsNodeUsedInSpanAdditionalCheckForNetwork,
+    UniqueIDsAdditionalCheckForNetwork,
 ]
 
 

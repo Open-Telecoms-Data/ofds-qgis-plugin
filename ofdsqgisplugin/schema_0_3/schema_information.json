@@ -313,6 +313,13 @@
           "type": "text"
         },
         {
+          "name": "fibreCount",
+          "title": "Fibre count",
+          "description": "The number of individual optical fibres in this span.",
+          "type": "integer",
+          "sqlite_type": "integer"
+        },
+        {
           "name": "fibreLength",
           "title": "Fibre length",
           "description": "The physical length in kilometres, of fibre optic cable used in this span.",

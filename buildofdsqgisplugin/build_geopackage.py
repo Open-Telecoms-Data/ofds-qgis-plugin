@@ -245,6 +245,12 @@ class Builder:
                 column["sqlite_type"] = "real"
                 columns.append(column)
 
+            # -------- Integer
+            elif property_value["type"] == "integer":
+                column["type"] = "integer"
+                column["sqlite_type"] = "integer"
+                columns.append(column)
+
             # -------- An object that we might call recursively
             elif property_value["type"] == "object":
                 # First, check for any special cases we ignore because they are handled elsewhere

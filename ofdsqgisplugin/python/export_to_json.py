@@ -76,6 +76,11 @@ def export_callable_to_json(callable):
                     data[column_info["name"]],
                     type=column_info["type"],
                 )
+    # If they didn't set any networks, we'll create one, as we need it!
+    if not default_network_id:
+        default_network_id = str(uuid.uuid4())
+        networks[default_network_id] = copy.deepcopy(START_OF_NETWORK)
+        networks[default_network_id]["id"] = default_network_id
     # Other tables - first load geopackage id's to json id mapping
     geopackage_id_to_standard_info_mappings = {}
     for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:

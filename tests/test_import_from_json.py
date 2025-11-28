@@ -73,11 +73,11 @@ def test_import_1():
     assert ("orgb", "Org B", "network2") == rows[1]
     # nodes
     cursor.execute(
-        "SELECT ofds_id, physicalInfrastructureProvider FROM nodes ORDER BY ofds_id ASC"
+        "SELECT ofds_id, physicalInfrastructureProvider, network_id FROM nodes ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("node1", "orga") == rows[0]
+    assert ("node1", "orga", "network1") == rows[0]
     # wrapup
     connection.close()
 
@@ -137,11 +137,11 @@ def test_import_nodes_network_providers_1():
     assert ("orga", "Org A", "network1") == rows[0]
     assert ("orgb", "Org B", "network1") == rows[1]
     # nodes
-    cursor.execute("SELECT ofds_id FROM nodes ORDER BY ofds_id ASC")
+    cursor.execute("SELECT ofds_id, network_id FROM nodes ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 2 == len(rows)
-    assert ("node1",) == rows[0]
-    assert ("node2",) == rows[1]
+    assert ("node1", "network1") == rows[0]
+    assert ("node2", "network1") == rows[1]
     # nodes network providers
     cursor.execute(
         """

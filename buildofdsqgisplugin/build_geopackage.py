@@ -30,6 +30,7 @@ class Builder:
         json_schema,
         table_name,
         has_network_id=False,
+        parent_column=None,
         geographic_type=None,
         geographic_field=None,
     ):
@@ -51,6 +52,9 @@ class Builder:
                     "description": "",
                 }
             )
+
+        if parent_column:
+            columns.append(parent_column)
 
         for column in columns:
             self.cursor.execute(
@@ -490,6 +494,40 @@ class Builder:
             jsonschema["properties"]["contracts"]["items"],
             table_name="contracts",
             has_network_id=True,
+        )
+        self._create_table_from_json_schema(
+            jsonschema["properties"]["nodes"]["items"]["properties"][
+                "internationalConnections"
+            ]["items"],
+            table_name="nodes_internationalConnections",
+            has_network_id=True,
+            parent_column={
+                "name": "node_id",
+                "type": "foreign_key",
+                "sqlite_type": "text",
+                "foreignkey_key": "ofds_id",
+                "foreignkey_value": "name",
+                "foreignkey_layer": "nodes",
+                "title": "Nodes ID",
+                "description": "",
+            },
+        )
+        self._create_table_from_json_schema(
+            jsonschema["properties"]["contracts"]["items"]["properties"]["documents"][
+                "items"
+            ],
+            table_name="contracts_documents",
+            has_network_id=True,
+            parent_column={
+                "name": "contract_id",
+                "type": "foreign_key",
+                "sqlite_type": "text",
+                "foreignkey_key": "ofds_id",
+                "foreignkey_value": "title",
+                "foreignkey_layer": "contracts",
+                "title": "Contract ID",
+                "description": "",
+            },
         )
         # Create relations
         self._create_relations_from_json_schema(

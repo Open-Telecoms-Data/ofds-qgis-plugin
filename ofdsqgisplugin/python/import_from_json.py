@@ -70,6 +70,7 @@ def import_json_to_callable(json_data_to_import, callable):
             # Now other tables
             standard_id_to_geopackage_id_mappings = {}
             list_idx_to_geopackage_id_mappings = {}
+            list_idx_to_thing_id_mappings = {}
             # First pass, make main tables and store mappings
             for table_name in [
                 "nodes",
@@ -81,9 +82,11 @@ def import_json_to_callable(json_data_to_import, callable):
                 table_datas = network.get(table_name, [])
                 standard_id_to_geopackage_id_mappings[table_name] = {}
                 list_idx_to_geopackage_id_mappings[table_name] = {}
+                list_idx_to_thing_id_mappings[table_name] = {}
                 if isinstance(table_datas, list):
                     for idx, table_data in enumerate(table_datas):
                         thing_id = table_data.get("id") or uuid.uuid4()
+                        list_idx_to_thing_id_mappings[table_name][idx] = thing_id
                         data = [("network_id", network_id), ("ofds_id", thing_id)]
                         for column_info in schema_information["tables"][table_name][
                             "columns"
@@ -116,7 +119,47 @@ def import_json_to_callable(json_data_to_import, callable):
                         list_idx_to_geopackage_id_mappings[table_name][
                             idx
                         ] = geopackage_id
-            # Second pass, relations
+            # Second pass, some tables underneath the main tables
+            for table_name, sub_table_and_field_name, parent_field_name in [
+                ("nodes", "internationalConnections", "node_id"),
+                ("contracts", "documents", "contract_id"),
+            ]:
+                table_datas = network.get(table_name, [])
+                if isinstance(table_datas, list):
+                    for idx, table_data in enumerate(table_datas):
+                        sub_table_datas = table_data.get(sub_table_and_field_name)
+                        if isinstance(sub_table_datas, list):
+                            for sub_table_data in sub_table_datas:
+                                data = [
+                                    ("network_id", network_id),
+                                    (
+                                        parent_field_name,
+                                        list_idx_to_thing_id_mappings[table_name][idx],
+                                    ),
+                                ]
+                                for column_info in schema_information["tables"][
+                                    table_name + "_" + sub_table_and_field_name
+                                ]["columns"]:
+                                    if column_info["name"] not in [
+                                        parent_field_name,
+                                        "network_id",
+                                    ]:
+                                        data.append(
+                                            (
+                                                column_info["name"],
+                                                get_deep_key_from_data_for_import(
+                                                    sub_table_data,
+                                                    column_info["name"].replace(
+                                                        "__", "/"
+                                                    ),
+                                                    type=column_info["type"],
+                                                ),
+                                            )
+                                        )
+                                callable(
+                                    table_name + "_" + sub_table_and_field_name, data
+                                )
+            # Third pass, relations
             for table_name in [
                 "nodes",
                 "spans",

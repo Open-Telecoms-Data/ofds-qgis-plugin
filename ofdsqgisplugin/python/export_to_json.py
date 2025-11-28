@@ -90,7 +90,13 @@ def export_callable_to_json(callable):
                 "id": data["ofds_id"]
             }
     # Other tables - now process
-    for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:
+    for table_name, sub_tables in [
+        ("nodes", [("internationalConnections", "node_id")]),
+        ("spans", []),
+        ("phases", []),
+        ("organisations", []),
+        ("contracts", [("documents", "contract_id")]),
+    ]:
         for data in callable(table_name):
             out = {}
             network_id = data["network_id"] or default_network_id
@@ -108,6 +114,35 @@ def export_callable_to_json(callable):
                 out[schema_information["tables"][table_name]["geographic_field"]] = (
                     json.loads(data["geom"])
                 )
+            # other tables
+            # This is an inefficient way of doing this, as we loop within loop - but will do for first pass and the small data sizes we expect
+            for sub_table_and_field_name, parent_field_name in sub_tables:
+                sub_values = []
+                for sub_table_data in callable(
+                    table_name + "_" + sub_table_and_field_name
+                ):
+                    if (
+                        sub_table_data[parent_field_name] == out["id"]
+                        and sub_table_data["network_id"] == network_id
+                    ):
+                        sub_out = {}
+                        for column_info in schema_information["tables"][
+                            table_name + "_" + sub_table_and_field_name
+                        ]["columns"]:
+                            if column_info["name"] not in [
+                                parent_field_name,
+                                "network_id",
+                            ]:
+                                set_key_in_dict_for_export(
+                                    sub_out,
+                                    column_info["name"].replace("__", "/"),
+                                    sub_table_data[column_info["name"]],
+                                    type=column_info["type"],
+                                )
+                        sub_values.append(sub_out)
+                if sub_values:
+                    out[sub_table_and_field_name] = sub_values
+
             # relations
             # This is an inefficient way of doing this, as we loop within loop - but will do for first pass and the small data sizes we expect
             for relation in schema_information["tables"][table_name].get(

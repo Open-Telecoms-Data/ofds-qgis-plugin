@@ -158,3 +158,105 @@ def test_import_nodes_network_providers_1():
     assert ("node2", "orgb") == rows[1]
     # wrapup
     connection.close()
+
+
+def test_import_contract_documents_1():
+    """
+    Import some contract documents
+
+    It has contracts of the same ID in different networks, which is alowed in the spec!
+    """
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "contracts": [
+                        {
+                            "id": "contracta",
+                            "title": "titlea",
+                            "documents": [{"title": "A-1"}, {"title": "A-2"}],
+                        },
+                        {
+                            "id": "contractb",
+                            "title": "titleb",
+                            "documents": [{"title": "B-1"}, {"title": "B-2"}],
+                        },
+                    ],
+                },
+                {
+                    "id": "network2",
+                    "name": "Network 2",
+                    "contracts": [
+                        {
+                            "id": "contracta",
+                            "title": "titlea",
+                            "documents": [{"title": "C-1"}, {"title": "C-2"}],
+                        },
+                    ],
+                },
+            ]
+        },
+        sqlite_filename,
+    )
+
+    # Test the database contents
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    # networks
+    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 2 == len(rows)
+    assert ("network1", "Network 1") == rows[0]
+    assert ("network2", "Network 2") == rows[1]
+    # contracts
+    cursor.execute(
+        "SELECT network_id, ofds_id, title FROM contracts ORDER BY network_id ASC, ofds_id ASC"
+    )
+    rows = cursor.fetchall()
+    assert 3 == len(rows)
+    assert (
+        "network1",
+        "contracta",
+        "titlea",
+    ) == rows[0]
+    assert (
+        "network1",
+        "contractb",
+        "titleb",
+    ) == rows[1]
+    assert (
+        "network2",
+        "contracta",
+        "titlea",
+    ) == rows[2]
+    # contract documents
+    cursor.execute(
+        "SELECT network_id, contract_id, title FROM contracts_documents ORDER BY title ASC"
+    )
+    rows = cursor.fetchall()
+    assert 6 == len(rows)
+    assert ("network1", "contracta", "A-1") == rows[0]
+    assert ("network1", "contracta", "A-2") == rows[1]
+    assert ("network1", "contractb", "B-1") == rows[2]
+    assert ("network1", "contractb", "B-2") == rows[3]
+    # wrapup
+    connection.close()

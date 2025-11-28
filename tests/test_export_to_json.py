@@ -101,3 +101,66 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
     assert data["networks"][0]["nodes"][0]["id"] == "nodea"
     assert data["networks"][0]["nodes"][0]["name"] == "Node A"
     assert data["networks"][0]["nodes"][0]["networkProviders"][0]["id"] == "orga"
+
+
+def test_export_contract_documents_1():
+    """
+    Export some contract documents
+
+    It has contracts of the same ID in different networks, which is alowed in the spec!
+
+    """
+    sqlite_filename = _get_and_setup_sqlite_filename()
+
+    # Set Some data
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    cursor.execute(
+        "INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network'),('worky', 'Network')"
+    )
+    cursor.execute(
+        """
+        INSERT INTO contracts (ofds_id, title, network_id) 
+        VALUES ('contracta', 'Contract A', 'netty'),('contractb', 'Contract B', 'netty'), 
+        ('contracta', 'Contract A', 'worky'),('contractb', 'Contract B', 'worky')
+        """
+    )
+    cursor.execute(
+        """
+        INSERT INTO contracts_documents (title, network_id, contract_id) 
+        VALUES ('documenta', 'netty', 'contracta'),('documentb', 'netty', 'contractb'),
+        ('documentc', 'worky', 'contracta'),('documentd', 'worky', 'contractb')
+        """
+    )
+
+    connection.commit()
+    connection.close()
+
+    # Export
+    data = export_sqlite_to_json(sqlite_filename)
+
+    # Test
+    assert data["networks"][0]["contracts"] == [
+        {
+            "id": "contracta",
+            "title": "Contract A",
+            "documents": [{"title": "documenta"}],
+        },
+        {
+            "id": "contractb",
+            "title": "Contract B",
+            "documents": [{"title": "documentb"}],
+        },
+    ]
+    assert data["networks"][1]["contracts"] == [
+        {
+            "id": "contracta",
+            "title": "Contract A",
+            "documents": [{"title": "documentc"}],
+        },
+        {
+            "id": "contractb",
+            "title": "Contract B",
+            "documents": [{"title": "documentd"}],
+        },
+    ]

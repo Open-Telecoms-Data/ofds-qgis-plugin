@@ -302,8 +302,8 @@ class Builder:
             self.cursor.execute(
                 """
                 CREATE TABLE IF NOT EXISTS {} (
-                    base_id TEXT NOT NULL,
-                    related_id TEXT NOT NULL,
+                    base_id INTEGER NOT NULL,
+                    related_id INTEGER NOT NULL,
                     PRIMARY KEY (base_id, related_id),
                     FOREIGN KEY (base_id) REFERENCES {}(id),
                     FOREIGN KEY (related_id) REFERENCES {}(id)

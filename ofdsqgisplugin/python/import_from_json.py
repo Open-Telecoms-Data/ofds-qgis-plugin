@@ -88,7 +88,7 @@ def import_json_to_callable(json_data_to_import, callable):
                         for column_info in schema_information["tables"][table_name][
                             "columns"
                         ]:
-                            if column_info["name"] != "ofds_id":
+                            if column_info["name"] not in ["ofds_id", "network_id"]:
                                 data.append(
                                     (
                                         column_info["name"],

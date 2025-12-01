@@ -23,6 +23,8 @@ class Builder:
         }
         self.MAPPING_MANY_TO_MANY_KEY_NAMES_TO_LAYERS = {
             "Network providers": "organisations",
+            "Funders": "organisations",
+            "Related phases": "phases",
         }
 
     def _create_table_from_json_schema(
@@ -537,6 +539,14 @@ class Builder:
         self._create_relations_from_json_schema(
             jsonschema["properties"]["spans"]["items"],
             table_name="spans",
+        )
+        self._create_relations_from_json_schema(
+            jsonschema["properties"]["phases"]["items"],
+            table_name="phases",
+        )
+        self._create_relations_from_json_schema(
+            jsonschema["properties"]["contracts"]["items"],
+            table_name="contracts",
         )
         # Wrapup
         self.connection.commit()

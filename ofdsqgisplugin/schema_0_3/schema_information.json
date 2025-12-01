@@ -403,7 +403,15 @@
           "description": ""
         }
       ],
-      "relations": [],
+      "relations": [
+        {
+          "standard_field": "funders",
+          "name": "phases_funders",
+          "related_table": "organisations",
+          "mapping_table": "relation_phases_funders",
+          "title": "Funders"
+        }
+      ],
       "geographic_type": null,
       "geographic_field": null
     },
@@ -549,7 +557,15 @@
           "description": ""
         }
       ],
-      "relations": [],
+      "relations": [
+        {
+          "standard_field": "relatedPhases",
+          "name": "contracts_relatedPhases",
+          "related_table": "phases",
+          "mapping_table": "relation_contracts_relatedPhases",
+          "title": "Related phases"
+        }
+      ],
       "geographic_type": null,
       "geographic_field": null
     },

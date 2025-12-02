@@ -81,6 +81,7 @@ def add_layers(filename):
                         else "closed_codelists"
                     )
                 ][field_info["codelist"]]
+                values = [{i[1]: i[0]} for i in values]
                 layers[table_name].setEditorWidgetSetup(
                     field_idx + 1,
                     QgsEditorWidgetSetup("ValueMap", {"map": values}),

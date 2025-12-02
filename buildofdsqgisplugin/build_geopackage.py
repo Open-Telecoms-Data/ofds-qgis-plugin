@@ -99,7 +99,7 @@ class Builder:
             );
         """.format(
                 table_name,
-                "geom BLOB NOT NULL," if geographic_type else "",
+                "geom BLOB NULL," if geographic_type else "",
                 ",".join(fields_sql),
             )
         )

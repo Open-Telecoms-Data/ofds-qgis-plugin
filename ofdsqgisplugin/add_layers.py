@@ -3,8 +3,9 @@ import json
 import os
 
 from qgis.core import (Qgis, QgsAttributeEditorRelation, QgsDefaultValue,
-                       QgsEditorWidgetSetup, QgsLayerTreeLayer, QgsMapLayer,
-                       QgsProject, QgsRelation, QgsVectorLayer)
+                       QgsEditFormConfig, QgsEditorWidgetSetup,
+                       QgsLayerTreeLayer, QgsMapLayer, QgsProject, QgsRelation,
+                       QgsVectorLayer)
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -162,6 +163,10 @@ def add_layers(filename):
             form_config = layers[table_name].editFormConfig()
             relation_editor = QgsAttributeEditorRelation(join_to_base, None)
             relation_editor.setLabel(relation["title"])
+            # set's cardinality option
+            relation_editor.setNmRelationId(join_to_related.id())
+            # set's mode to "Drag and drop designer"
+            form_config.setLayout(QgsEditFormConfig.TabLayout)
             form_config.invisibleRootContainer().addChildElement(relation_editor)
             layers[table_name].setEditFormConfig(form_config)
 

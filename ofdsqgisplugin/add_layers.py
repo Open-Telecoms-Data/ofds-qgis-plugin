@@ -115,7 +115,12 @@ def add_layers(filename):
                 )
             if field_info["type"] == "text" and field_info["name"] == "ofds_id":
                 layers[table_name].setDefaultValueDefinition(
-                    field_idx + 1, QgsDefaultValue("ltrim(rtrim(uuid(),'}'),'{')")
+                    field_idx + 1,
+                    QgsDefaultValue(
+                        "ltrim(rtrim(uuid(),'}'),'{')"
+                        if table_name == "networks"
+                        else "count('{}') + 1".format(table_name)
+                    ),
                 )
 
         # Relations

@@ -59,6 +59,11 @@ class Builder:
             columns.append(parent_column)
 
         for column in columns:
+            constraint_name = None
+
+            if column["type"] == "closed_codelist":
+                constraint_name = "closed_codelist_" + column["codelist"]
+
             self.cursor.execute(
                 """
                     INSERT INTO gpkg_data_columns (
@@ -70,7 +75,7 @@ class Builder:
                         mime_type,
                         constraint_name
                     )
-                    VALUES (?, ?, ?, ?, ?, NULL, NULL);
+                    VALUES (?, ?, ?, ?, ?, NULL, ?);
                     """,
                 [
                     table_name,
@@ -78,6 +83,7 @@ class Builder:
                     column["title"],
                     column["title"],
                     column["description"],
+                    constraint_name,
                 ],
             )
 
@@ -93,7 +99,7 @@ class Builder:
             );
         """.format(
                 table_name,
-                "geom BLOB NOT NULL," if geographic_type else "",
+                "geom BLOB NULL," if geographic_type else "",
                 ",".join(fields_sql),
             )
         )
@@ -185,11 +191,28 @@ class Builder:
                     ) as csvfile:
                         csvreader = csv.reader(csvfile)
                         headers = next(csvreader)
-                        values = []
+                        raw_values = []
                         for line in csvreader:
-                            values.append({line[1] + " [" + line[0] + "]": line[0]})
-                    if len(values) > 20:
-                        values.sort(key=lambda x: list(x.keys())[0])
+                            raw_values.append(line)
+                        values = []
+                        for raw_value in raw_values:
+                            desc = (
+                                # Description always has the actual title of the codelist item
+                                raw_value[1]
+                                # If it's a very long codelist, we add the actual code so that people can see what the codelist is sorted by
+                                + (
+                                    " (" + raw_value[0] + ")"
+                                    if len(raw_values) > 20
+                                    else ""
+                                )
+                                # And if it exists, we add the description of the codelist item
+                                + (
+                                    ": " + raw_value[2]
+                                    if len(raw_value) > 2 and raw_value[2]
+                                    else ""
+                                )
+                            )
+                            values.append((raw_value[0], desc))
                     self.information_out[
                         (
                             "open_codelists"
@@ -364,6 +387,33 @@ class Builder:
             )
 
         self.information_out["tables"][table_name]["relations"] = relations
+
+    def _write_codelists(self):
+        for codelist_name, codelist_values in self.information_out[
+            "closed_codelists"
+        ].items():
+            for codelist_value in codelist_values:
+                self.cursor.execute(
+                    """
+                    INSERT OR IGNORE INTO gpkg_data_column_constraints (
+                    constraint_name,
+                    constraint_type,
+                    value,
+                    description
+                    )
+                    VALUES (
+                    ?,
+                    'enum',
+                    ?,
+                    ?
+                    );
+                """,
+                    [
+                        "closed_codelist_" + codelist_name,
+                        codelist_value[0],
+                        codelist_value[1],
+                    ],
+                )
 
     def _for_create_relations_get_relations_from_json_schema(
         self,
@@ -548,6 +598,8 @@ class Builder:
             jsonschema["properties"]["contracts"]["items"],
             table_name="contracts",
         )
+        # Codelists
+        self._write_codelists()
         # Wrapup
         self.connection.commit()
         schema_information_json_filename = os.path.join(

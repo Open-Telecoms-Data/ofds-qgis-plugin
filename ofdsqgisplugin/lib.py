@@ -23,6 +23,7 @@ def find_layers():
     for table in schema_information["tables"].values():
         for relation in table["relations"]:
             relation_tables_names.append(relation["mapping_table"])
+            relation_tables_names.append(relation["related_table"])
     for k, v in QgsProject.instance().mapLayers().items():
         if isinstance(v, QgsVectorLayer):
             possible_layer = v.customProperty("ofdslayer")

@@ -164,3 +164,34 @@ def test_export_contract_documents_1():
             "documents": [{"title": "documentd"}],
         },
     ]
+
+
+def test_export_mulitple_codelists_1():
+    """
+    Export some contract documents
+
+    It has contracts of the same ID in different networks, which is alowed in the spec!
+
+    """
+    sqlite_filename = _get_and_setup_sqlite_filename()
+
+    # Set Some data
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    cursor.execute(
+        "INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network'),('worky', 'Network')"
+    )
+    cursor.execute(
+        "INSERT INTO nodes (ofds_id, name, network_id, geom) VALUES ('nodea', 'Node A', 'netty', '{}')"
+    )
+    # TODO Hard coding the id's is a bit of an assumption but we are getting away with it
+    cursor.execute("INSERT INTO relation_nodes_type(base_id, related_id) VALUES (1, 1)")
+
+    connection.commit()
+    connection.close()
+
+    # Export
+    data = export_sqlite_to_json(sqlite_filename)
+
+    # Test
+    assert data["networks"][0]["nodes"][0]["type"] == ["addDropSite"]

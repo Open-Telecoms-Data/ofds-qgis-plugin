@@ -11,10 +11,11 @@ PLUGIN_DIR = os.path.dirname(__file__)
 def import_json_to_sqlite(json_data_to_import, sqlite_filename):
     # Setup
     connection = sqlite3.connect(sqlite_filename)
+    connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
     # Start
-    def callable(table_name, data):
+    def callable_write(table_name, data):
         cursor.execute(
             "INSERT INTO "
             + table_name
@@ -29,13 +30,18 @@ def import_json_to_sqlite(json_data_to_import, sqlite_filename):
         cursor.execute("SELECT last_insert_rowid()")
         return cursor.fetchone()[0]
 
-    import_json_to_callable(json_data_to_import, callable)
+    def callable_read(table_name):
+        cursor.execute("SELECT * FROM " + table_name)
+        return cursor.fetchall()
+
+    import_json_to_callable(json_data_to_import, callable_write, callable_read)
+
     # Wrap up
     connection.commit()
     connection.close()
 
 
-def import_json_to_callable(json_data_to_import, callable):
+def import_json_to_callable(json_data_to_import, callable_write, callable_read):
     # Get Information
     with open(
         os.path.join(
@@ -66,7 +72,7 @@ def import_json_to_callable(json_data_to_import, callable):
                             ),
                         )
                     )
-            callable("networks", data)
+            callable_write("networks", data)
             # Now other tables
             standard_id_to_geopackage_id_mappings = {}
             list_idx_to_geopackage_id_mappings = {}
@@ -112,7 +118,7 @@ def import_json_to_callable(json_data_to_import, callable):
                                 data.append(("geom", json.dumps(geom_data)))
                             else:
                                 data.append(("geom", ""))
-                        geopackage_id = callable(table_name, data)
+                        geopackage_id = callable_write(table_name, data)
                         standard_id_to_geopackage_id_mappings[table_name][
                             thing_id
                         ] = geopackage_id
@@ -156,7 +162,7 @@ def import_json_to_callable(json_data_to_import, callable):
                                                 ),
                                             )
                                         )
-                                callable(
+                                callable_write(
                                     table_name + "_" + sub_table_and_field_name, data
                                 )
             # Third pass, relations
@@ -172,13 +178,34 @@ def import_json_to_callable(json_data_to_import, callable):
                     for relation in schema_information["tables"][table_name].get(
                         "relations", []
                     ):
+                        # First, for codelist, we may have to load the codelist contents to memory
+                        if (
+                            relation.get("codelist")
+                            and relation["related_table"]
+                            not in standard_id_to_geopackage_id_mappings
+                        ):
+                            standard_id_to_geopackage_id_mappings[
+                                relation["related_table"]
+                            ] = {}
+                            for related_data in callable_read(
+                                relation["related_table"]
+                            ):
+                                standard_id_to_geopackage_id_mappings[
+                                    relation["related_table"]
+                                ][related_data["code"]] = related_data["id"]
+
+                        # Now process
                         for idx, table_data in enumerate(table_datas):
                             relation_datas = table_data.get(relation["standard_field"])
                             if isinstance(relation_datas, list):
                                 for relation_data in relation_datas:
-                                    relation_data_id = relation_data.get("id")
+                                    relation_data_id = (
+                                        relation_data
+                                        if relation.get("codelist")
+                                        else relation_data.get("id")
+                                    )
                                     if relation_data_id:
-                                        callable(
+                                        callable_write(
                                             relation["mapping_table"],
                                             [
                                                 (

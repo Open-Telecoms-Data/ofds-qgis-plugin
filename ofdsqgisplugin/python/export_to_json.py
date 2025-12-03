@@ -148,16 +148,29 @@ def export_callable_to_json(callable):
             for relation in schema_information["tables"][table_name].get(
                 "relations", []
             ):
+                # First, for codelist, we may have to load the codelist contents
+                if (
+                    relation.get("codelist")
+                    and relation["related_table"]
+                    not in geopackage_id_to_standard_info_mappings
+                ):
+                    geopackage_id_to_standard_info_mappings[
+                        relation["related_table"]
+                    ] = {}
+                    for related_data in callable(relation["related_table"]):
+                        geopackage_id_to_standard_info_mappings[
+                            relation["related_table"]
+                        ][related_data["id"]] = related_data["code"]
+
+                # Now process
                 values = []
                 for relation_data in callable(relation["mapping_table"]):
                     # We convert relation_data columns to ints as currently it's text column types ... if they become int column types later we can remove this
                     if int(relation_data["base_id"]) == data["id"]:
                         values.append(
-                            {
-                                "id": geopackage_id_to_standard_info_mappings[
-                                    relation["related_table"]
-                                ][int(relation_data["related_id"])]["id"]
-                            }
+                            geopackage_id_to_standard_info_mappings[
+                                relation["related_table"]
+                            ][int(relation_data["related_id"])]
                         )
                 if values:
                     out[relation["standard_field"]] = values

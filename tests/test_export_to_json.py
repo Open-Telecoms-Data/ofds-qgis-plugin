@@ -195,3 +195,37 @@ def test_export_mulitple_codelists_1():
 
     # Test
     assert data["networks"][0]["nodes"][0]["type"] == ["addDropSite"]
+
+
+def test_export_custom_single_open_codelist_entry_1():
+    """
+    For a open codelist field (single value), add a custom codelist item then set it and export it.
+    """
+    sqlite_filename = _get_and_setup_sqlite_filename()
+
+    # Set Some data
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    cursor.execute(
+        "INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network'),('worky', 'Network')"
+    )
+    cursor.execute(
+        "INSERT INTO codelist_open_organisationIdentifierScheme (code, description) VALUES ('MYOWNORGLIST','Using org-id is too hard so I just made up my own prefix')"
+    )
+    cursor.execute(
+        "INSERT INTO organisations (ofds_id, name, network_id, identifier__scheme) VALUES ('orga', 'Org A', 'netty', 'MYOWNORGLIST')"
+    )
+    connection.commit()
+    connection.close()
+
+    # Export
+    data = export_sqlite_to_json(sqlite_filename)
+
+    # Test
+    assert data["networks"][0]["organisations"][0] == {
+        "id": "orga",
+        "identifier": {
+            "scheme": "MYOWNORGLIST",
+        },
+        "name": "Org A",
+    }

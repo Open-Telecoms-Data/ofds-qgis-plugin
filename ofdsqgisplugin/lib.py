@@ -24,6 +24,11 @@ def find_layers():
         for relation in table["relations"]:
             relation_tables_names.append(relation["mapping_table"])
             relation_tables_names.append(relation["related_table"])
+        for field_info in table["columns"]:
+            if field_info["type"] == "open_codelist":
+                relation_tables_names.append(
+                    "codelist_open_" + field_info["codelist"][:-4]
+                )
     for k, v in QgsProject.instance().mapLayers().items():
         if isinstance(v, QgsVectorLayer):
             possible_layer = v.customProperty("ofdslayer")

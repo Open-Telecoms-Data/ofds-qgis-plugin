@@ -11,7 +11,7 @@ PLUGIN_DIR = os.path.dirname(__file__)
 
 
 def add_layers(filename):
-    # Get Information
+    # --------   Get Information
     with open(
         os.path.join(
             PLUGIN_DIR,
@@ -21,12 +21,12 @@ def add_layers(filename):
     ) as fp:
         schema_information = json.load(fp)
 
-    # Create a group
+    # --------   Create a group
     groupName = "Open Fibre"
     root = QgsProject.instance().layerTreeRoot()
     group = root.addGroup(groupName)
 
-    # Add vector Layers
+    # --------  Add vector Layers
     layers = {}
     for table_name, table_info in schema_information["tables"].items():
         layers[table_name] = QgsVectorLayer(
@@ -36,7 +36,7 @@ def add_layers(filename):
         group.insertChildNode(-1, QgsLayerTreeLayer(layers[table_name]))
         QgsProject.instance().addMapLayer(layers[table_name], False)
 
-    # Config for layers
+    # --------   Config for layers
     for table_name, table_info in schema_information["tables"].items():
         # Symbology https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/20
         if table_info["geographic_type"] == "LINESTRING":
@@ -50,6 +50,8 @@ def add_layers(filename):
         for field_idx, field_info in enumerate(table_info["columns"]):
             if field_info["title"]:
                 layers[table_name].setFieldAlias(field_idx + 1, field_info["title"])
+
+            # --------  boolean
             if field_info["type"] == "boolean":
                 layers[table_name].setEditorWidgetSetup(
                     field_idx + 1,
@@ -57,6 +59,8 @@ def add_layers(filename):
                         "ValueMap", {"map": [{"True": "true"}, {"False": "false"}]}
                     ),
                 )
+
+            # --------  date
             elif field_info["type"] == "date":
                 layers[table_name].setEditorWidgetSetup(
                     field_idx + 1,
@@ -71,10 +75,9 @@ def add_layers(filename):
                         },
                     ),
                 )
-            elif (
-                field_info["type"] == "open_codelist"
-                or field_info["type"] == "closed_codelist"
-            ):
+
+            # --------  closed codelist
+            elif field_info["type"] == "closed_codelist":
                 values = schema_information[
                     (
                         "open_codelists"
@@ -87,6 +90,52 @@ def add_layers(filename):
                     field_idx + 1,
                     QgsEditorWidgetSetup("ValueMap", {"map": values}),
                 )
+
+            # --------  open codelist
+            elif field_info["type"] == "open_codelist":
+                codelist_layer_name = "codelist_open_" + field_info["codelist"][:-4]
+                # If we need to, load the target table
+                if codelist_layer_name not in layers:
+                    layers[codelist_layer_name] = QgsVectorLayer(
+                        filename + "|layername=" + codelist_layer_name,
+                        codelist_layer_name,
+                        "ogr",
+                    )
+                    layers[codelist_layer_name].setCustomProperty(
+                        "ofdslayer", codelist_layer_name
+                    )
+                    group.insertChildNode(
+                        -1, QgsLayerTreeLayer(layers[codelist_layer_name])
+                    )
+                    QgsProject.instance().addMapLayer(
+                        layers[codelist_layer_name], False
+                    )
+                # config widget
+                layers[table_name].setEditorWidgetSetup(
+                    field_idx + 1,
+                    QgsEditorWidgetSetup(
+                        "ValueRelation",
+                        {
+                            "AllowMulti": False,
+                            "AllowNull": True,
+                            "Description": None,
+                            "FilterExpression": None,
+                            "Key": "code",
+                            "Layer": layers[codelist_layer_name].id(),
+                            "LayerName": codelist_layer_name,
+                            "LayerProviderName": "ogr",
+                            "LayerSource": "{}|layername={}".format(
+                                filename, codelist_layer_name
+                            ),
+                            "NofColumns": 1,
+                            "OrderByValue": False,
+                            "UseCompleter": False,
+                            "Value": "description",
+                        },
+                    ),
+                )
+
+            # --------  foreign key (dict with id and name)
             elif (
                 field_info["type"] == "foreign_key_id_name_dict"
                 or field_info["type"] == "foreign_key"
@@ -114,6 +163,8 @@ def add_layers(filename):
                         },
                     ),
                 )
+
+            # --------  for ocds id fields, set default value
             if field_info["type"] == "text" and field_info["name"] == "ofds_id":
                 layers[table_name].setDefaultValueDefinition(
                     field_idx + 1,
@@ -124,7 +175,7 @@ def add_layers(filename):
                     ),
                 )
 
-        # Relations
+        # --------  Relations
         for relation in table_info["relations"]:
 
             # Load join table
@@ -189,5 +240,5 @@ def add_layers(filename):
             form_config.invisibleRootContainer().addChildElement(relation_editor)
             layers[table_name].setEditFormConfig(form_config)
 
-    # Project Properties
+    # --------   Project Properties
     QgsProject.instance().setTransactionMode(Qgis.TransactionMode.AutomaticGroups)

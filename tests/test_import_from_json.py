@@ -324,3 +324,77 @@ def test_import_multiple_codelists_1():
     assert ("node1", "addDropSite") == rows[0]
     # wrapup
     connection.close()
+
+
+def test_import_custom_single_open_codelist_entry_1():
+    """
+    For a open codelist field (single value), import data with a custom codelist item.
+    """
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "organisations": [
+                        {
+                            "id": "orga",
+                            "identifier": {
+                                "scheme": "MYOWNORGLIST",
+                            },
+                            "name": "Org A",
+                        }
+                    ],
+                },
+            ]
+        },
+        sqlite_filename,
+    )
+
+    # Test the database contents
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    # networks
+    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("network1", "Network 1") == rows[0]
+    # organisations
+    cursor.execute(
+        "SELECT ofds_id, name, network_id, identifier__scheme FROM organisations ORDER BY ofds_id ASC"
+    )
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("orga", "Org A", "network1", "MYOWNORGLIST") == rows[0]
+    # Make sure the custom item was added to the open codelist
+    #
+    #   This doesn't pass yet - The code to make this work should be written
+    #   under https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/26
+    #
+    #   However, when we do https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/37
+    #   that code will have to change, so left for now.
+    # cursor.execute(
+    #    "SELECT code, description FROM codelist_open_organisationIdentifierScheme WHERE code=?", ["MYOWNORGLIST"]
+    # )
+    # rows = cursor.fetchall()
+    # assert 1 == len(rows)
+    # assert ("MYOWNORGLIST","MYOWNORGLIST") == rows[0]
+    # wrapup
+    connection.close()

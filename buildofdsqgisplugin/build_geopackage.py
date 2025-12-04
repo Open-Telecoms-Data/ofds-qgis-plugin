@@ -214,6 +214,13 @@ class Builder:
         fields_sql = [
             '"' + i["name"] + '" ' + i.get("sqlite_type", i["type"]) for i in columns
         ]
+        fields_sql += [
+            "FOREIGN KEY ({}) REFERENCES codelist_open_{}(id)".format(
+                i["name"], i["codelist"][:-4]
+            )
+            for i in columns
+            if i["type"] == "open_codelist"
+        ]
         self.cursor.execute(
             """
             CREATE TABLE {} (
@@ -302,7 +309,9 @@ class Builder:
                     if property_value.get("openCodelist")
                     else "closed_codelist"
                 )
-                column["sqlite_type"] = "text"
+                column["sqlite_type"] = (
+                    "integer" if property_value.get("openCodelist") else "text"
+                )
                 column["codelist"] = property_value["codelist"]
                 columns.append(column)
 

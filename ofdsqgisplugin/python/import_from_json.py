@@ -3,8 +3,6 @@ import os
 import sqlite3
 import uuid
 
-from .lib import get_deep_key_from_data_for_import
-
 PLUGIN_DIR = os.path.dirname(__file__)
 
 
@@ -50,6 +48,7 @@ class ImportJSONToCallable:
         self._json_data_to_import = json_data_to_import
         self._callable_write = callable_write
         self._callable_read = callable_read
+        self._open_codelists_codes_to_id_mappings = {}
         # Get Information
         with open(
             os.path.join(
@@ -61,7 +60,53 @@ class ImportJSONToCallable:
         ) as fp:
             self._schema_information = json.load(fp)
 
+    def _get_deep_key_from_data_for_import(self, data, key, column_info={}):
+        key_bits = key.split("/")
+        final_key = key_bits.pop(-1)
+        for key_bit in key_bits:
+            if key_bit in data and isinstance(data[key_bit], dict):
+                data = data[key_bit]
+            else:
+                return None
+        out = data.get(final_key)
+        column_type = column_info.get("type")
+
+        # ------------ Foreign key (id and name dict)
+        if column_type == "foreign_key_id_name_dict" and isinstance(out, dict):
+            return out.get("id")
+
+        # ------------ Open codelist
+        elif column_type == "open_codelist" and out:
+            # Do we know about this value in our codelist table? If not, add it to our code list table
+            if (
+                not out
+                in self._open_codelists_codes_to_id_mappings[column_info["codelist"]]
+            ):
+                new_id = self._callable_write(
+                    "codelist_open_" + column_info["codelist"][:-4],
+                    [("code", out), ("description", out)],
+                )
+                self._open_codelists_codes_to_id_mappings[column_info["codelist"]][
+                    out
+                ] = new_id
+            # Now return
+            return self._open_codelists_codes_to_id_mappings[column_info["codelist"]][
+                out
+            ]
+
+        # ------------ Any other type
+        else:
+            return out
+
     def go(self):
+        # Load Codelist data we may need later
+        self._open_codelists_codes_to_id_mappings = {}
+        for open_codelist_name in self._schema_information["open_codelists"].keys():
+            self._open_codelists_codes_to_id_mappings[open_codelist_name] = {}
+            for data in self._callable_read("codelist_open_" + open_codelist_name[:-4]):
+                self._open_codelists_codes_to_id_mappings[open_codelist_name][
+                    data["id"]
+                ] = data["code"]
         # For each network ...
         networks = self._json_data_to_import.get("networks", [])
         if isinstance(networks, list):
@@ -79,10 +124,10 @@ class ImportJSONToCallable:
                 data.append(
                     (
                         column_info["name"],
-                        get_deep_key_from_data_for_import(
+                        self._get_deep_key_from_data_for_import(
                             network,
                             column_info["name"].replace("__", "/"),
-                            type=column_info["type"],
+                            column_info=column_info,
                         ),
                     )
                 )
@@ -115,10 +160,10 @@ class ImportJSONToCallable:
                             data.append(
                                 (
                                     column_info["name"],
-                                    get_deep_key_from_data_for_import(
+                                    self._get_deep_key_from_data_for_import(
                                         table_data,
                                         column_info["name"].replace("__", "/"),
-                                        type=column_info["type"],
+                                        column_info=column_info,
                                     ),
                                 )
                             )
@@ -167,10 +212,10 @@ class ImportJSONToCallable:
                                     data.append(
                                         (
                                             column_info["name"],
-                                            get_deep_key_from_data_for_import(
+                                            self._get_deep_key_from_data_for_import(
                                                 sub_table_data,
                                                 column_info["name"].replace("__", "/"),
-                                                type=column_info["type"],
+                                                column_info=column_info,
                                             ),
                                         )
                                     )

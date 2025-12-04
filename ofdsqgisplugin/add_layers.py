@@ -120,7 +120,7 @@ def add_layers(filename):
                             "AllowNull": True,
                             "Description": None,
                             "FilterExpression": None,
-                            "Key": "code",
+                            "Key": "id",
                             "Layer": layers[codelist_layer_name].id(),
                             "LayerName": codelist_layer_name,
                             "LayerProviderName": "ogr",

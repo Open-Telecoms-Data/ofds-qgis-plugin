@@ -65,6 +65,14 @@ class ExportCallableToJSON:
         # Make JSON
         networks = {}
         default_network_id = None
+        # Load Codelist data we may need later
+        open_codelists_ids_to_codes_mappings = {}
+        for open_codelist_name in self._schema_information["open_codelists"].keys():
+            open_codelists_ids_to_codes_mappings[open_codelist_name] = {}
+            for data in self._callable("codelist_open_" + open_codelist_name[:-4]):
+                open_codelists_ids_to_codes_mappings[open_codelist_name][data["id"]] = (
+                    data["code"]
+                )
         # Networks first
         for data in self._callable("networks"):
             default_network_id = data["ofds_id"]
@@ -82,6 +90,13 @@ class ExportCallableToJSON:
                         column_info["name"].replace("__", "/"),
                         data[column_info["name"]],
                         type=column_info["type"],
+                        open_codelist_ids_to_codes_mappings=(
+                            open_codelists_ids_to_codes_mappings[
+                                column_info["codelist"]
+                            ]
+                            if column_info["type"] == "open_codelist"
+                            else {}
+                        ),
                     )
         # If they didn't set any networks, we'll create one, as we need it!
         if not default_network_id:
@@ -118,6 +133,13 @@ class ExportCallableToJSON:
                             column_info["name"].replace("__", "/"),
                             data[column_info["name"]],
                             type=column_info["type"],
+                            open_codelist_ids_to_codes_mappings=(
+                                open_codelists_ids_to_codes_mappings[
+                                    column_info["codelist"]
+                                ]
+                                if column_info["type"] == "open_codelist"
+                                else {}
+                            ),
                         )
                 if self._schema_information["tables"][table_name]["geographic_field"]:
                     out[
@@ -149,6 +171,13 @@ class ExportCallableToJSON:
                                         column_info["name"].replace("__", "/"),
                                         sub_table_data[column_info["name"]],
                                         type=column_info["type"],
+                                        open_codelist_ids_to_codes_mappings=(
+                                            open_codelists_ids_to_codes_mappings[
+                                                column_info["codelist"]
+                                            ]
+                                            if column_info["type"] == "open_codelist"
+                                            else {}
+                                        ),
                                     )
                             sub_values.append(sub_out)
                     if sub_values:

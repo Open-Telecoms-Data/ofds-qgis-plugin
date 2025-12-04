@@ -1,4 +1,6 @@
-def set_key_in_dict_for_export(data, key, value, type=""):
+def set_key_in_dict_for_export(
+    data, key, value, type="", open_codelist_ids_to_codes_mappings={}
+):
     if not value:
         return
     key_bits = key.split("/")
@@ -17,20 +19,7 @@ def set_key_in_dict_for_export(data, key, value, type=""):
         data[final_key] = float(value)
     elif type == "foreign_key_id_name_dict":
         data[final_key] = {"id": value}
+    elif type == "open_codelist" and value in open_codelist_ids_to_codes_mappings:
+        data[final_key] = open_codelist_ids_to_codes_mappings[value]
     else:
         data[final_key] = value
-
-
-def get_deep_key_from_data_for_import(data, key, type=""):
-    key_bits = key.split("/")
-    final_key = key_bits.pop(-1)
-    for key_bit in key_bits:
-        if key_bit in data and isinstance(data[key_bit], dict):
-            data = data[key_bit]
-        else:
-            return None
-    out = data.get(final_key)
-    if type == "foreign_key_id_name_dict" and isinstance(out, dict):
-        return out.get("id")
-    else:
-        return out

@@ -376,25 +376,22 @@ def test_import_custom_single_open_codelist_entry_1():
     rows = cursor.fetchall()
     assert 1 == len(rows)
     assert ("network1", "Network 1") == rows[0]
+    # get our new custom item from the open codelist
+    cursor.execute(
+        "SELECT id, code, description FROM codelist_open_organisationIdentifierScheme WHERE code=?",
+        ["MYOWNORGLIST"],
+    )
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert "MYOWNORGLIST" == rows[0][1]
+    assert "MYOWNORGLIST" == rows[0][2]
+    new_codelist_item_id = rows[0][0]
     # organisations
     cursor.execute(
         "SELECT ofds_id, name, network_id, identifier__scheme FROM organisations ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("orga", "Org A", "network1", "MYOWNORGLIST") == rows[0]
-    # Make sure the custom item was added to the open codelist
-    #
-    #   This doesn't pass yet - The code to make this work should be written
-    #   under https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/26
-    #
-    #   However, when we do https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/37
-    #   that code will have to change, so left for now.
-    # cursor.execute(
-    #    "SELECT code, description FROM codelist_open_organisationIdentifierScheme WHERE code=?", ["MYOWNORGLIST"]
-    # )
-    # rows = cursor.fetchall()
-    # assert 1 == len(rows)
-    # assert ("MYOWNORGLIST","MYOWNORGLIST") == rows[0]
+    assert ("orga", "Org A", "network1", new_codelist_item_id) == rows[0]
     # wrapup
     connection.close()

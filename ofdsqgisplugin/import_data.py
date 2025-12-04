@@ -4,7 +4,7 @@ import uuid
 
 from qgis.core import QgsFeature, QgsJsonUtils
 
-from .python.import_from_json import import_json_to_callable
+from .python.import_from_json import ImportJSONToCallable
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -46,7 +46,10 @@ def import_json(layers, json_data_to_import):
             out.append(data)
         return out
 
-    import_json_to_callable(json_data_to_import, callable_write, callable_read)
+    import_json_to_callable = ImportJSONToCallable(
+        json_data_to_import, callable_write, callable_read
+    )
+    import_json_to_callable.go()
 
     # Commit
     # Hacky time ... we had errors commiting some layers when relations introduced. So ...

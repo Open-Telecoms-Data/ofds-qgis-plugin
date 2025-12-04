@@ -3,7 +3,7 @@ import json
 import os
 import uuid
 
-from .python.export_to_json import export_callable_to_json
+from .python.export_to_json import ExportCallableToJSON
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -34,4 +34,4 @@ def get_json(layers):
             out.append(data)
         return out
 
-    return export_callable_to_json(callable)
+    return ExportCallableToJSON(callable).go()

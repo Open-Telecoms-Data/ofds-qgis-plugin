@@ -260,3 +260,67 @@ def test_import_contract_documents_1():
     assert ("network1", "contractb", "B-2") == rows[3]
     # wrapup
     connection.close()
+
+
+def test_import_multiple_codelists_1():
+    """ """
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "nodes": [
+                        {"id": "node1", "type": ["addDropSite"]},
+                    ],
+                },
+            ]
+        },
+        sqlite_filename,
+    )
+
+    # Test the database contents
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    # networks
+    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("network1", "Network 1") == rows[0]
+    # nodes
+    cursor.execute("SELECT ofds_id, network_id FROM nodes ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("node1", "network1") == rows[0]
+    # node technologies
+    cursor.execute(
+        """
+        SELECT nodes.ofds_id, codelist_open_nodeType.code
+        FROM relation_nodes_type
+        JOIN nodes ON nodes.id == relation_nodes_type.base_id
+        JOIN codelist_open_nodeType ON codelist_open_nodeType.id = relation_nodes_type.related_id
+        ORDER BY nodes.ofds_id ASC
+        """
+    )
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("node1", "addDropSite") == rows[0]
+    # wrapup
+    connection.close()

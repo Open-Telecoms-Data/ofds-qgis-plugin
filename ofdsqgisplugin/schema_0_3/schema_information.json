@@ -193,11 +193,30 @@
       ],
       "relations": [
         {
+          "standard_field": "type",
+          "name": "nodes_type",
+          "related_table": "codelist_open_nodeType",
+          "mapping_table": "relation_nodes_type",
+          "title": "Node type",
+          "related_table_private": false,
+          "codelist": true
+        },
+        {
+          "standard_field": "technologies",
+          "name": "nodes_technologies",
+          "related_table": "codelist_open_nodeTechnologies",
+          "mapping_table": "relation_nodes_technologies",
+          "title": "Technologies",
+          "related_table_private": false,
+          "codelist": true
+        },
+        {
           "standard_field": "networkProviders",
           "name": "nodes_networkProviders",
           "related_table": "organisations",
           "mapping_table": "relation_nodes_networkProviders",
-          "title": "Network providers"
+          "title": "Network providers",
+          "related_table_private": false
         }
       ],
       "geographic_type": "POINT",
@@ -366,7 +385,44 @@
           "name": "spans_networkProviders",
           "related_table": "organisations",
           "mapping_table": "relation_spans_networkProviders",
-          "title": "Network providers"
+          "title": "Network providers",
+          "related_table_private": false
+        },
+        {
+          "standard_field": "transmissionMedium",
+          "name": "spans_transmissionMedium",
+          "related_table": "codelist_closed_transmissionMedium",
+          "mapping_table": "relation_spans_transmissionMedium",
+          "title": "Transmission medium",
+          "related_table_private": true,
+          "codelist": true
+        },
+        {
+          "standard_field": "deployment",
+          "name": "spans_deployment",
+          "related_table": "codelist_closed_deployment",
+          "mapping_table": "relation_spans_deployment",
+          "title": "Deployment",
+          "related_table_private": true,
+          "codelist": true
+        },
+        {
+          "standard_field": "technologies",
+          "name": "spans_technologies",
+          "related_table": "codelist_open_spanTechnologies",
+          "mapping_table": "relation_spans_technologies",
+          "title": "Technologies",
+          "related_table_private": false,
+          "codelist": true
+        },
+        {
+          "standard_field": "countries",
+          "name": "spans_countries",
+          "related_table": "codelist_closed_country",
+          "mapping_table": "relation_spans_countries",
+          "title": "Countries",
+          "related_table_private": true,
+          "codelist": true
         }
       ],
       "geographic_type": "LINESTRING",
@@ -409,7 +465,8 @@
           "name": "phases_funders",
           "related_table": "organisations",
           "mapping_table": "relation_phases_funders",
-          "title": "Funders"
+          "title": "Funders",
+          "related_table_private": false
         }
       ],
       "geographic_type": null,
@@ -492,7 +549,17 @@
           "description": ""
         }
       ],
-      "relations": [],
+      "relations": [
+        {
+          "standard_field": "roles",
+          "name": "organisations_roles",
+          "related_table": "codelist_open_organisationRole",
+          "mapping_table": "relation_organisations_roles",
+          "title": "Roles",
+          "related_table_private": false,
+          "codelist": true
+        }
+      ],
       "geographic_type": null,
       "geographic_field": null
     },
@@ -563,7 +630,8 @@
           "name": "contracts_relatedPhases",
           "related_table": "phases",
           "mapping_table": "relation_contracts_relatedPhases",
-          "title": "Related phases"
+          "title": "Related phases",
+          "related_table_private": false
         }
       ],
       "geographic_type": null,
@@ -11686,6 +11754,102 @@
         "offline/print",
         "print (offline/print)"
       ]
+    ],
+    "nodeType.csv": [
+      [
+        "addDropSite",
+        "Add drop site: A point at which individual digital bit streams can be added to, or dropped from, a multiplexed signal in order to redirect bit streams between network paths."
+      ],
+      [
+        "aggregationPoint",
+        "Aggregation point: A point at which multiple fibre optic cables are spliced together. Typically located between an exchange or POP and GPON splitters or end user premises."
+      ],
+      [
+        "borderCrossing",
+        "Border crossing: The point at which a fibre cable crosses either an international boundary or the coastline of the operator\u2019s country. The countries to which this node connects should be listed in `.internationalConnections`."
+      ],
+      [
+        "cabinet",
+        "Cabinet: An distribution cabinet to which end users are connected by a standard phone line."
+      ],
+      [
+        "cableLanding",
+        "Cable landing point: The location where a submarine or other underwater cable makes landfall."
+      ],
+      [
+        "dataCentre",
+        "Data centre: A structure, or group of structures, dedicated to the centralized accommodation, interconnection and operation of information technology and network telecommunications equipment."
+      ],
+      [
+        "exchange",
+        "Exchange: A telephone exchange."
+      ],
+      [
+        "ixp",
+        "Internet Exchange Point: A physical point at which networks such as internet service providers, mobile operators and content delivery networks come together to connect and exchange internet traffic."
+      ],
+      [
+        "pop",
+        "Point of Presence: A demarcation point, access point, or physical location at which two or more networks or communication devices share a connection."
+      ],
+      [
+        "repeaterSite",
+        "Repeater site: A point at which fibre optic signals are amplified or repeated. Also known as a regeneration facility."
+      ],
+      [
+        "substation",
+        "Substation: An electrical substation."
+      ],
+      [
+        "tower",
+        "Tower: A ground-based or rooftop structure that supports antennas for sending or receiving radio waves."
+      ]
+    ],
+    "nodeTechnologies.csv": [
+      [
+        "ip",
+        "Internet Protocol: A network layer protocol that defines the addressing mechanism on the Internet to allow data to be transmitted."
+      ],
+      [
+        "mpls",
+        "Multi-Protocol Label Switching: A routing technique that directs data from one node to the next based on labels rather than network addresses."
+      ]
+    ],
+    "spanTechnologies.csv": [
+      [
+        "dwdm",
+        "Dense Wavelength Division Multiplexing: A technology that multiplexes a number of optical carrier signals onto a single optical fibre by using different wavelengths."
+      ],
+      [
+        "sdh",
+        "Synchronous Digital Hierarchy: A standardised protocol for transferring multiple digital bit streams synchronously over optical fibre. SDH is used worldwide, with the exception of the US and Canada."
+      ],
+      [
+        "sonet",
+        "Synchronous Optical Networking: A standardised protocol for transferring multiple digital bit streams synchronously over optical fibre. SONET is used in the US and Canada."
+      ],
+      [
+        "tdm",
+        "Time Division Multiplexing: A technology that multiplexes a number of optical carrier signals onto a single optical fibre by using different arrival times."
+      ]
+    ],
+    "organisationRole.csv": [
+      [
+        "physicalInfrastructureProvider",
+        "Physical infrastructure provider: An organisation that owns and maintains passive network infrastructure, i.e. the non-electrical elements, such as dark fibre, ducts and physical sites."
+      ],
+      [
+        "networkProvider",
+        "Network provider: An organisation that operates the active network infrastructure, i.e. the electrical elements, such as optical transceivers, switches and routers. In open business models, network providers provide wholesale access to service providers such as retail internet service providers. Network providers can own or lease the active network infrastructure."
+      ],
+      [
+        "funder",
+        "Funder: An organisation that provides financing for the development or operation of a phase or network."
+      ],
+      [
+        "supplier",
+        "Supplier: The organisation responsible for installing the cable for a span."
+      ]
     ]
   },
   "closed_codelists": {
@@ -13989,6 +14153,34 @@
       [
         "ZWR",
         "Zimbabwe Dollar (ZWR): 2009-06"
+      ]
+    ],
+    "transmissionMedium.csv": [
+      [
+        "coaxial",
+        "Coaxial cable: The physical media of this span is coaxial cable."
+      ],
+      [
+        "copper",
+        "Copper wire: The physical media of this span is copper wire."
+      ],
+      [
+        "fibre",
+        "Fibre optic cable: The physical media of this span is fibre optic cable."
+      ],
+      [
+        "microwave",
+        "Microwave radio: The physical media of this span is microwave radio."
+      ]
+    ],
+    "deployment.csv": [
+      [
+        "aboveGround",
+        "Above ground: This span is deployed above ground. For example, aerial deployment along poles or using optical groundwire."
+      ],
+      [
+        "belowGround",
+        "Below ground: This span is deployed below ground. For example, cable that is routed through a duct buried in a trench or run through a sewer."
       ]
     ]
   }

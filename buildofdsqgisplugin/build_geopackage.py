@@ -27,6 +27,130 @@ class Builder:
             "Related phases": "phases",
         }
 
+    def _load_codelist_items(
+        self,
+        open_codelist: bool,
+        codelist_name: str,
+        create_database_table_even_if_closed=False,
+    ):
+        # If we haven't already loaded the codelist contents, do so
+        if (
+            codelist_name
+            not in self.information_out[
+                ("open_codelists" if open_codelist else "closed_codelists")
+            ].keys()
+        ):
+            with open(
+                os.path.join(
+                    self.root_directory,
+                    "buildofdsqgisplugin",
+                    "schema_0_3",
+                    "codelists",
+                    "open" if open_codelist else "closed",
+                    codelist_name,
+                )
+            ) as csvfile:
+                csvreader = csv.reader(csvfile)
+                headers = next(csvreader)
+                raw_values = []
+                for line in csvreader:
+                    raw_values.append(line)
+                values = []
+                for raw_value in raw_values:
+                    desc = (
+                        # Description always has the actual title of the codelist item
+                        raw_value[1]
+                        # If it's a very long codelist, we add the actual code so that people can see what the codelist is sorted by
+                        + (" (" + raw_value[0] + ")" if len(raw_values) > 20 else "")
+                        # And if it exists, we add the description of the codelist item
+                        + (
+                            ": " + raw_value[2]
+                            if len(raw_value) > 2 and raw_value[2]
+                            else ""
+                        )
+                    )
+                    values.append((raw_value[0], desc))
+            self.information_out[
+                ("open_codelists" if open_codelist else "closed_codelists")
+            ][codelist_name] = values
+        if open_codelist or create_database_table_even_if_closed:
+            table_name = (
+                "codelist_"
+                + ("open" if open_codelist else "closed")
+                + "_"
+                + codelist_name[:-4]
+            )
+            self.cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+                [table_name],
+            )
+            if not self.cursor.fetchone():
+
+                self.cursor.execute(
+                    """
+                    INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id)
+                    VALUES (?, "attributes", ?, 4326);
+                    """,
+                    [
+                        table_name,
+                        table_name,
+                    ],
+                )
+
+                self.cursor.execute(
+                    """
+                    CREATE TABLE {} (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        code TEXT,
+                        description TEXT
+                    );
+                """.format(
+                        table_name,
+                    )
+                )
+
+                for column_name, column_title, column_desc in [
+                    ("code", "Code", "The code for this item"),
+                    ("description", "Description", "The Description for this item."),
+                ]:
+                    self.cursor.execute(
+                        """
+                        INSERT INTO gpkg_data_columns (
+                            table_name,
+                            column_name,
+                            name,
+                            title,
+                            description,
+                            mime_type,
+                            constraint_name
+                        )
+                        VALUES (?, ?, ?, ?, ?, NULL, NULL);
+                        """,
+                        [
+                            table_name,
+                            column_name,
+                            column_title,
+                            column_title,
+                            column_title,
+                        ],
+                    )
+
+                for code, desc in self.information_out[
+                    ("open_codelists" if open_codelist else "closed_codelists")
+                ][codelist_name]:
+                    self.cursor.execute(
+                        """
+                        INSERT INTO {} (
+                            code,
+                            description
+                        )
+                        VALUES (?, ?);
+                        """.format(
+                            table_name
+                        ),
+                        [code, desc],
+                    )
+
     def _create_table_from_json_schema(
         self,
         json_schema,
@@ -168,58 +292,10 @@ class Builder:
 
             # --------  codelist
             elif property_value["type"] == "string" and property_value.get("codelist"):
-                # If we haven't already loaded the codelist contents, do so
-                if (
-                    property_value["codelist"]
-                    not in self.information_out[
-                        (
-                            "open_codelists"
-                            if property_value.get("openCodelist")
-                            else "closed_codelists"
-                        )
-                    ].keys()
-                ):
-                    with open(
-                        os.path.join(
-                            self.root_directory,
-                            "buildofdsqgisplugin",
-                            "schema_0_3",
-                            "codelists",
-                            "open" if property_value.get("openCodelist") else "closed",
-                            property_value["codelist"],
-                        )
-                    ) as csvfile:
-                        csvreader = csv.reader(csvfile)
-                        headers = next(csvreader)
-                        raw_values = []
-                        for line in csvreader:
-                            raw_values.append(line)
-                        values = []
-                        for raw_value in raw_values:
-                            desc = (
-                                # Description always has the actual title of the codelist item
-                                raw_value[1]
-                                # If it's a very long codelist, we add the actual code so that people can see what the codelist is sorted by
-                                + (
-                                    " (" + raw_value[0] + ")"
-                                    if len(raw_values) > 20
-                                    else ""
-                                )
-                                # And if it exists, we add the description of the codelist item
-                                + (
-                                    ": " + raw_value[2]
-                                    if len(raw_value) > 2 and raw_value[2]
-                                    else ""
-                                )
-                            )
-                            values.append((raw_value[0], desc))
-                    self.information_out[
-                        (
-                            "open_codelists"
-                            if property_value.get("openCodelist")
-                            else "closed_codelists"
-                        )
-                    ][property_value["codelist"]] = values
+                # loaded the codelist contents
+                self._load_codelist_items(
+                    property_value.get("openCodelist"), property_value["codelist"]
+                )
                 # set up field
                 column["type"] = (
                     "open_codelist"
@@ -423,6 +499,7 @@ class Builder:
         relations = []
         for property_key, property_value in json_schema["properties"].items():
 
+            # --------  many to many
             if (
                 property_value["type"] == "array"
                 and property_value["items"]["type"] == "object"
@@ -439,6 +516,31 @@ class Builder:
                         ],
                         "mapping_table": "relation_" + table_name + "_" + property_key,
                         "title": property_value["title"],
+                        "related_table_private": False,
+                    }
+                )
+
+            # --------  multi codelist
+            elif property_value["type"] == "array" and property_value.get("codelist"):
+                # loaded the codelist contents
+                self._load_codelist_items(
+                    property_value.get("openCodelist"),
+                    property_value["codelist"],
+                    create_database_table_even_if_closed=True,
+                )
+                # set up field
+                relations.append(
+                    {
+                        "standard_field": property_key,
+                        "name": table_name + "_" + property_key,
+                        "related_table": "codelist_"
+                        + ("open" if property_value.get("openCodelist") else "closed")
+                        + "_"
+                        + property_value["codelist"][:-4],
+                        "mapping_table": "relation_" + table_name + "_" + property_key,
+                        "title": property_value["title"],
+                        "related_table_private": not property_value.get("openCodelist"),
+                        "codelist": True,
                     }
                 )
 
@@ -597,6 +699,10 @@ class Builder:
         self._create_relations_from_json_schema(
             jsonschema["properties"]["contracts"]["items"],
             table_name="contracts",
+        )
+        self._create_relations_from_json_schema(
+            jsonschema["properties"]["organisations"]["items"],
+            table_name="organisations",
         )
         # Codelists
         self._write_codelists()

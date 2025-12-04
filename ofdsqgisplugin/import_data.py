@@ -24,7 +24,7 @@ def import_json(layers, json_data_to_import):
         layers[layer_id].startEditing()
 
     # work
-    def callable(table_name, data):
+    def callable_write(table_name, data):
         feature = QgsFeature(layers[table_name].fields())
         for d in data:
             if d[0] != "geom":
@@ -37,7 +37,17 @@ def import_json(layers, json_data_to_import):
             raise Exception("Could not add to table_name layer")
         return feature.attribute("id") if "id" in feature.fields().names() else None
 
-    import_json_to_callable(json_data_to_import, callable)
+    def callable_read(table_name):
+        out = []
+        for f in layers[table_name].getFeatures():
+            data = {}
+            for field_name in layers[table_name].fields().names():
+                data[field_name] = f.attribute(field_name)
+            out.append(data)
+        return out
+
+    import_json_to_callable(json_data_to_import, callable_write, callable_read)
+
     # Commit
     # Hacky time ... we had errors commiting some layers when relations introduced. So ...
     # First, just try and commit each layer and ignore errors

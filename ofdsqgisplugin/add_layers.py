@@ -142,6 +142,25 @@ def add_layers(filename):
             )
             QgsProject.instance().addMapLayer(layers[relation["mapping_table"]], False)
 
+            # If we need to, load the target table
+            if relation["related_table"] not in layers:
+                layers[relation["related_table"]] = QgsVectorLayer(
+                    filename + "|layername=" + relation["related_table"],
+                    relation["related_table"],
+                    "ogr",
+                )
+                layers[relation["related_table"]].setCustomProperty(
+                    "ofdslayer", relation["related_table"]
+                )
+                if relation["related_table_private"]:
+                    layers[relation["related_table"]].setFlags(QgsMapLayer.Private)
+                group.insertChildNode(
+                    -1, QgsLayerTreeLayer(layers[relation["related_table"]])
+                )
+                QgsProject.instance().addMapLayer(
+                    layers[relation["related_table"]], False
+                )
+
             # Create relationships
             join_to_base = QgsRelation()
             join_to_base.setName("join_to_base_" + relation["name"])

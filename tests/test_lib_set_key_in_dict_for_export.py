@@ -1,9 +1,13 @@
-from ofdsqgisplugin.python.lib import get_deep_key_from_data_for_import
+from ofdsqgisplugin.python.lib import set_key_in_dict_for_export
 
 
 def test_1():
-    assert "x" == get_deep_key_from_data_for_import({"key": "x"}, "key")
+    data = {}
+    set_key_in_dict_for_export(data, "key", "x")
+    assert {"key": "x"} == data
 
 
 def test_2():
-    assert "x" == get_deep_key_from_data_for_import({"key": {"key": "x"}}, "key/key")
+    data = {}
+    set_key_in_dict_for_export(data, "key/key", "x")
+    assert {"key": {"key": "x"}} == data

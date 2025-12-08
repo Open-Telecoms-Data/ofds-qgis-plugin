@@ -212,8 +212,11 @@ def test_export_custom_single_open_codelist_entry_1():
     cursor.execute(
         "INSERT INTO codelist_open_organisationIdentifierScheme (code, description) VALUES ('MYOWNORGLIST','Using org-id is too hard so I just made up my own prefix')"
     )
+    cursor.execute("SELECT last_insert_rowid()")
+    new_codelist_item_id = cursor.fetchone()[0]
     cursor.execute(
-        "INSERT INTO organisations (ofds_id, name, network_id, identifier__scheme) VALUES ('orga', 'Org A', 'netty', 'MYOWNORGLIST')"
+        "INSERT INTO organisations (ofds_id, name, network_id, identifier__scheme) VALUES ('orga', 'Org A', 'netty', ?)",
+        [new_codelist_item_id],
     )
     connection.commit()
     connection.close()

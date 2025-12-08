@@ -37,7 +37,7 @@
           "title": "Publisher Organisation identifier Scheme",
           "description": "The publisher of this network. An identifier for this organisation. The register from which the identifier in `.id` is drawn, from the open [organisationIdentifierScheme codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#organisationidentifierscheme).",
           "type": "open_codelist",
-          "sqlite_type": "text",
+          "sqlite_type": "integer",
           "codelist": "organisationIdentifierScheme.csv"
         },
         {
@@ -84,7 +84,7 @@
           "title": "Language",
           "description": "The default language of this network,from the open [language codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#language). A [BCP47 language tag](https://www.w3.org/International/articles/language-tags/) is allowed, if there is a user need for the additional information.",
           "type": "open_codelist",
-          "sqlite_type": "text",
+          "sqlite_type": "integer",
           "codelist": "language.csv"
         }
       ],
@@ -497,7 +497,7 @@
           "title": "Organisation identifier Scheme",
           "description": "An identifier for this organisation. The register from which the identifier in `.id` is drawn, from the open [organisationIdentifierScheme codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#organisationidentifierscheme).",
           "type": "open_codelist",
-          "sqlite_type": "text",
+          "sqlite_type": "integer",
           "codelist": "organisationIdentifierScheme.csv"
         },
         {
@@ -588,7 +588,7 @@
           "title": "Contract type",
           "description": "The type of this contract, from the open [contractType codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#contracttype).",
           "type": "open_codelist",
-          "sqlite_type": "text",
+          "sqlite_type": "integer",
           "codelist": "contractType.csv"
         },
         {
@@ -721,7 +721,7 @@
           "title": "Format",
           "description": "The format of this document, from the open [mediaType codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#mediatype).",
           "type": "open_codelist",
-          "sqlite_type": "text",
+          "sqlite_type": "integer",
           "codelist": "mediaType.csv"
         },
         {

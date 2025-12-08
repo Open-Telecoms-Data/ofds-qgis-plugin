@@ -23,7 +23,7 @@ class OFDSQGISPlugin:
     def initGui(self):
         # --------------------- Add Layers
         self.action_add_layers = QAction(
-            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_add.png"))),
+            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_add.svg"))),
             "Add Layers",
             self.iface.mainWindow(),
         )
@@ -31,7 +31,7 @@ class OFDSQGISPlugin:
         self.action_add_layers.triggered.connect(self.add_layers)
         # --------------------- import JSON
         self.action_import_json = QAction(
-            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_import_json.png"))),
+            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_import_json.svg"))),
             "Import JSON",
             self.iface.mainWindow(),
         )
@@ -39,7 +39,7 @@ class OFDSQGISPlugin:
         self.action_import_json.triggered.connect(self.import_json)
         # --------------------- validate
         self.action_validate = QAction(
-            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_validate.png"))),
+            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_validate.svg"))),
             "Validate",
             self.iface.mainWindow(),
         )
@@ -47,7 +47,7 @@ class OFDSQGISPlugin:
         self.action_validate.triggered.connect(self.validate)
         # --------------------- export JSON
         self.action_export_json = QAction(
-            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_export_json.png"))),
+            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_export_json.svg"))),
             "Export JSON",
             self.iface.mainWindow(),
         )

@@ -2,7 +2,7 @@
 
 ## Sections of the repository
 
-## buildofdsqgisplugin package
+### buildofdsqgisplugin package
 
 This code is not used directly by QGIS.
 
@@ -47,7 +47,7 @@ In QGIS, go to *Plugins -> Manage and install plugins* and activate the plugin.
 
 You'll also want to search for the following plugins and activate them:
 
-* *First Aid* - Get a nice debug page whin your python crashes
+* *First Aid* - Get a nice debug page when your python crashes
 * *Plugin Reloader* - Easy button to reload plugin without restarting QGIS
 
 ## Linting

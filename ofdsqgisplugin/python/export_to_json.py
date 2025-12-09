@@ -4,8 +4,6 @@ import os
 import sqlite3
 import uuid
 
-from .lib import set_key_in_dict_for_export
-
 PLUGIN_DIR = os.path.dirname(__file__)
 
 
@@ -50,6 +48,7 @@ class ExportCallableToJSON:
 
     def __init__(self, callable):
         self._callable = callable
+        self._tables_ids_to_standard_info_mappings = {}
         # Get Information
         with open(
             os.path.join(
@@ -61,10 +60,50 @@ class ExportCallableToJSON:
         ) as fp:
             self._schema_information = json.load(fp)
 
+    def _set_key_in_dict_for_export(
+        self, data, key, value, column_info={}, open_codelist_ids_to_codes_mappings={}
+    ):
+        # ------------ data check
+        if not value:
+            return
+
+        # ------------ setup
+        key_bits = key.split("/")
+        final_key = key_bits.pop(-1)
+
+        # ------------ Work our way down to the dictionary we actually want to set
+        for key_bit in key_bits:
+            if key_bit in data:
+                data = data[key_bit]
+            else:
+                data[key_bit] = {}
+                data = data[key_bit]
+
+        # ------------ now set, taking into account the column type
+        column_type = column_info.get("type")
+        if column_type == "boolean":
+            data[final_key] = value == "true"
+        elif column_type == "integer":
+            data[final_key] = int(value)
+        elif column_type == "number":
+            data[final_key] = float(value)
+        elif column_type == "foreign_key":
+            data[final_key] = self._tables_ids_to_standard_info_mappings[
+                column_info["foreignkey_layer"]
+            ][value]["id"]
+        elif column_type == "foreign_key_id_name_dict":
+            data[final_key] = {"id": value}
+        elif (
+            column_type == "open_codelist"
+            and value in open_codelist_ids_to_codes_mappings
+        ):
+            data[final_key] = open_codelist_ids_to_codes_mappings[value]
+        else:
+            data[final_key] = value
+
     def go(self):
         # Make JSON
         networks = {}
-        default_network_id = None
         # Load Codelist data we may need later
         open_codelists_ids_to_codes_mappings = {}
         for open_codelist_name in self._schema_information["open_codelists"].keys():
@@ -73,23 +112,31 @@ class ExportCallableToJSON:
                 open_codelists_ids_to_codes_mappings[open_codelist_name][data["id"]] = (
                     data["code"]
                 )
+        # Load table data that is the target of foreign keys for use later
+        self._tables_ids_to_standard_info_mappings = {}
+        for table_name in ["nodes", "networks"]:
+            self._tables_ids_to_standard_info_mappings[table_name] = {}
+            for data in self._callable(table_name):
+                self._tables_ids_to_standard_info_mappings[table_name][data["id"]] = {
+                    "id": data["ofds_id"]
+                }
         # Networks first
         for data in self._callable("networks"):
-            default_network_id = data["ofds_id"]
+            network_ofds_id = data["ofds_id"]
             # If they put in a network but didn't set an id for it, we'll set one for them
-            if not default_network_id:
-                default_network_id = str(uuid.uuid4())
-            networks[default_network_id] = copy.deepcopy(START_OF_NETWORK)
-            networks[default_network_id]["id"] = default_network_id
+            if not network_ofds_id:
+                network_ofds_id = str(uuid.uuid4())
+            networks[network_ofds_id] = copy.deepcopy(START_OF_NETWORK)
+            networks[network_ofds_id]["id"] = network_ofds_id
             for column_info in self._schema_information["tables"]["networks"][
                 "columns"
             ]:
                 if column_info["name"] != "ofds_id":
-                    set_key_in_dict_for_export(
-                        networks[default_network_id],
+                    self._set_key_in_dict_for_export(
+                        networks[network_ofds_id],
                         column_info["name"].replace("__", "/"),
                         data[column_info["name"]],
-                        type=column_info["type"],
+                        column_info=column_info,
                         open_codelist_ids_to_codes_mappings=(
                             open_codelists_ids_to_codes_mappings[
                                 column_info["codelist"]
@@ -99,10 +146,13 @@ class ExportCallableToJSON:
                         ),
                     )
         # If they didn't set any networks, we'll create one, as we need it!
-        if not default_network_id:
-            default_network_id = str(uuid.uuid4())
-            networks[default_network_id] = copy.deepcopy(START_OF_NETWORK)
-            networks[default_network_id]["id"] = default_network_id
+        if not networks:
+            network_ofds_id = str(uuid.uuid4())
+            networks[network_ofds_id] = copy.deepcopy(START_OF_NETWORK)
+            networks[network_ofds_id]["id"] = network_ofds_id
+            self._tables_ids_to_standard_info_mappings["networks"][1] = {
+                "id": network_ofds_id
+            }
         # Other tables - first load geopackage id's to json id mapping
         geopackage_id_to_standard_info_mappings = {}
         for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:
@@ -121,18 +171,21 @@ class ExportCallableToJSON:
         ]:
             for data in self._callable(table_name):
                 out = {}
-                network_id = data["network_id"] or default_network_id
+                network_table_id = data["network_id"] or 1
+                network_ofds_id = self._tables_ids_to_standard_info_mappings[
+                    "networks"
+                ][network_table_id]["id"]
                 # Normal fields
                 out["id"] = data["ofds_id"] or str(uuid.uuid4())
                 for column_info in self._schema_information["tables"][table_name][
                     "columns"
                 ]:
                     if column_info["name"] not in ["ofds_id", "network_id"]:
-                        set_key_in_dict_for_export(
+                        self._set_key_in_dict_for_export(
                             out,
                             column_info["name"].replace("__", "/"),
                             data[column_info["name"]],
-                            type=column_info["type"],
+                            column_info=column_info,
                             open_codelist_ids_to_codes_mappings=(
                                 open_codelists_ids_to_codes_mappings[
                                     column_info["codelist"]
@@ -155,8 +208,8 @@ class ExportCallableToJSON:
                         table_name + "_" + sub_table_and_field_name
                     ):
                         if (
-                            sub_table_data[parent_field_name] == out["id"]
-                            and sub_table_data["network_id"] == network_id
+                            sub_table_data[parent_field_name] == data["id"]
+                            and sub_table_data["network_id"] == network_table_id
                         ):
                             sub_out = {}
                             for column_info in self._schema_information["tables"][
@@ -166,11 +219,11 @@ class ExportCallableToJSON:
                                     parent_field_name,
                                     "network_id",
                                 ]:
-                                    set_key_in_dict_for_export(
+                                    self._set_key_in_dict_for_export(
                                         sub_out,
                                         column_info["name"].replace("__", "/"),
                                         sub_table_data[column_info["name"]],
-                                        type=column_info["type"],
+                                        column_info=column_info,
                                         open_codelist_ids_to_codes_mappings=(
                                             open_codelists_ids_to_codes_mappings[
                                                 column_info["codelist"]
@@ -215,7 +268,7 @@ class ExportCallableToJSON:
                     if values:
                         out[relation["standard_field"]] = values
                 # wrap up
-                networks[network_id][table_name].append(out)
+                networks[network_ofds_id][table_name].append(out)
 
         # Clear empty arrays out of networks
         for network in networks.values():

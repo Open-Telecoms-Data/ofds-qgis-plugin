@@ -170,8 +170,8 @@ class Builder:
                 {
                     "name": "network_id",
                     "type": "foreign_key",
-                    "sqlite_type": "text",
-                    "foreignkey_key": "ofds_id",
+                    "sqlite_type": "integer",
+                    "foreignkey_key": "id",
                     "foreignkey_value": "name",
                     "foreignkey_layer": "networks",
                     "title": "Network ID",
@@ -220,6 +220,13 @@ class Builder:
             )
             for i in columns
             if i["type"] == "open_codelist"
+        ]
+        fields_sql += [
+            "FOREIGN KEY ({}) REFERENCES {}(id)".format(
+                i["name"], i["foreignkey_layer"]
+            )
+            for i in columns
+            if i["type"] == "foreign_key"
         ]
         self.cursor.execute(
             """
@@ -338,8 +345,8 @@ class Builder:
                 in self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS.keys()
             ):
                 column["type"] = "foreign_key"
-                column["sqlite_type"] = "text"
-                column["foreignkey_key"] = "ofds_id"
+                column["sqlite_type"] = "integer"
+                column["foreignkey_key"] = "id"
                 column["foreignkey_value"] = "name"
                 column["foreignkey_layer"] = self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS[
                     property_value["title"]
@@ -667,8 +674,8 @@ class Builder:
             parent_column={
                 "name": "node_id",
                 "type": "foreign_key",
-                "sqlite_type": "text",
-                "foreignkey_key": "ofds_id",
+                "sqlite_type": "integer",
+                "foreignkey_key": "id",
                 "foreignkey_value": "name",
                 "foreignkey_layer": "nodes",
                 "title": "Nodes ID",
@@ -684,8 +691,8 @@ class Builder:
             parent_column={
                 "name": "contract_id",
                 "type": "foreign_key",
-                "sqlite_type": "text",
-                "foreignkey_key": "ofds_id",
+                "sqlite_type": "integer",
+                "foreignkey_key": "id",
                 "foreignkey_value": "title",
                 "foreignkey_layer": "contracts",
                 "title": "Contract ID",

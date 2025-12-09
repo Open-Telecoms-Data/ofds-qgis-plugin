@@ -50,6 +50,7 @@ def test_import_1():
             ]
         },
         sqlite_filename,
+        enforce_foreign_keys=True,
     )
 
     # Test the database contents
@@ -57,27 +58,27 @@ def test_import_1():
     cursor = connection.cursor()
     # networks
     cursor.execute(
-        "SELECT ofds_id, name, publisher__name, accuracy FROM networks ORDER BY ofds_id ASC"
+        "SELECT id, ofds_id, name, publisher__name, accuracy FROM networks ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 2 == len(rows)
-    assert ("network1", "Network 1", "Publisher", 2.3) == rows[0]
-    assert ("network2", "Network 2", None, None) == rows[1]
+    assert (1, "network1", "Network 1", "Publisher", 2.3) == rows[0]
+    assert (2, "network2", "Network 2", None, None) == rows[1]
     # organisations
     cursor.execute(
         "SELECT ofds_id, name, network_id FROM organisations ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 2 == len(rows)
-    assert ("orga", "Org A", "network1") == rows[0]
-    assert ("orgb", "Org B", "network2") == rows[1]
+    assert ("orga", "Org A", 1) == rows[0]
+    assert ("orgb", "Org B", 2) == rows[1]
     # nodes
     cursor.execute(
         "SELECT ofds_id, physicalInfrastructureProvider, network_id FROM nodes ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("node1", "orga", "network1") == rows[0]
+    assert ("node1", "orga", 1) == rows[0]
     # wrapup
     connection.close()
 
@@ -118,30 +119,31 @@ def test_import_nodes_network_providers_1():
             ]
         },
         sqlite_filename,
+        enforce_foreign_keys=True,
     )
 
     # Test the database contents
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
     # networks
-    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    cursor.execute("SELECT id, ofds_id, name FROM networks ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("network1", "Network 1") == rows[0]
+    assert (1, "network1", "Network 1") == rows[0]
     # organisations
     cursor.execute(
         "SELECT ofds_id, name, network_id FROM organisations ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 2 == len(rows)
-    assert ("orga", "Org A", "network1") == rows[0]
-    assert ("orgb", "Org B", "network1") == rows[1]
+    assert ("orga", "Org A", 1) == rows[0]
+    assert ("orgb", "Org B", 1) == rows[1]
     # nodes
     cursor.execute("SELECT ofds_id, network_id FROM nodes ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 2 == len(rows)
-    assert ("node1", "network1") == rows[0]
-    assert ("node2", "network1") == rows[1]
+    assert ("node1", 1) == rows[0]
+    assert ("node2", 1) == rows[1]
     # nodes network providers
     cursor.execute(
         """
@@ -216,17 +218,18 @@ def test_import_contract_documents_1():
             ]
         },
         sqlite_filename,
+        enforce_foreign_keys=True,
     )
 
     # Test the database contents
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
     # networks
-    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    cursor.execute("SELECT id, ofds_id, name FROM networks ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 2 == len(rows)
-    assert ("network1", "Network 1") == rows[0]
-    assert ("network2", "Network 2") == rows[1]
+    assert (1, "network1", "Network 1") == rows[0]
+    assert (2, "network2", "Network 2") == rows[1]
     # contracts
     cursor.execute(
         "SELECT network_id, ofds_id, title FROM contracts ORDER BY network_id ASC, ofds_id ASC"
@@ -234,17 +237,17 @@ def test_import_contract_documents_1():
     rows = cursor.fetchall()
     assert 3 == len(rows)
     assert (
-        "network1",
+        1,
         "contracta",
         "titlea",
     ) == rows[0]
     assert (
-        "network1",
+        1,
         "contractb",
         "titleb",
     ) == rows[1]
     assert (
-        "network2",
+        2,
         "contracta",
         "titlea",
     ) == rows[2]
@@ -254,10 +257,12 @@ def test_import_contract_documents_1():
     )
     rows = cursor.fetchall()
     assert 6 == len(rows)
-    assert ("network1", "contracta", "A-1") == rows[0]
-    assert ("network1", "contracta", "A-2") == rows[1]
-    assert ("network1", "contractb", "B-1") == rows[2]
-    assert ("network1", "contractb", "B-2") == rows[3]
+    assert (1, 1, "A-1") == rows[0]
+    assert (1, 1, "A-2") == rows[1]
+    assert (1, 2, "B-1") == rows[2]
+    assert (1, 2, "B-2") == rows[3]
+    assert (2, 3, "C-1") == rows[4]
+    assert (2, 3, "C-2") == rows[5]
     # wrapup
     connection.close()
 
@@ -294,21 +299,22 @@ def test_import_multiple_codelists_1():
             ]
         },
         sqlite_filename,
+        enforce_foreign_keys=True,
     )
 
     # Test the database contents
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
     # networks
-    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    cursor.execute("SELECT id, ofds_id, name FROM networks ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("network1", "Network 1") == rows[0]
+    assert (1, "network1", "Network 1") == rows[0]
     # nodes
     cursor.execute("SELECT ofds_id, network_id FROM nodes ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("node1", "network1") == rows[0]
+    assert ("node1", 1) == rows[0]
     # node technologies
     cursor.execute(
         """
@@ -366,16 +372,17 @@ def test_import_custom_single_open_codelist_entry_1():
             ]
         },
         sqlite_filename,
+        enforce_foreign_keys=True,
     )
 
     # Test the database contents
     connection = sqlite3.connect(sqlite_filename)
     cursor = connection.cursor()
     # networks
-    cursor.execute("SELECT ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    cursor.execute("SELECT id, ofds_id, name FROM networks ORDER BY ofds_id ASC")
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("network1", "Network 1") == rows[0]
+    assert (1, "network1", "Network 1") == rows[0]
     # get our new custom item from the open codelist
     cursor.execute(
         "SELECT id, code, description FROM codelist_open_organisationIdentifierScheme WHERE code=?",
@@ -392,6 +399,71 @@ def test_import_custom_single_open_codelist_entry_1():
     )
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("orga", "Org A", "network1", new_codelist_item_id) == rows[0]
+    assert ("orga", "Org A", 1, new_codelist_item_id) == rows[0]
+    # wrapup
+    connection.close()
+
+
+def test_span_with_start_and_end_set_1():
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "nodes": [
+                        {
+                            "id": "node1",
+                        },
+                        {
+                            "id": "node2",
+                        },
+                    ],
+                    "spans": [{"id": "span1to2", "start": "node1", "end": "node2"}],
+                }
+            ]
+        },
+        sqlite_filename,
+        enforce_foreign_keys=True,
+    )
+
+    # Test the database contents
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    # networks
+    cursor.execute("SELECT id, ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert (1, "network1", "Network 1") == rows[0]
+    # nodes
+    cursor.execute("SELECT id, ofds_id, network_id FROM nodes ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 2 == len(rows)
+    assert (1, "node1", 1) == rows[0]
+    assert (2, "node2", 1) == rows[1]
+    # spans
+    cursor.execute(
+        "SELECT id, ofds_id, start, end, network_id FROM spans ORDER BY ofds_id ASC"
+    )
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert (1, "span1to2", 1, 2, 1) == rows[0]
     # wrapup
     connection.close()

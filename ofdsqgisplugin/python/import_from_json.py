@@ -6,11 +6,15 @@ import uuid
 PLUGIN_DIR = os.path.dirname(__file__)
 
 
-def import_json_to_sqlite(json_data_to_import, sqlite_filename):
+def import_json_to_sqlite(
+    json_data_to_import, sqlite_filename, enforce_foreign_keys=False
+):
     # Setup
     connection = sqlite3.connect(sqlite_filename)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
+    if enforce_foreign_keys:
+        cursor.execute("PRAGMA foreign_keys = ON;")
 
     # Start
     def callable_write(table_name, data):
@@ -75,6 +79,12 @@ class ImportJSONToCallable:
         if column_type == "foreign_key_id_name_dict" and isinstance(out, dict):
             return out.get("id")
 
+        # ------------ Foreign key (id and name dict)
+        elif column_type == "foreign_key":
+            return self._standard_id_to_geopackage_id_mappings[
+                column_info["foreignkey_layer"]
+            ][out]
+
         # ------------ Open codelist
         elif column_type == "open_codelist" and out:
             # Do we know about this value in our codelist table? If not, add it to our code list table
@@ -115,11 +125,11 @@ class ImportJSONToCallable:
 
     def _go_network(self, network):
         # Network table
-        network_id = network["id"] or uuid.uuid4()
+        network_ofds_id = network["id"] or uuid.uuid4()
         data = []
         for column_info in self._schema_information["tables"]["networks"]["columns"]:
             if column_info["name"] == "ofds_id":
-                data.append(("ofds_id", network_id))
+                data.append(("ofds_id", network_ofds_id))
             else:
                 data.append(
                     (
@@ -131,11 +141,10 @@ class ImportJSONToCallable:
                         ),
                     )
                 )
-        self._callable_write("networks", data)
+        network_table_id = self._callable_write("networks", data)
         # Now other tables
-        standard_id_to_geopackage_id_mappings = {}
+        self._standard_id_to_geopackage_id_mappings = {}
         list_idx_to_geopackage_id_mappings = {}
-        list_idx_to_thing_id_mappings = {}
         # First pass, make main tables and store mappings
         for table_name in [
             "nodes",
@@ -145,14 +154,12 @@ class ImportJSONToCallable:
             "contracts",
         ]:
             table_datas = network.get(table_name, [])
-            standard_id_to_geopackage_id_mappings[table_name] = {}
+            self._standard_id_to_geopackage_id_mappings[table_name] = {}
             list_idx_to_geopackage_id_mappings[table_name] = {}
-            list_idx_to_thing_id_mappings[table_name] = {}
             if isinstance(table_datas, list):
                 for idx, table_data in enumerate(table_datas):
                     thing_id = table_data.get("id") or uuid.uuid4()
-                    list_idx_to_thing_id_mappings[table_name][idx] = thing_id
-                    data = [("network_id", network_id), ("ofds_id", thing_id)]
+                    data = [("network_id", network_table_id), ("ofds_id", thing_id)]
                     for column_info in self._schema_information["tables"][table_name][
                         "columns"
                     ]:
@@ -180,7 +187,7 @@ class ImportJSONToCallable:
                         else:
                             data.append(("geom", ""))
                     geopackage_id = self._callable_write(table_name, data)
-                    standard_id_to_geopackage_id_mappings[table_name][
+                    self._standard_id_to_geopackage_id_mappings[table_name][
                         thing_id
                     ] = geopackage_id
                     list_idx_to_geopackage_id_mappings[table_name][idx] = geopackage_id
@@ -196,10 +203,10 @@ class ImportJSONToCallable:
                     if isinstance(sub_table_datas, list):
                         for sub_table_data in sub_table_datas:
                             data = [
-                                ("network_id", network_id),
+                                ("network_id", network_table_id),
                                 (
                                     parent_field_name,
-                                    list_idx_to_thing_id_mappings[table_name][idx],
+                                    list_idx_to_geopackage_id_mappings[table_name][idx],
                                 ),
                             ]
                             for column_info in self._schema_information["tables"][
@@ -240,15 +247,15 @@ class ImportJSONToCallable:
                     if (
                         relation.get("codelist")
                         and relation["related_table"]
-                        not in standard_id_to_geopackage_id_mappings
+                        not in self._standard_id_to_geopackage_id_mappings
                     ):
-                        standard_id_to_geopackage_id_mappings[
+                        self._standard_id_to_geopackage_id_mappings[
                             relation["related_table"]
                         ] = {}
                         for related_data in self._callable_read(
                             relation["related_table"]
                         ):
-                            standard_id_to_geopackage_id_mappings[
+                            self._standard_id_to_geopackage_id_mappings[
                                 relation["related_table"]
                             ][related_data["code"]] = related_data["id"]
 
@@ -274,9 +281,11 @@ class ImportJSONToCallable:
                                             ),
                                             (
                                                 "related_id",
-                                                standard_id_to_geopackage_id_mappings[
+                                                self._standard_id_to_geopackage_id_mappings[
                                                     relation["related_table"]
-                                                ][relation_data_id],
+                                                ][
+                                                    relation_data_id
+                                                ],
                                             ),
                                         ],
                                     )

@@ -267,5 +267,32 @@ def test_span_with_start_and_end_set_1():
         "id": "span1to2",
         "start": "node1",
         "end": "node2",
-        "route": {},
     }
+
+
+def test_export_no_geom():
+    """
+    Export nodes with no geographic features
+    """
+    sqlite_filename = _get_and_setup_sqlite_filename()
+
+    # Set Some data
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network')")
+    # TODO Hard coding the id's is a bit of an assumption but we are getting away with it
+    cursor.execute(
+        "INSERT INTO nodes (ofds_id, name, network_id, geom) VALUES ('nodea', 'Node A', 1, '')"
+    )
+    connection.commit()
+    connection.close()
+
+    # Export
+    data = export_sqlite_to_json(sqlite_filename)
+
+    # Test
+    assert data["networks"][0]["id"] == "netty"
+    assert data["networks"][0]["name"] == "Network"
+    assert data["networks"][0]["nodes"][0]["id"] == "nodea"
+    assert data["networks"][0]["nodes"][0]["name"] == "Node A"
+    assert "location" not in data["networks"][0]["nodes"][0]

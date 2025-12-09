@@ -74,11 +74,11 @@ def test_import_1():
     assert ("orgb", "Org B", 2) == rows[1]
     # nodes
     cursor.execute(
-        "SELECT ofds_id, physicalInfrastructureProvider, network_id FROM nodes ORDER BY ofds_id ASC"
+        "SELECT ofds_id, physicalInfrastructureProvider, network_id, geom FROM nodes ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("node1", 1, 1) == rows[0]
+    assert ("node1", 1, 1, None) == rows[0]
     # wrapup
     connection.close()
 

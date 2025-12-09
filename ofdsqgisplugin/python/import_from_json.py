@@ -188,8 +188,6 @@ class ImportJSONToCallable:
                         )
                         if isinstance(geom_data, dict):
                             data.append(("geom", json.dumps(geom_data)))
-                        else:
-                            data.append(("geom", ""))
                     geopackage_id = self._callable_write(table_name, data)
                     self._standard_id_to_geopackage_id_mappings[table_name][
                         thing_id

@@ -199,11 +199,15 @@ class ExportCallableToJSON:
                             ),
                         )
                 if self._schema_information["tables"][table_name]["geographic_field"]:
-                    out[
-                        self._schema_information["tables"][table_name][
-                            "geographic_field"
-                        ]
-                    ] = json.loads(data["geom"])
+                    geom_data = data["geom"]
+                    if geom_data:
+                        geom_data = json.loads(geom_data)
+                        if geom_data:
+                            out[
+                                self._schema_information["tables"][table_name][
+                                    "geographic_field"
+                                ]
+                            ] = geom_data
                 # other tables
                 # This is an inefficient way of doing this, as we loop within loop - but will do for first pass and the small data sizes we expect
                 for sub_table_and_field_name, parent_field_name in sub_tables:

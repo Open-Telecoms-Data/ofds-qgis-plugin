@@ -315,7 +315,7 @@ def test_import_multiple_codelists_1():
     rows = cursor.fetchall()
     assert 1 == len(rows)
     assert ("node1", 1) == rows[0]
-    # node technologies
+    # node type
     cursor.execute(
         """
         SELECT nodes.ofds_id, codelist_open_nodeType.code
@@ -328,6 +328,71 @@ def test_import_multiple_codelists_1():
     rows = cursor.fetchall()
     assert 1 == len(rows)
     assert ("node1", "addDropSite") == rows[0]
+    # wrapup
+    connection.close()
+
+
+def test_import_multiple_open_codelists_new_value_1():
+    """ """
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "nodes": [
+                        {"id": "node1", "type": ["newAndSpecial"]},
+                    ],
+                },
+            ]
+        },
+        sqlite_filename,
+        enforce_foreign_keys=True,
+    )
+
+    # Test the database contents
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    # networks
+    cursor.execute("SELECT id, ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert (1, "network1", "Network 1") == rows[0]
+    # nodes
+    cursor.execute("SELECT ofds_id, network_id FROM nodes ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("node1", 1) == rows[0]
+    # node type
+    cursor.execute(
+        """
+        SELECT nodes.ofds_id, codelist_open_nodeType.code
+        FROM relation_nodes_type
+        JOIN nodes ON nodes.id == relation_nodes_type.base_id
+        JOIN codelist_open_nodeType ON codelist_open_nodeType.id = relation_nodes_type.related_id
+        ORDER BY nodes.ofds_id ASC
+        """
+    )
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("node1", "newAndSpecial") == rows[0]
     # wrapup
     connection.close()
 

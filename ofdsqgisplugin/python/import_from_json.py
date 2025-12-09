@@ -272,6 +272,25 @@ class ImportJSONToCallable:
                                     else relation_data.get("id")
                                 )
                                 if relation_data_id:
+                                    # If an open code list, it may be a new value we have to insert
+                                    if (
+                                        relation.get("codelist")
+                                        and not relation_data_id
+                                        in self._standard_id_to_geopackage_id_mappings[
+                                            relation["related_table"]
+                                        ]
+                                    ):
+                                        self._standard_id_to_geopackage_id_mappings[
+                                            relation["related_table"]
+                                        ][relation_data_id] = self._callable_write(
+                                            relation["related_table"],
+                                            [
+                                                ("code", relation_data_id),
+                                                ("description", relation_data_id),
+                                            ],
+                                        )
+
+                                    # Now insert to mapping table
                                     self._callable_write(
                                         relation["mapping_table"],
                                         [

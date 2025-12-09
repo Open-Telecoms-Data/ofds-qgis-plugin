@@ -135,7 +135,7 @@ def add_layers(filename):
                     ),
                 )
 
-            # --------  foreign key (dict with id and name)
+            # --------  foreign key (both types, direct and dict with id and name)
             elif (
                 field_info["type"] == "foreign_key_id_name_dict"
                 or field_info["type"] == "foreign_key"

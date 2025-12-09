@@ -92,7 +92,11 @@ class ExportCallableToJSON:
                 column_info["foreignkey_layer"]
             ][value]["id"]
         elif column_type == "foreign_key_id_name_dict":
-            data[final_key] = {"id": value}
+            data[final_key] = {
+                "id": self._tables_ids_to_standard_info_mappings[
+                    column_info["foreignkey_layer"]
+                ][value]["id"]
+            }
         elif (
             column_type == "open_codelist"
             and value in open_codelist_ids_to_codes_mappings
@@ -114,7 +118,7 @@ class ExportCallableToJSON:
                 )
         # Load table data that is the target of foreign keys for use later
         self._tables_ids_to_standard_info_mappings = {}
-        for table_name in ["nodes", "networks"]:
+        for table_name in ["nodes", "networks", "organisations", "phases"]:
             self._tables_ids_to_standard_info_mappings[table_name] = {}
             for data in self._callable(table_name):
                 self._tables_ids_to_standard_info_mappings[table_name][data["id"]] = {

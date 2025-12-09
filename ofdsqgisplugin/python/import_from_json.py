@@ -77,9 +77,11 @@ class ImportJSONToCallable:
 
         # ------------ Foreign key (id and name dict)
         if column_type == "foreign_key_id_name_dict" and isinstance(out, dict):
-            return out.get("id")
+            return self._standard_id_to_geopackage_id_mappings[
+                column_info["foreignkey_layer"]
+            ][out.get("id")]
 
-        # ------------ Foreign key (id and name dict)
+        # ------------ Foreign key (normal)
         elif column_type == "foreign_key":
             return self._standard_id_to_geopackage_id_mappings[
                 column_info["foreignkey_layer"]
@@ -146,11 +148,13 @@ class ImportJSONToCallable:
         self._standard_id_to_geopackage_id_mappings = {}
         list_idx_to_geopackage_id_mappings = {}
         # First pass, make main tables and store mappings
+        # The order of these tables is carefully choosen, as some of them have foreign keys to each other.
+        # We have to load the target tables first, so we have information about them before we load the tables that have the foreign keys on.
         for table_name in [
-            "nodes",
-            "spans",
             "phases",
             "organisations",
+            "nodes",
+            "spans",
             "contracts",
         ]:
             table_datas = network.get(table_name, [])

@@ -78,7 +78,7 @@ def test_import_1():
     )
     rows = cursor.fetchall()
     assert 1 == len(rows)
-    assert ("node1", "orga", 1) == rows[0]
+    assert ("node1", 1, 1) == rows[0]
     # wrapup
     connection.close()
 

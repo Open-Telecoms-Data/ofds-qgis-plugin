@@ -226,7 +226,7 @@ class Builder:
                 i["name"], i["foreignkey_layer"]
             )
             for i in columns
-            if i["type"] == "foreign_key"
+            if i["type"] in ["foreign_key", "foreign_key_id_name_dict"]
         ]
         self.cursor.execute(
             """
@@ -330,8 +330,8 @@ class Builder:
                 in self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS.keys()
             ):
                 column["type"] = "foreign_key_id_name_dict"
-                column["sqlite_type"] = "text"
-                column["foreignkey_key"] = "ofds_id"
+                column["sqlite_type"] = "integer"
+                column["foreignkey_key"] = "id"
                 column["foreignkey_value"] = "name"
                 column["foreignkey_layer"] = self.MAPPING_FOREIGN_KEY_NAMES_TO_LAYERS[
                     property_value["title"]

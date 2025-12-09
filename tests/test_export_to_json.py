@@ -71,7 +71,11 @@ def test_export_network_with_no_id():
 
 
 def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linked():
-    """Tests a network with an org and a node. The org is in the node's networkProviders."""
+    """
+    Tests a network with an org and a node.
+
+    The org is in the node's networkProviders, and physicalInfrastructureProvider - this tests different ways there could be a link.
+    """
     sqlite_filename = _get_and_setup_sqlite_filename()
 
     # Set Some data
@@ -83,7 +87,7 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
         "INSERT INTO organisations (ofds_id, name, network_id) VALUES ('orga', 'Org A', 1)"
     )
     cursor.execute(
-        "INSERT INTO nodes (ofds_id, name, network_id, geom) VALUES ('nodea', 'Node A', 1, '{}')"
+        "INSERT INTO nodes (ofds_id, name, network_id, geom, physicalInfrastructureProvider) VALUES ('nodea', 'Node A', 1, '{}', 1)"
     )
     cursor.execute(
         "INSERT INTO relation_nodes_networkProviders(base_id, related_id) VALUES (1, 1)"
@@ -101,6 +105,10 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
     assert data["networks"][0]["nodes"][0]["id"] == "nodea"
     assert data["networks"][0]["nodes"][0]["name"] == "Node A"
     assert data["networks"][0]["nodes"][0]["networkProviders"][0]["id"] == "orga"
+    assert (
+        data["networks"][0]["nodes"][0]["physicalInfrastructureProvider"]["id"]
+        == "orga"
+    )
 
 
 def test_export_contract_documents_1():

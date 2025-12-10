@@ -77,15 +77,29 @@ class ImportJSONToCallable:
 
         # ------------ Foreign key (id and name dict)
         if column_type == "foreign_key_id_name_dict" and isinstance(out, dict):
-            return self._standard_id_to_geopackage_id_mappings[
-                column_info["foreignkey_layer"]
-            ][out.get("id")]
+            return (
+                self._standard_id_to_geopackage_id_mappings[
+                    column_info["foreignkey_layer"]
+                ][out.get("id")]
+                if out.get("id")
+                in self._standard_id_to_geopackage_id_mappings[
+                    column_info["foreignkey_layer"]
+                ]
+                else None
+            )
 
         # ------------ Foreign key (normal)
         elif column_type == "foreign_key":
-            return self._standard_id_to_geopackage_id_mappings[
-                column_info["foreignkey_layer"]
-            ][out]
+            return (
+                self._standard_id_to_geopackage_id_mappings[
+                    column_info["foreignkey_layer"]
+                ][out]
+                if out
+                in self._standard_id_to_geopackage_id_mappings[
+                    column_info["foreignkey_layer"]
+                ]
+                else None
+            )
 
         # ------------ Open codelist
         elif column_type == "open_codelist" and out:

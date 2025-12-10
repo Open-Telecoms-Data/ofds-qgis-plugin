@@ -532,3 +532,48 @@ def test_span_with_start_and_end_set_1():
     assert (1, "span1to2", 1, 2, 1) == rows[0]
     # wrapup
     connection.close()
+
+
+def test_import_broken_foreign_keys():
+    """
+    Can we import broken data with foreign keys that point to things that don't exist without crashing?
+    """
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_3",
+            "geopackage.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "nodes": [
+                        {
+                            "id": "node1",
+                            "physicalInfrastructureProvider": {"id": "orga"},
+                        }
+                    ],
+                    "spans": [{"id": "span1to2", "start": "node1", "end": "node2"}],
+                }
+            ]
+        },
+        sqlite_filename,
+        enforce_foreign_keys=True,
+    )
+
+    # We don't actually test any results here.
+    # The test is simply can the above function run without crashing.

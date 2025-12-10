@@ -2,7 +2,8 @@ import csv
 import json
 import os
 
-from qgis.core import (Qgis, QgsAttributeEditorRelation, QgsDefaultValue,
+from qgis.core import (Qgis, QgsAttributeEditorContainer,
+                       QgsAttributeEditorRelation, QgsDefaultValue,
                        QgsEditFormConfig, QgsEditorWidgetSetup,
                        QgsLayerTreeLayer, QgsMapLayer, QgsProject, QgsRelation,
                        QgsVectorLayer)
@@ -176,6 +177,7 @@ def add_layers(filename):
                 )
 
         # --------  Relations
+        relation_editors = []
         for relation in table_info["relations"]:
 
             # Load join table
@@ -230,15 +232,35 @@ def add_layers(filename):
             QgsProject.instance().relationManager().addRelation(join_to_related)
 
             # Set up form widget
-            form_config = layers[table_name].editFormConfig()
             relation_editor = QgsAttributeEditorRelation(join_to_base, None)
             relation_editor.setLabel(relation["title"])
             # set's cardinality option
             relation_editor.setNmRelationId(join_to_related.id())
-            # set's mode to "Drag and drop designer"
-            form_config.setLayout(QgsEditFormConfig.TabLayout)
-            form_config.invisibleRootContainer().addChildElement(relation_editor)
-            layers[table_name].setEditFormConfig(form_config)
+            relation_editors.append(relation_editor)
+
+        # Set up tabs, if needed
+        if relation_editors:
+            # Setup
+            edit_form_config = layers[table_name].editFormConfig()
+            edit_form_config.setLayout(QgsEditFormConfig.TabLayout)
+
+            # Create a tab for all existing fields
+            tab_fields = QgsAttributeEditorContainer("Fields", None)
+            tab_fields.setType(Qgis.AttributeEditorContainerType.Tab)
+            for child in edit_form_config.invisibleRootContainer().children():
+                tab_fields.addChildElement(child.clone(None))
+            edit_form_config.invisibleRootContainer().clear()
+            edit_form_config.invisibleRootContainer().addChildElement(tab_fields)
+
+            # Create a tab for all relations
+            tab_relations = QgsAttributeEditorContainer("Relations", None)
+            tab_relations.setType(Qgis.AttributeEditorContainerType.Tab)
+            for relation_editor in relation_editors:
+                tab_relations.addChildElement(relation_editor)
+            edit_form_config.invisibleRootContainer().addChildElement(tab_relations)
+
+            # Wrap up
+            layers[table_name].setEditFormConfig(edit_form_config)
 
     # --------   Project Properties
     QgsProject.instance().setTransactionMode(Qgis.TransactionMode.AutomaticGroups)

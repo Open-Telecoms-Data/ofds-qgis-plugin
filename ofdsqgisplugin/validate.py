@@ -1,8 +1,9 @@
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtGui import QStandardItem, QStandardItemModel
+from PyQt5.QtWidgets import (QHBoxLayout, QListView, QMainWindow, QPushButton,
+                             QVBoxLayout, QWidget)
 
 from .export import get_json
 from .libcoveofds.python_validate import PythonValidate
-from .ui.validate import Ui_Dialog
 
 
 def error_to_human_message(data):
@@ -57,22 +58,56 @@ def error_to_human_message(data):
     return str(data)
 
 
-class ValidateDialog(QDialog):
-
-    ui: Ui_Dialog
+class ValidateDialog(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.ui = Ui_Dialog()
-        self.ui.setupUi(self)
+
+        # window setup
+        self.setWindowTitle("OFDS Validation Results")
+        self.resize(600, 600)
+
+        # central widget is vertical list
+        central = QWidget()
+        layout = QVBoxLayout(central)
+
+        # First item is a list view
+        self.listview = QListView()
+        self.model = QStandardItemModel(self.listview)
+        self.listview.setModel(self.model)
+        self.listview.setSpacing(10)
+        self.listview.setWordWrap(True)
+        layout.addWidget(self.listview)
+
+        # Second item is a big ok button
+        btn_layout = QHBoxLayout()
+        ok_btn = QPushButton("Ok")
+        ok_btn.clicked.connect(self.button_ok_clicked)
+        btn_layout.addWidget(ok_btn)
+        layout.addLayout(btn_layout)
+
+        # Finally add central widget
+        self.setCentralWidget(central)
+
+    def button_ok_clicked(self):
+        self.hide()
 
     def validate(self, layers, message_bar):
+        # validate
         data = get_json(layers)
         validator = PythonValidate()
         results = validator.validate(data)
+        # if all fine ....
         if not results:
             message_bar.pushMessage("No errors found while validating OFDS data!")
             return
-        out = "\n".join(["ERROR: " + error_to_human_message(r) for r in results])
-        self.ui.textBrowser.setText(out)
+        # oh oh!
+        # clear list
+        self.model.clear()
+        # create list
+        for result in results:
+            item = QStandardItem(error_to_human_message(result))
+            item.setEditable(False)
+            self.model.appendRow(item)
+        # show
         self.show()

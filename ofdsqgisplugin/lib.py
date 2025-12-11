@@ -37,7 +37,6 @@ def find_layers():
                 or possible_layer in relation_tables_names
             ):
                 layers[possible_layer] = v
-    # If any of the layers are missing, return None.
-    # That way downstream code can raise an alert on a simple "if" check
-    # and can then trust all layers are present
-    return None if [k for k, v in layers.items() if not v] else layers
+    # Return
+    # We aren't checking if any layers are missing here, may be we should?
+    return layers

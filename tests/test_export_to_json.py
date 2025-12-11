@@ -104,11 +104,14 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
     assert data["networks"][0]["organisations"][0] == {"id": "orga", "name": "Org A"}
     assert data["networks"][0]["nodes"][0]["id"] == "nodea"
     assert data["networks"][0]["nodes"][0]["name"] == "Node A"
-    assert data["networks"][0]["nodes"][0]["networkProviders"][0]["id"] == "orga"
-    assert (
-        data["networks"][0]["nodes"][0]["physicalInfrastructureProvider"]["id"]
-        == "orga"
-    )
+    assert data["networks"][0]["nodes"][0]["networkProviders"][0] == {
+        "id": "orga",
+        "name": "Org A",
+    }
+    assert data["networks"][0]["nodes"][0]["physicalInfrastructureProvider"] == {
+        "id": "orga",
+        "name": "Org A",
+    }
 
 
 def test_export_contract_documents_1():

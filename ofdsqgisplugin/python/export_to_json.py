@@ -92,11 +92,10 @@ class ExportCallableToJSON:
                 column_info["foreignkey_layer"]
             ][value]["id"]
         elif column_type == "foreign_key_id_name_dict":
-            data[final_key] = {
-                "id": self._tables_ids_to_standard_info_mappings[
-                    column_info["foreignkey_layer"]
-                ][value]["id"]
-            }
+            info = self._tables_ids_to_standard_info_mappings[
+                column_info["foreignkey_layer"]
+            ][value]
+            data[final_key] = {"id": info["id"], "name": info["name"]}
         elif (
             column_type == "open_codelist"
             and value in open_codelist_ids_to_codes_mappings
@@ -122,7 +121,8 @@ class ExportCallableToJSON:
             self._tables_ids_to_standard_info_mappings[table_name] = {}
             for data in self._callable(table_name):
                 self._tables_ids_to_standard_info_mappings[table_name][data["id"]] = {
-                    "id": data["ofds_id"]
+                    "id": data["ofds_id"],
+                    "name": data["name"] if "name" in data.keys() else None,
                 }
         # Networks first
         for data in self._callable("networks"):
@@ -163,7 +163,8 @@ class ExportCallableToJSON:
             geopackage_id_to_standard_info_mappings[table_name] = {}
             for data in self._callable(table_name):
                 geopackage_id_to_standard_info_mappings[table_name][data["id"]] = {
-                    "id": data["ofds_id"]
+                    "id": data["ofds_id"],
+                    "name": data["name"] if "name" in data.keys() else None,
                 }
         # Other tables - now process
         for table_name, sub_tables in [

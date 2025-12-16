@@ -33,25 +33,19 @@ class NetworkEditDialog(QMainWindow):
         for field_idx, field_info in enumerate(
             get_schema_information()["tables"]["networks"]["columns"]
         ):
+
+            title = QLabel(field_info["title"], None)
+            scroll_area_layout.addWidget(title)
+
+            description = QLabel(field_info["description"], None)
+            description.setWordWrap(True)
+            scroll_area_layout.addWidget(description)
+
             if field_info["type"] == "text":
-                title = QLabel(field_info["title"], None)
-                scroll_area_layout.addWidget(title)
-
-                description = QLabel(field_info["description"], None)
-                description.setWordWrap(True)
-                scroll_area_layout.addWidget(description)
-
                 self.fields[field_idx] = QLineEdit()
                 scroll_area_layout.addWidget(self.fields[field_idx])
 
             elif field_info["type"] == "number":
-                title = QLabel(field_info["title"], None)
-                scroll_area_layout.addWidget(title)
-
-                description = QLabel(field_info["description"], None)
-                description.setWordWrap(True)
-                scroll_area_layout.addWidget(description)
-
                 self.fields[field_idx] = {
                     "select": QCheckBox(),
                     "number": QDoubleSpinBox(),

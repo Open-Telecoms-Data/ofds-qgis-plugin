@@ -5,16 +5,15 @@ from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QListView, QListWidget,
 
 from ..lib import find_layers
 from .network_edit import NetworkEditDialog
-from .phase_list import PhaseListDialog
 
 
-class HomeDialog(QMainWindow):
+class PhaseListDialog(QMainWindow):
 
     def __init__(self):
         super().__init__()
 
         # window setup
-        self.setWindowTitle("OFDS Networks")
+        self.setWindowTitle("OFDS Phases")
         self.resize(600, 600)
 
         # central widget is vertical list
@@ -29,12 +28,8 @@ class HomeDialog(QMainWindow):
         btn_layout = QHBoxLayout()
 
         refresh_btn = QPushButton("Refresh")
-        refresh_btn.clicked.connect(self.load_networks)
+        refresh_btn.clicked.connect(self.load_phases)
         btn_layout.addWidget(refresh_btn)
-
-        new_btn = QPushButton("New")
-        new_btn.clicked.connect(self.new)
-        btn_layout.addWidget(new_btn)
 
         close_btn = QPushButton("Close")
         close_btn.clicked.connect(self.button_close_clicked)
@@ -45,28 +40,34 @@ class HomeDialog(QMainWindow):
         # Finally add central widget
         self.setCentralWidget(central)
 
+        # Vars to track things
+        self.network_data = {}
+
     def button_close_clicked(self):
         self.hide()
 
-    def start(self):
-        self.load_networks()
+    def start(self, network_data):
+        self.network_data = network_data
+        self.load_phases()
         self.show()
 
-    def load_networks(self):
+    def load_phases(self):
         self.listview.clear()
         layers = find_layers()
-        for f in layers["networks"].getFeatures():
+        for f in layers["phases"].getFeatures():
             data = {}
-            for field_name in layers["networks"].fields().names():
+            for field_name in layers["phases"].fields().names():
                 data[field_name] = f.attribute(field_name)
 
-            row_widget = self._get_widget_for_network(data)
-            item = QListWidgetItem(self.listview)
-            item.setSizeHint(row_widget.sizeHint())
-            self.listview.addItem(item)
-            self.listview.setItemWidget(item, row_widget)
+            if data["network_id"] == self.network_data["id"]:
 
-    def _get_widget_for_network(self, data):
+                row_widget = self._get_widget_for_phase(data)
+                item = QListWidgetItem(self.listview)
+                item.setSizeHint(row_widget.sizeHint())
+                self.listview.addItem(item)
+                self.listview.setItemWidget(item, row_widget)
+
+    def _get_widget_for_phase(self, data):
         network_row_widget = QWidget()
         h = QHBoxLayout(network_row_widget)
 
@@ -77,29 +78,4 @@ class HomeDialog(QMainWindow):
         text_layout.addWidget(subtitle)
         h.addLayout(text_layout)
 
-        button_layout = QVBoxLayout()
-
-        button_edit = QPushButton("Edit")
-        button_edit.clicked.connect(lambda: self.edit(data))
-        button_layout.addWidget(button_edit)
-
-        button_phases = QPushButton("Phases")
-        button_phases.clicked.connect(lambda: self.phases(data))
-        button_layout.addWidget(button_phases)
-
-        h.addLayout(button_layout)
-
         return network_row_widget
-
-    def new(self):
-        self.network_new = NetworkEditDialog()
-        self.network_new.start_new()
-
-    def edit(self, data):
-        # TODO This means you can't open 2 edit dialogs at once, which you might want to do.
-        self.network_new = NetworkEditDialog()
-        self.network_new.start_edit(data)
-
-    def phases(self, data):
-        self.phases_dalog = PhaseListDialog()
-        self.phases_dalog.start(data)

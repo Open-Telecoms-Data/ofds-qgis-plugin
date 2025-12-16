@@ -57,7 +57,7 @@ class OFDSQGISPlugin:
         self.action_export_json.triggered.connect(self.export_json)
         # --------------------- custom ui
         self.action_custom_ui = QAction(
-            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_validate.svg"))),
+            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_custom_ui.svg"))),
             "Open UI",
             self.iface.mainWindow(),
         )

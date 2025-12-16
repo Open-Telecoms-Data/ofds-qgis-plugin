@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QLineEdit, QListView,
-                             QMainWindow, QPushButton, QScrollArea,
-                             QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (QCheckBox, QDoubleSpinBox, QHBoxLayout, QLabel,
+                             QLineEdit, QListView, QMainWindow, QPushButton,
+                             QScrollArea, QVBoxLayout, QWidget)
 from qgis.core import QgsFeature, QgsJsonUtils
 
 from ..lib import find_layers
@@ -43,6 +43,21 @@ class NetworkEditDialog(QMainWindow):
 
                 self.fields[field_idx] = QLineEdit()
                 scroll_area_layout.addWidget(self.fields[field_idx])
+
+            elif field_info["type"] == "number":
+                title = QLabel(field_info["title"], None)
+                scroll_area_layout.addWidget(title)
+
+                description = QLabel(field_info["description"], None)
+                description.setWordWrap(True)
+                scroll_area_layout.addWidget(description)
+
+                self.fields[field_idx] = {
+                    "select": QCheckBox(),
+                    "number": QDoubleSpinBox(),
+                }
+                scroll_area_layout.addWidget(self.fields[field_idx]["select"])
+                scroll_area_layout.addWidget(self.fields[field_idx]["number"])
 
         layout.addWidget(scroll_area)
 
@@ -89,6 +104,13 @@ class NetworkEditDialog(QMainWindow):
                     self.fields[field_idx].setText(data[field_info["name"]])
                 else:
                     self.fields[field_idx].setText("")
+            elif field_info["type"] == "number":
+                if data[field_info["name"]]:
+                    self.fields[field_idx]["select"].setChecked(True)
+                    self.fields[field_idx]["number"].setValue(data[field_info["name"]])
+                else:
+                    self.fields[field_idx]["select"].setChecked(False)
+                    self.fields[field_idx]["number"].setValue(0.0)
         # Show
         self.show()
 
@@ -114,6 +136,13 @@ class NetworkEditDialog(QMainWindow):
                 feature.setAttribute(
                     field_info["name"], self.fields[field_idx].displayText()
                 )
+            elif field_info["type"] == "number":
+                if self.fields[field_idx]["select"].isChecked():
+                    feature.setAttribute(
+                        field_info["name"], self.fields[field_idx]["number"].value()
+                    )
+                else:
+                    feature.setAttribute(field_info["name"], None)
 
         # Update or add features
         if self.existing_data:

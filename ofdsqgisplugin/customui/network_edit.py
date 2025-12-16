@@ -42,7 +42,6 @@ class NetworkEditDialog(QMainWindow):
                 scroll_area_layout.addWidget(description)
 
                 self.fields[field_idx] = QLineEdit()
-                self.fields[field_idx].setPlaceholderText(field_info["name"])
                 scroll_area_layout.addWidget(self.fields[field_idx])
 
         layout.addWidget(scroll_area)

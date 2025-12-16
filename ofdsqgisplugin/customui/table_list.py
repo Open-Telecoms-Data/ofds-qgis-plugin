@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QListView, QListWidget,
                              QVBoxLayout, QWidget)
 
 from ..lib import find_layers
-from .network_edit import NetworkEditDialog
+from .table_edit import TableEditDialog
 
 
 class TableListDialog(QMainWindow):
@@ -31,6 +31,10 @@ class TableListDialog(QMainWindow):
         refresh_btn = QPushButton("Refresh")
         refresh_btn.clicked.connect(self.load_data)
         btn_layout.addWidget(refresh_btn)
+
+        new_btn = QPushButton("New")
+        new_btn.clicked.connect(self.new)
+        btn_layout.addWidget(new_btn)
 
         close_btn = QPushButton("Close")
         close_btn.clicked.connect(self.button_close_clicked)
@@ -79,4 +83,21 @@ class TableListDialog(QMainWindow):
         text_layout.addWidget(subtitle)
         h.addLayout(text_layout)
 
+        button_layout = QVBoxLayout()
+
+        button_edit = QPushButton("Edit")
+        button_edit.clicked.connect(lambda: self.edit(data))
+        button_layout.addWidget(button_edit)
+
+        h.addLayout(button_layout)
+
         return network_row_widget
+
+    def new(self):
+        self.new_dialog = TableEditDialog(self.table_name)
+        self.new_dialog.start_new(self.network_data)
+
+    def edit(self, data):
+        # TODO This means you can't open 2 edit dialogs at once, which you might want to do.
+        self.edit_dialog = TableEditDialog(self.table_name)
+        self.edit_dialog.start_edit(data, self.network_data)

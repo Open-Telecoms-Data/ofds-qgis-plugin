@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QLineEdit, QListView,
-                             QMainWindow, QPushButton, QVBoxLayout, QWidget)
+                             QMainWindow, QPushButton, QScrollArea,
+                             QVBoxLayout, QWidget)
 from qgis.core import QgsFeature, QgsJsonUtils
 
 from ..lib import find_layers
@@ -22,20 +23,29 @@ class NetworkEditDialog(QMainWindow):
         # First item is the form
         self.fields = {}
 
+        scroll_area = QScrollArea()
+        scroll_area_widget = QWidget()
+        scroll_area_layout = QVBoxLayout()
+        scroll_area_widget.setLayout(scroll_area_layout)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(scroll_area_widget)
+
         for field_idx, field_info in enumerate(
             get_schema_information()["tables"]["networks"]["columns"]
         ):
             if field_info["type"] == "text":
                 title = QLabel(field_info["title"], None)
-                layout.addWidget(title)
+                scroll_area_layout.addWidget(title)
 
                 description = QLabel(field_info["description"], None)
                 description.setWordWrap(True)
-                layout.addWidget(description)
+                scroll_area_layout.addWidget(description)
 
                 self.fields[field_idx] = QLineEdit()
                 self.fields[field_idx].setPlaceholderText(field_info["name"])
-                layout.addWidget(self.fields[field_idx])
+                scroll_area_layout.addWidget(self.fields[field_idx])
+
+        layout.addWidget(scroll_area)
 
         # Second item is butons
         btn_layout = QHBoxLayout()

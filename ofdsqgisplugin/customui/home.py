@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QListView, QListWidget,
 
 from ..lib import find_layers
 from .network_edit import NetworkEditDialog
-from .phase_list import PhaseListDialog
+from .table_list import TableListDialog
 
 
 class HomeDialog(QMainWindow):
@@ -83,9 +83,25 @@ class HomeDialog(QMainWindow):
         button_edit.clicked.connect(lambda: self.edit(data))
         button_layout.addWidget(button_edit)
 
-        button_phases = QPushButton("Phases")
-        button_phases.clicked.connect(lambda: self.phases(data))
-        button_layout.addWidget(button_phases)
+        button_table_1 = QPushButton("Nodes")
+        button_table_1.clicked.connect(lambda: self.table_list("nodes", data))
+        button_layout.addWidget(button_table_1)
+
+        button_table_2 = QPushButton("Spans")
+        button_table_2.clicked.connect(lambda: self.table_list("spans", data))
+        button_layout.addWidget(button_table_2)
+
+        button_table_3 = QPushButton("Phases")
+        button_table_3.clicked.connect(lambda: self.table_list("phases", data))
+        button_layout.addWidget(button_table_3)
+
+        button_table_4 = QPushButton("Organisations")
+        button_table_4.clicked.connect(lambda: self.table_list("organisations", data))
+        button_layout.addWidget(button_table_4)
+
+        button_table_5 = QPushButton("Contracts")
+        button_table_5.clicked.connect(lambda: self.table_list("contracts", data))
+        button_layout.addWidget(button_table_5)
 
         h.addLayout(button_layout)
 
@@ -100,6 +116,6 @@ class HomeDialog(QMainWindow):
         self.network_new = NetworkEditDialog()
         self.network_new.start_edit(data)
 
-    def phases(self, data):
-        self.phases_dalog = PhaseListDialog()
-        self.phases_dalog.start(data)
+    def table_list(self, table_name, data):
+        self.table_list_dialog = TableListDialog(table_name)
+        self.table_list_dialog.start(data)

@@ -7,13 +7,14 @@ from ..lib import find_layers
 from .network_edit import NetworkEditDialog
 
 
-class PhaseListDialog(QMainWindow):
+class TableListDialog(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, table_name):
+        self.table_name = table_name
         super().__init__()
 
         # window setup
-        self.setWindowTitle("OFDS Phases")
+        self.setWindowTitle("OFDS " + table_name)  # TODO better title
         self.resize(600, 600)
 
         # central widget is vertical list
@@ -28,7 +29,7 @@ class PhaseListDialog(QMainWindow):
         btn_layout = QHBoxLayout()
 
         refresh_btn = QPushButton("Refresh")
-        refresh_btn.clicked.connect(self.load_phases)
+        refresh_btn.clicked.connect(self.load_data)
         btn_layout.addWidget(refresh_btn)
 
         close_btn = QPushButton("Close")
@@ -48,15 +49,15 @@ class PhaseListDialog(QMainWindow):
 
     def start(self, network_data):
         self.network_data = network_data
-        self.load_phases()
+        self.load_data()
         self.show()
 
-    def load_phases(self):
+    def load_data(self):
         self.listview.clear()
         layers = find_layers()
-        for f in layers["phases"].getFeatures():
+        for f in layers[self.table_name].getFeatures():
             data = {}
-            for field_name in layers["phases"].fields().names():
+            for field_name in layers[self.table_name].fields().names():
                 data[field_name] = f.attribute(field_name)
 
             if data["network_id"] == self.network_data["id"]:
@@ -73,7 +74,7 @@ class PhaseListDialog(QMainWindow):
 
         text_layout = QVBoxLayout()
         title = QLabel(str(data["ofds_id"]), None)
-        subtitle = QLabel(str(data["name"]), None)
+        subtitle = QLabel(str(data["name"] if "name" in data else data["title"]), None)
         text_layout.addWidget(title)
         text_layout.addWidget(subtitle)
         h.addLayout(text_layout)

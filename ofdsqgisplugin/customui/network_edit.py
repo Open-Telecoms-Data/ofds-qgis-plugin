@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (QCheckBox, QDoubleSpinBox, QHBoxLayout, QLabel,
-                             QLineEdit, QListView, QMainWindow, QPushButton,
-                             QScrollArea, QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QHBoxLayout,
+                             QLabel, QLineEdit, QListView, QMainWindow,
+                             QPushButton, QScrollArea, QVBoxLayout, QWidget)
 from qgis.core import QgsFeature, QgsJsonUtils
 
 from ..lib import find_layers
@@ -53,6 +53,12 @@ class NetworkEditDialog(QMainWindow):
                 scroll_area_layout.addWidget(self.fields[field_idx]["select"])
                 scroll_area_layout.addWidget(self.fields[field_idx]["number"])
 
+            elif field_info["type"] == "open_codelist":
+                self.fields[field_idx] = {"select": QComboBox()}
+                scroll_area_layout.addWidget(self.fields[field_idx]["select"])
+
+                # TODO must add a way for people to add new items
+
         layout.addWidget(scroll_area)
 
         # Second item is butons
@@ -73,7 +79,7 @@ class NetworkEditDialog(QMainWindow):
 
         # Vars to track things
         self.existing_data = None
-        self.layer = find_layers()["networks"]
+        self.layers = find_layers()
 
     def discard(self):
         # TODO prompt user, are they sure?
@@ -105,21 +111,52 @@ class NetworkEditDialog(QMainWindow):
                 else:
                     self.fields[field_idx]["select"].setChecked(False)
                     self.fields[field_idx]["number"].setValue(0.0)
+            elif field_info["type"] == "open_codelist":
+                # clear current values
+                self.fields[field_idx]["select"].clear()
+
+                # load new values & add
+                self.fields[field_idx]["values"] = []
+                for codelist_feature in self.layers[
+                    "codelist_open_" + field_info["codelist"][:-4]
+                ].getFeatures():
+                    self.fields[field_idx]["values"].append(
+                        (
+                            codelist_feature.attribute("id"),
+                            codelist_feature.attribute("description"),
+                        )
+                    )
+                print(self.fields[field_idx]["values"])
+                self.fields[field_idx]["select"].addItems(
+                    [""] + [i[1] for i in self.fields[field_idx]["values"]]
+                )
+
+                # set selected value
+                current_value = [
+                    i[1]
+                    for i in self.fields[field_idx]["values"]
+                    if i[0] == data[field_info["name"]]
+                ]
+                if current_value:
+                    self.fields[field_idx]["select"].setCurrentText(current_value[0])
+                else:
+                    self.fields[field_idx]["select"].setCurrentText("")
+
         # Show
         self.show()
 
     def save(self):
         # Start editing
-        self.layer.startEditing()
+        self.layers["networks"].startEditing()
 
         # Get feature, or make a new one
         if self.existing_data:
-            for feature in self.layer.getFeatures():
+            for feature in self.layers["networks"].getFeatures():
                 if feature.attribute("id") == self.existing_data["id"]:
                     break
             # TODO error if not found
         else:
-            feature = QgsFeature(self.layer.fields())
+            feature = QgsFeature(self.layers["networks"].fields())
 
         # Set data
 
@@ -130,6 +167,7 @@ class NetworkEditDialog(QMainWindow):
                 feature.setAttribute(
                     field_info["name"], self.fields[field_idx].displayText()
                 )
+
             elif field_info["type"] == "number":
                 if self.fields[field_idx]["select"].isChecked():
                     feature.setAttribute(
@@ -138,16 +176,31 @@ class NetworkEditDialog(QMainWindow):
                 else:
                     feature.setAttribute(field_info["name"], None)
 
+            elif field_info["type"] == "open_codelist":
+                current_text = self.fields[field_idx]["select"].currentText()
+                if current_text:
+                    current_value = [
+                        i[0]
+                        for i in self.fields[field_idx]["values"]
+                        if i[1] == current_text
+                    ]
+                    if current_value:
+                        feature.setAttribute(field_info["name"], current_value[0])
+                    else:
+                        feature.setAttribute(field_info["name"], None)
+                else:
+                    feature.setAttribute(field_info["name"], None)
+
         # Update or add features
         if self.existing_data:
-            if not self.layer.updateFeature(feature):
+            if not self.layers["networks"].updateFeature(feature):
                 raise Exception("Could not Update")
         else:
-            if not self.layer.addFeature(feature):
+            if not self.layers["networks"].addFeature(feature):
                 raise Exception("Could not add to table_name layer")
 
         # Commit
-        if not self.layer.commitChanges():
+        if not self.layers["networks"].commitChanges():
             raise Exception("Could not commit layer")
 
         # TODO call refresh on the list of networks on home dialog

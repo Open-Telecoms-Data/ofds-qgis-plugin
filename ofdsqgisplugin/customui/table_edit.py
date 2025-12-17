@@ -89,45 +89,17 @@ class TableEditDialog(QMainWindow):
         # TODO prompt user, are they sure?
         self.hide()
 
-    def start_new(self, network_data):
-        if network_data:
-            self.setWindowTitle(
-                "New OFDS {} in network {}({})".format(
-                    self.table_name, network_data["name"], network_data["ofds_id"]
-                )
-            )
-        else:
-            self.setWindowTitle("New OFDS " + self.table_name)
-        self.network_data = network_data
-        self.existing_data = None
-        self.show()
+    def setup_form_options(self):
+        """Sets up all the form options, like select entries.
 
-    def start_edit(self, data, network_data):
-
-        # Sort out window
-        self.setWindowTitle("EditOFDS " + self.table_name)
-
-        # vars
-        self.network_data = network_data
-        self.existing_data = data
-
-        # Load data into fields
+        This is not done in __init__ for lifecycle reasons - __init__ may have been
+        called a while ago and since then new data items might have been added to open codelists etc.
+        So do it every time we start a new or an edit.
+        """
         for field_idx, field_info in enumerate(
             get_schema_information()["tables"][self.table_name]["columns"]
         ):
-            if field_info["type"] == "text":
-                if data[field_info["name"]]:
-                    self.fields[field_idx].setText(data[field_info["name"]])
-                else:
-                    self.fields[field_idx].setText("")
-            elif field_info["type"] == "number":
-                if data[field_info["name"]]:
-                    self.fields[field_idx]["select"].setChecked(True)
-                    self.fields[field_idx]["number"].setValue(data[field_info["name"]])
-                else:
-                    self.fields[field_idx]["select"].setChecked(False)
-                    self.fields[field_idx]["number"].setValue(0.0)
-            elif field_info["type"] == "open_codelist":
+            if field_info["type"] == "open_codelist":
                 # clear current values
                 self.fields[field_idx]["select"].clear()
 
@@ -146,7 +118,47 @@ class TableEditDialog(QMainWindow):
                     [""] + [i[1] for i in self.fields[field_idx]["values"]]
                 )
 
-                # set selected value
+    def start_new(self, network_data):
+        if network_data:
+            self.setWindowTitle(
+                "New OFDS {} in network {}({})".format(
+                    self.table_name, network_data["name"], network_data["ofds_id"]
+                )
+            )
+        else:
+            self.setWindowTitle("New OFDS " + self.table_name)
+        self.network_data = network_data
+        self.existing_data = None
+        self.setup_form_options()
+        self.show()
+
+    def start_edit(self, data, network_data):
+
+        # vars
+        self.network_data = network_data
+        self.existing_data = data
+
+        # Sort out window
+        self.setWindowTitle("EditOFDS " + self.table_name)
+        self.setup_form_options()
+
+        # Load data into fields
+        for field_idx, field_info in enumerate(
+            get_schema_information()["tables"][self.table_name]["columns"]
+        ):
+            if field_info["type"] == "text":
+                if data[field_info["name"]]:
+                    self.fields[field_idx].setText(data[field_info["name"]])
+                else:
+                    self.fields[field_idx].setText("")
+            elif field_info["type"] == "number":
+                if data[field_info["name"]]:
+                    self.fields[field_idx]["select"].setChecked(True)
+                    self.fields[field_idx]["number"].setValue(data[field_info["name"]])
+                else:
+                    self.fields[field_idx]["select"].setChecked(False)
+                    self.fields[field_idx]["number"].setValue(0.0)
+            elif field_info["type"] == "open_codelist":
                 current_value = [
                     i[1]
                     for i in self.fields[field_idx]["values"]

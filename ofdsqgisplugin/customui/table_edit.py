@@ -1,7 +1,8 @@
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QHBoxLayout,
-                             QLabel, QLineEdit, QListView, QMainWindow,
-                             QPushButton, QScrollArea, QVBoxLayout, QWidget)
+                             QLabel, QLineEdit, QListView, QListWidget,
+                             QListWidgetItem, QMainWindow, QPushButton,
+                             QScrollArea, QVBoxLayout, QWidget)
 from qgis.core import QgsFeature, QgsJsonUtils
 
 from ..lib import find_layers
@@ -23,6 +24,7 @@ class TableEditDialog(QMainWindow):
 
         # First item is the form
         self.fields = {}
+        self.relations = {}
 
         scroll_area = QScrollArea()
         scroll_area_widget = QWidget()
@@ -31,8 +33,10 @@ class TableEditDialog(QMainWindow):
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(scroll_area_widget)
 
+        schema_information = get_schema_information()
+
         for field_idx, field_info in enumerate(
-            get_schema_information()["tables"][table_name]["columns"]
+            schema_information["tables"][table_name]["columns"]
         ):
 
             if field_info["name"] != "network_id":
@@ -61,6 +65,27 @@ class TableEditDialog(QMainWindow):
                     scroll_area_layout.addWidget(self.fields[field_idx]["select"])
 
                     # TODO must add a way for people to add new items
+
+        for relation_idx, relation_info in enumerate(
+            schema_information["tables"][table_name]["relations"]
+        ):
+
+            title = QLabel(relation_info["title"], None)
+            scroll_area_layout.addWidget(title)
+
+            self.relations[relation_idx] = {
+                "select": QComboBox(),
+                "list": QListWidget(),
+                "info": relation_info,
+            }
+
+            scroll_area_layout.addWidget(self.relations[relation_idx]["list"])
+
+            scroll_area_layout.addWidget(self.relations[relation_idx]["select"])
+
+            add_btn = QPushButton("Add")
+            add_btn.clicked.connect(lambda y, x=relation_idx: self.add_relation_item(x))
+            scroll_area_layout.addWidget(add_btn)
 
         layout.addWidget(scroll_area)
 
@@ -95,9 +120,13 @@ class TableEditDialog(QMainWindow):
         This is not done in __init__ for lifecycle reasons - __init__ may have been
         called a while ago and since then new data items might have been added to open codelists etc.
         So do it every time we start a new or an edit.
+
+        self.existing_data must be set correctly before calling this.
         """
+        schema_information = get_schema_information()
+
         for field_idx, field_info in enumerate(
-            get_schema_information()["tables"][self.table_name]["columns"]
+            schema_information["tables"][self.table_name]["columns"]
         ):
             if field_info["type"] == "open_codelist":
                 # clear current values
@@ -116,6 +145,49 @@ class TableEditDialog(QMainWindow):
                     )
                 self.fields[field_idx]["select"].addItems(
                     [""] + [i[1] for i in self.fields[field_idx]["values"]]
+                )
+
+        for relation_idx, relation_info in enumerate(
+            schema_information["tables"][self.table_name]["relations"]
+        ):
+
+            # clear current values
+            self.relations[relation_idx]["select"].clear()
+            self.relations[relation_idx]["list"].clear()
+
+            # load new values & add
+            self.relations[relation_idx]["values"] = []
+            description_field = (
+                "description" if relation_info.get("codelist") else "name"
+            )
+            for codelist_feature in self.layers[
+                relation_info["related_table"]
+            ].getFeatures():
+                self.relations[relation_idx]["values"].append(
+                    (
+                        codelist_feature.attribute("id"),
+                        codelist_feature.attribute(description_field),
+                    )
+                )
+            self.relations[relation_idx]["select"].addItems(
+                [i[1] for i in self.relations[relation_idx]["values"]]
+            )
+
+            # current values
+            self.relations[relation_idx]["selected_values"] = (
+                self.get_current_values_for_relationship(relation_idx)
+            )
+
+            # Put current values in UI
+            for value in self.relations[relation_idx]["selected_values"]:
+                self._add_relation_item_to_list(
+                    relation_idx,
+                    value,
+                    [
+                        i[1]
+                        for i in self.relations[relation_idx]["values"]
+                        if i[0] == value
+                    ][0],
                 )
 
     def start_new(self, network_data):
@@ -172,6 +244,58 @@ class TableEditDialog(QMainWindow):
         # Show
         self.show()
 
+    def get_current_values_for_relationship(self, relation_idx):
+
+        if not self.existing_data:
+            return []
+
+        out = []
+
+        for feature in self.layers[
+            self.relations[relation_idx]["info"]["mapping_table"]
+        ].getFeatures():
+            if feature.attribute("base_id") == self.existing_data["id"]:
+                out.append(feature.attribute("related_id"))
+
+        return out
+
+    def add_relation_item(self, relation_idx):
+        current_text = self.relations[relation_idx]["select"].currentText()
+        current_value = [
+            i for i in self.relations[relation_idx]["values"] if i[1] == current_text
+        ]
+        current_value_id, current_value_label = current_value[0]
+
+        if current_value_id not in self.relations[relation_idx]["selected_values"]:
+            # store in state, ready for saving
+            self.relations[relation_idx]["selected_values"].append(current_value_id)
+            # write into UI
+            self._add_relation_item_to_list(
+                relation_idx, current_value_id, current_value_label
+            )
+
+    def _add_relation_item_to_list(self, relation_idx, value_id, value_label):
+        row_widget = QWidget()
+        h = QHBoxLayout(row_widget)
+
+        text_layout = QVBoxLayout()
+        title = QLabel(str(value_label), None)
+        text_layout.addWidget(title)
+        h.addLayout(text_layout)
+
+        button_layout = QVBoxLayout()
+
+        # button_remove = QPushButton("Remove")
+        # button_edit.clicked.connect(lambda: self.edit(data))
+        # button_layout.addWidget(button_remove)
+
+        h.addLayout(button_layout)
+
+        item = QListWidgetItem(self.relations[relation_idx]["list"])
+        item.setSizeHint(row_widget.sizeHint())
+        self.relations[relation_idx]["list"].addItem(item)
+        self.relations[relation_idx]["list"].setItemWidget(item, row_widget)
+
     def save(self):
         # Start editing
         self.layers["networks"].startEditing()
@@ -188,9 +312,10 @@ class TableEditDialog(QMainWindow):
                 feature.setAttribute("network_id", self.network_data["id"])
 
         # Set data
+        schema_information = get_schema_information()
 
         for field_idx, field_info in enumerate(
-            get_schema_information()["tables"][self.table_name]["columns"]
+            schema_information["tables"][self.table_name]["columns"]
         ):
             if field_info["type"] == "text":
                 feature.setAttribute(
@@ -220,7 +345,7 @@ class TableEditDialog(QMainWindow):
                 else:
                     feature.setAttribute(field_info["name"], None)
 
-        # Update or add features
+        # Update or add main feature
         if self.existing_data:
             if not self.layers[self.table_name].updateFeature(feature):
                 raise Exception("Could not Update")
@@ -231,6 +356,58 @@ class TableEditDialog(QMainWindow):
         # Commit
         if not self.layers[self.table_name].commitChanges():
             raise Exception("Could not commit layer")
+
+        # Now relations
+        # (For new items, we need to make sure we have an database id saved before we do this)
+        for relation_idx, relation_info in enumerate(
+            schema_information["tables"][self.table_name]["relations"]
+        ):
+
+            # Get current options in DB
+            current_options = self.get_current_values_for_relationship(relation_idx)
+
+            # Work out which ones we need to delete or add
+            delete_ids = [
+                i
+                for i in current_options
+                if i not in self.relations[relation_idx]["selected_values"]
+            ]
+            add_ids = [
+                i
+                for i in self.relations[relation_idx]["selected_values"]
+                if i not in current_options
+            ]
+
+            if delete_ids or add_ids:
+                # start editing
+                self.layers[relation_info["mapping_table"]].startEditing()
+
+                # Delete ones!
+                # TODO
+
+                # Add ones!
+                for add_id in add_ids:
+                    relation_feature = QgsFeature(
+                        self.layers[relation_info["mapping_table"]].fields()
+                    )
+                    relation_feature.setAttribute("base_id", feature.attribute("id"))
+                    relation_feature.setAttribute("related_id", add_id)
+                    if not self.layers[relation_info["mapping_table"]].addFeature(
+                        relation_feature
+                    ):
+                        raise Exception(
+                            "Could not add to {} layer".format(
+                                relation_info["mapping_table"]
+                            )
+                        )
+
+                # And commit
+                if not self.layers[relation_info["mapping_table"]].commitChanges():
+                    raise Exception(
+                        "Could not commit {} layer".format(
+                            relation_info["mapping_table"]
+                        )
+                    )
 
         # TODO call refresh on the list of things in the last dialog
 

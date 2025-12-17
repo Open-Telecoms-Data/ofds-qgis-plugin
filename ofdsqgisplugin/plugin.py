@@ -7,7 +7,6 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
 from .add_layers import add_layers
-from .customui.home import HomeDialog
 from .export import get_json
 from .import_data import import_json
 from .lib import find_layers
@@ -15,12 +14,20 @@ from .validate import ValidateDialog
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
+CUSTOM_UI_FEATURE_FLAG = bool(
+    int(os.environ.get("OPENFIBRE_QGIS_PLUGIN_CUSTOM_UI_FEATURE_FLAG", "0"))
+)
+
+if CUSTOM_UI_FEATURE_FLAG:
+    from .customui.home import HomeDialog
+
 
 class OFDSQGISPlugin:
     def __init__(self, iface):
         self.iface = iface
         self.validate_dialog = ValidateDialog()
-        self.custom_ui_home = HomeDialog()
+        if CUSTOM_UI_FEATURE_FLAG:
+            self.custom_ui_home = HomeDialog()
 
     def initGui(self):
         # --------------------- Add Layers
@@ -56,13 +63,14 @@ class OFDSQGISPlugin:
         self.iface.addToolBarIcon(self.action_export_json)
         self.action_export_json.triggered.connect(self.export_json)
         # --------------------- custom ui
-        self.action_custom_ui = QAction(
-            QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_custom_ui.svg"))),
-            "Open UI",
-            self.iface.mainWindow(),
-        )
-        self.iface.addToolBarIcon(self.action_custom_ui)
-        self.action_custom_ui.triggered.connect(self.custom_ui)
+        if CUSTOM_UI_FEATURE_FLAG:
+            self.action_custom_ui = QAction(
+                QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_custom_ui.svg"))),
+                "Open UI",
+                self.iface.mainWindow(),
+            )
+            self.iface.addToolBarIcon(self.action_custom_ui)
+            self.action_custom_ui.triggered.connect(self.custom_ui)
 
     def unload(self):
         # --------------------- Add Layers
@@ -80,10 +88,11 @@ class OFDSQGISPlugin:
         self.iface.removeToolBarIcon(self.action_export_json)
         del self.action_export_json
         # --------------------- custom ui
-        self.iface.removeToolBarIcon(self.action_custom_ui)
-        del self.action_custom_ui
-        self.custom_ui_home.close()
-        del self.custom_ui_home
+        if CUSTOM_UI_FEATURE_FLAG:
+            self.iface.removeToolBarIcon(self.action_custom_ui)
+            del self.action_custom_ui
+            self.custom_ui_home.close()
+            del self.custom_ui_home
 
     def add_layers(self):
         # check projection

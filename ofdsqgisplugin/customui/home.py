@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QListView, QListWidget,
                              QVBoxLayout, QWidget)
 
 from ..lib import find_layers
-from .network_edit import NetworkEditDialog
+from .table_edit import TableEditDialog
 from .table_list import TableListDialog
 
 
@@ -108,13 +108,13 @@ class HomeDialog(QMainWindow):
         return network_row_widget
 
     def new(self):
-        self.network_new = NetworkEditDialog()
-        self.network_new.start_new()
+        self.network_new = TableEditDialog("networks")
+        self.network_new.start_new(None)
 
     def edit(self, data):
         # TODO This means you can't open 2 edit dialogs at once, which you might want to do.
-        self.network_new = NetworkEditDialog()
-        self.network_new.start_edit(data)
+        self.network_new = TableEditDialog("networks")
+        self.network_new.start_edit(data, None)
 
     def table_list(self, table_name, data):
         self.table_list_dialog = TableListDialog(table_name)

@@ -165,7 +165,8 @@ class TableEditDialog(QMainWindow):
             # TODO error if not found
         else:
             feature = QgsFeature(self.layers[self.table_name].fields())
-            feature.setAttribute("network_id", self.network_data["id"])
+            if self.network_data:
+                feature.setAttribute("network_id", self.network_data["id"])
 
         # Set data
 

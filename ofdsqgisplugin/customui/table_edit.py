@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
+from PyQt5.QtGui import QFont, QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QHBoxLayout,
                              QLabel, QLineEdit, QListView, QListWidget,
                              QListWidgetItem, QMainWindow, QPushButton,
@@ -35,6 +35,9 @@ class TableEditDialog(QMainWindow):
 
         schema_information = get_schema_information()
 
+        font_for_titles = QFont()
+        font_for_titles.setBold(True)
+
         for field_idx, field_info in enumerate(
             schema_information["tables"][table_name]["columns"]
         ):
@@ -42,6 +45,8 @@ class TableEditDialog(QMainWindow):
             if field_info["name"] != "network_id":
 
                 title = QLabel(field_info["title"], None)
+                title.setFont(font_for_titles)
+                title.setStyleSheet("margin-top: 20px")
                 scroll_area_layout.addWidget(title)
 
                 description = QLabel(field_info["description"], None)
@@ -60,17 +65,25 @@ class TableEditDialog(QMainWindow):
                     scroll_area_layout.addWidget(self.fields[field_idx]["select"])
                     scroll_area_layout.addWidget(self.fields[field_idx]["number"])
 
+                    # TODO When select is off, number field should be disabled. Then it's clearer what select does.
+
                 elif field_info["type"] == "open_codelist":
                     self.fields[field_idx] = {"select": QComboBox()}
                     scroll_area_layout.addWidget(self.fields[field_idx]["select"])
 
                     # TODO must add a way for people to add new items
 
+                else:
+
+                    scroll_area_layout.addWidget(QLabel("TODO", None))
+
         for relation_idx, relation_info in enumerate(
             schema_information["tables"][table_name]["relations"]
         ):
 
             title = QLabel(relation_info["title"], None)
+            title.setFont(font_for_titles)
+            title.setStyleSheet("margin-top: 20px")
             scroll_area_layout.addWidget(title)
 
             self.relations[relation_idx] = {

@@ -33,7 +33,7 @@ class OFDSQGISPlugin:
         # --------------------- Add Layers
         self.action_add_layers = QAction(
             QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_add.svg"))),
-            "Add Layers",
+            "Create OFDS GeoPackage",
             self.iface.mainWindow(),
         )
         self.iface.addToolBarIcon(self.action_add_layers)

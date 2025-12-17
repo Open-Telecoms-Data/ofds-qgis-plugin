@@ -90,7 +90,14 @@ class TableEditDialog(QMainWindow):
         self.hide()
 
     def start_new(self, network_data):
-        self.setWindowTitle("New OFDS " + self.table_name)
+        if network_data:
+            self.setWindowTitle(
+                "New OFDS {} in network {}({})".format(
+                    self.table_name, network_data["name"], network_data["ofds_id"]
+                )
+            )
+        else:
+            self.setWindowTitle("New OFDS " + self.table_name)
         self.network_data = network_data
         self.existing_data = None
         self.show()

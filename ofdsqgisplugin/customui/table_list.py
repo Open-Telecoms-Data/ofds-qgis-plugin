@@ -14,7 +14,6 @@ class TableListDialog(QMainWindow):
         super().__init__()
 
         # window setup
-        self.setWindowTitle("OFDS " + table_name)  # TODO better title
         self.resize(600, 600)
 
         # central widget is vertical list
@@ -53,6 +52,11 @@ class TableListDialog(QMainWindow):
 
     def start(self, network_data):
         self.network_data = network_data
+        self.setWindowTitle(
+            "OFDS {} in network {}({})".format(
+                self.table_name, network_data["name"], network_data["ofds_id"]
+            )
+        )
         self.load_data()
         self.show()
 

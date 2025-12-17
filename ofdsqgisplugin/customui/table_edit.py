@@ -285,9 +285,13 @@ class TableEditDialog(QMainWindow):
 
         button_layout = QVBoxLayout()
 
-        # button_remove = QPushButton("Remove")
-        # button_edit.clicked.connect(lambda: self.edit(data))
-        # button_layout.addWidget(button_remove)
+        button_remove = QPushButton("Remove")
+        button_remove.clicked.connect(
+            lambda x, v1=relation_idx, v2=value_id: self.remove_relationship_item(
+                v1, v2
+            )
+        )
+        button_layout.addWidget(button_remove)
 
         h.addLayout(button_layout)
 
@@ -295,6 +299,18 @@ class TableEditDialog(QMainWindow):
         item.setSizeHint(row_widget.sizeHint())
         self.relations[relation_idx]["list"].addItem(item)
         self.relations[relation_idx]["list"].setItemWidget(item, row_widget)
+
+    def remove_relationship_item(self, relation_idx, value_id):
+
+        if value_id in self.relations[relation_idx]["selected_values"]:
+            # remove from state, ready for saving
+            self.relations[relation_idx]["selected_values"] = [
+                i
+                for i in self.relations[relation_idx]["selected_values"]
+                if i != value_id
+            ]
+            # remove from UI
+            # TODO
 
     def save(self):
         # Start editing
@@ -383,7 +399,27 @@ class TableEditDialog(QMainWindow):
                 self.layers[relation_info["mapping_table"]].startEditing()
 
                 # Delete ones!
-                # TODO
+                if delete_ids:
+                    features_to_delete = []
+                    for relation_feature in self.layers[
+                        relation_info["mapping_table"]
+                    ].getFeatures():
+                        if (
+                            relation_feature.attribute("base_id")
+                            == feature.attribute("id")
+                            and relation_feature.attribute("related_id") in delete_ids
+                        ):
+                            features_to_delete.append(relation_feature.id())
+
+                    for feature_to_delete in features_to_delete:
+                        if not self.layers[
+                            relation_info["mapping_table"]
+                        ].deleteFeature(feature_to_delete):
+                            raise Exception(
+                                "Could not delete from {} layer".format(
+                                    relation_info["mapping_table"]
+                                )
+                            )
 
                 # Add ones!
                 for add_id in add_ids:

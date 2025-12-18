@@ -11,7 +11,7 @@ from qgis.core import (Qgis, QgsAttributeEditorContainer,
 PLUGIN_DIR = os.path.dirname(__file__)
 
 
-def add_layers(filename):
+def add_layers(filename, plugin, custom_ui=False):
     # --------   Get Information
     with open(
         os.path.join(
@@ -261,6 +261,22 @@ def add_layers(filename):
 
             # Wrap up
             layers[table_name].setEditFormConfig(edit_form_config)
+
+    # --------  Custom UI
+    if custom_ui:
+        custom_ui_on_add_handlers = {
+            "nodes": plugin.on_node_feature_added,
+            "spans": plugin.on_span_feature_added,
+        }
+        for table_name in custom_ui_on_add_handlers.keys():
+            # remove QGIS form on add
+            form_config = layers[table_name].editFormConfig()
+            form_config.setSuppress(Qgis.AttributeFormSuppression.On)
+            layers[table_name].setEditFormConfig(form_config)
+            # Add our event handler
+            layers[table_name].featureAdded.connect(
+                custom_ui_on_add_handlers[table_name]
+            )
 
     # --------   Project Properties
     QgsProject.instance().setTransactionMode(Qgis.TransactionMode.AutomaticGroups)

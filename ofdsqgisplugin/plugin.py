@@ -20,6 +20,7 @@ CUSTOM_UI_FEATURE_FLAG = bool(
 
 if CUSTOM_UI_FEATURE_FLAG:
     from .customui.home import HomeDialog
+    from .customui.new_thing_select_network import NewThingSelectNetworkDialog
 
 
 class OFDSQGISPlugin:
@@ -28,6 +29,7 @@ class OFDSQGISPlugin:
         self.validate_dialog = ValidateDialog()
         if CUSTOM_UI_FEATURE_FLAG:
             self.custom_ui_home = HomeDialog()
+        self.currently_importing = False
 
     def initGui(self):
         # --------------------- Add Layers
@@ -124,7 +126,7 @@ class OFDSQGISPlugin:
             os.path.join(PLUGIN_DIR, "schema_0_3", "geopackage.gpkg"), filename
         )
         # add layers
-        add_layers(filename)
+        add_layers(filename, self, custom_ui=CUSTOM_UI_FEATURE_FLAG)
 
     def export_json(self):
         # get data and check it
@@ -150,6 +152,7 @@ class OFDSQGISPlugin:
             json.dump(data, fp, indent=2)
 
     def import_json(self):
+        self.currently_importing = True
         # check
         layers = find_layers()
         if not layers:
@@ -168,6 +171,8 @@ class OFDSQGISPlugin:
         with open(filename) as fp:
             data = json.load(fp)
         import_json(layers, data)
+        # wrap up
+        self.currently_importing = False
 
     def validate(self):
         # check
@@ -186,3 +191,13 @@ class OFDSQGISPlugin:
             return
         # Validate
         self.custom_ui_home.start()
+
+    def on_node_feature_added(self, fid):
+        if not self.currently_importing:
+            self.node_feature_added_dialog = NewThingSelectNetworkDialog("nodes", fid)
+            self.node_feature_added_dialog.start()
+
+    def on_span_feature_added(self, fid):
+        if not self.currently_importing:
+            self.span_feature_added_dialog = NewThingSelectNetworkDialog("spans", fid)
+            self.span_feature_added_dialog.start()

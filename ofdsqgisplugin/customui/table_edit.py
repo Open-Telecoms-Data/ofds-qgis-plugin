@@ -106,12 +106,16 @@ class TableEditDialog(QMainWindow):
 
             scroll_area_layout.addWidget(self.relations[relation_idx]["list"])
 
-            scroll_area_layout.addWidget(self.relations[relation_idx]["select"])
+            options_layout = QHBoxLayout()
+
+            self.relations[relation_idx]["select"].setMaximumWidth(INITIAL_WIDTH - 150)
+            options_layout.addWidget(self.relations[relation_idx]["select"])
 
             add_btn = QPushButton("Add")
-            add_btn.setMaximumWidth(INITIAL_WIDTH - 50)
             add_btn.clicked.connect(lambda y, x=relation_idx: self.add_relation_item(x))
-            scroll_area_layout.addWidget(add_btn)
+            options_layout.addWidget(add_btn)
+
+            scroll_area_layout.addLayout(options_layout)
 
         layout.addWidget(scroll_area)
 

@@ -8,6 +8,9 @@ from qgis.core import QgsFeature, QgsJsonUtils
 from ..lib import find_layers
 from .base import get_schema_information
 
+INITIAL_WIDTH = 900
+INITIAL_HEIGHT = 900
+
 
 class TableEditDialog(QMainWindow):
 
@@ -16,7 +19,7 @@ class TableEditDialog(QMainWindow):
         super().__init__()
 
         # window setup
-        self.resize(600, 600)
+        self.resize(INITIAL_WIDTH, INITIAL_HEIGHT)
 
         # central widget is vertical list
         central = QWidget()
@@ -96,11 +99,17 @@ class TableEditDialog(QMainWindow):
                 "info": relation_info,
             }
 
+            # setMaximumWidth is a bit hacky - but without it, these elements take up
+            # a lot of horizontal area forcing a scroll and I'm not sure why
+            self.relations[relation_idx]["list"].setMaximumWidth(INITIAL_WIDTH - 50)
+            self.relations[relation_idx]["select"].setMaximumWidth(INITIAL_WIDTH - 50)
+
             scroll_area_layout.addWidget(self.relations[relation_idx]["list"])
 
             scroll_area_layout.addWidget(self.relations[relation_idx]["select"])
 
             add_btn = QPushButton("Add")
+            add_btn.setMaximumWidth(INITIAL_WIDTH - 50)
             add_btn.clicked.connect(lambda y, x=relation_idx: self.add_relation_item(x))
             scroll_area_layout.addWidget(add_btn)
 

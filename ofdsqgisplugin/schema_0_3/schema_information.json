@@ -198,6 +198,7 @@
           "related_table": "codelist_open_nodeType",
           "mapping_table": "relation_nodes_type",
           "title": "Node type",
+          "description": "The type of this node, from the open [nodeType codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#nodetype). For nodes with multiple network providers, the union of the node types for each provider.",
           "related_table_private": false,
           "codelist": true
         },
@@ -207,6 +208,7 @@
           "related_table": "codelist_open_nodeTechnologies",
           "mapping_table": "relation_nodes_technologies",
           "title": "Technologies",
+          "description": "The active technologies used at this node, from the open [nodeTechnologies codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#nodetechnologies). For nodes with multiple network providers, the union of the active technologies used by each provider.",
           "related_table_private": false,
           "codelist": true
         },
@@ -216,6 +218,7 @@
           "related_table": "organisations",
           "mapping_table": "relation_nodes_networkProviders",
           "title": "Network providers",
+          "description": "The organisations that operate the active network infrastructure for this node, i.e. the electrical elements, such as optical transceivers, switches and routers. In open business models, network providers provide wholesale access to service providers such as retail internet service providers. Network providers can own or lease the active network infrastructure.",
           "related_table_private": false
         }
       ],
@@ -386,6 +389,7 @@
           "related_table": "organisations",
           "mapping_table": "relation_spans_networkProviders",
           "title": "Network providers",
+          "description": "The organisations that operate the active network infrastructure for this span, i.e. the electrical elements, such as optical transceivers, switches and routers. In open business models, network providers provide wholesale access to service providers such as retail internet service providers. Network providers can own or lease the active network infrastructure.",
           "related_table_private": false
         },
         {
@@ -394,6 +398,7 @@
           "related_table": "codelist_closed_transmissionMedium",
           "mapping_table": "relation_spans_transmissionMedium",
           "title": "Transmission medium",
+          "description": "The physical media of this span, from the closed [transmissionMedium codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#transmissionmedium).",
           "related_table_private": true,
           "codelist": true
         },
@@ -403,6 +408,7 @@
           "related_table": "codelist_closed_deployment",
           "mapping_table": "relation_spans_deployment",
           "title": "Deployment",
+          "description": "The physical deployment of this span, from the closed [deployment codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#deployment). Further details of this span's deployment can be provided in `.deploymentDetails`.",
           "related_table_private": true,
           "codelist": true
         },
@@ -412,6 +418,7 @@
           "related_table": "codelist_open_spanTechnologies",
           "mapping_table": "relation_spans_technologies",
           "title": "Technologies",
+          "description": "The active technologies used on this span, from the open [spanTechnologies codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#spantechnologies). For spans with multiple network providers, the union of the active technologies used by each provider.",
           "related_table_private": false,
           "codelist": true
         },
@@ -421,6 +428,7 @@
           "related_table": "codelist_closed_country",
           "mapping_table": "relation_spans_countries",
           "title": "Countries",
+          "description": "The countries in which this span is physically located, from the closed [country codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#country).",
           "related_table_private": true,
           "codelist": true
         }
@@ -466,6 +474,7 @@
           "related_table": "organisations",
           "mapping_table": "relation_phases_funders",
           "title": "Funders",
+          "description": "Information about the organisations that provide financing for the development or operation of this phase, also known as investors or financers.",
           "related_table_private": false
         }
       ],
@@ -556,6 +565,7 @@
           "related_table": "codelist_open_organisationRole",
           "mapping_table": "relation_organisations_roles",
           "title": "Roles",
+          "description": "This organisation's roles in this network, from the open [organisationRole codelist](https://open-fibre-data-standard.readthedocs.io/en/latest/reference/codelists.html#organisationrole). Further details about this organisation's roles can be provided in `.roleDetails`.",
           "related_table_private": false,
           "codelist": true
         }
@@ -631,6 +641,7 @@
           "related_table": "phases",
           "mapping_table": "relation_contracts_relatedPhases",
           "title": "Related phases",
+          "description": "The phases to which this contract relates.",
           "related_table_private": false
         }
       ],

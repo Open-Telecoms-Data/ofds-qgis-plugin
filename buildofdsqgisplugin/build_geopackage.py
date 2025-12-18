@@ -532,6 +532,7 @@ class Builder:
                         ],
                         "mapping_table": "relation_" + table_name + "_" + property_key,
                         "title": property_value["title"],
+                        "description": property_value["description"],
                         "related_table_private": False,
                     }
                 )
@@ -555,6 +556,7 @@ class Builder:
                         + property_value["codelist"][:-4],
                         "mapping_table": "relation_" + table_name + "_" + property_key,
                         "title": property_value["title"],
+                        "description": property_value["description"],
                         "related_table_private": not property_value.get("openCodelist"),
                         "codelist": True,
                     }

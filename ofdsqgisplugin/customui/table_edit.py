@@ -86,6 +86,10 @@ class TableEditDialog(QMainWindow):
             title.setStyleSheet("margin-top: 20px")
             scroll_area_layout.addWidget(title)
 
+            description = QLabel(relation_info["description"], None)
+            description.setWordWrap(True)
+            scroll_area_layout.addWidget(description)
+
             self.relations[relation_idx] = {
                 "select": QComboBox(),
                 "list": QListWidget(),

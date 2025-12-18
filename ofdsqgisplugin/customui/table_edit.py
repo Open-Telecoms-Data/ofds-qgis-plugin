@@ -310,14 +310,14 @@ class TableEditDialog(QMainWindow):
 
         text_layout = QVBoxLayout()
         title = QLabel(str(value_label), None)
+        title.setWordWrap(True)
         text_layout.addWidget(title)
         h.addLayout(text_layout)
 
         button_layout = QVBoxLayout()
 
-        # button_remove = QPushButton("Remove")
-        # button_edit.clicked.connect(lambda: self.edit(data))
-        # button_layout.addWidget(button_remove)
+        button_remove = QPushButton("Remove (TODO)")
+        button_layout.addWidget(button_remove)
 
         h.addLayout(button_layout)
 

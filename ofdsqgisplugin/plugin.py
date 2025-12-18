@@ -153,7 +153,7 @@ class OFDSQGISPlugin:
         # check
         layers = find_layers()
         if not layers:
-            self.iface.messageBar().pushMessage("Add OFDS layers first")
+            self.iface.messageBar().pushMessage("Create OFDS GeoPackage first")
             return
         # get filename
         filename_details = QFileDialog.getOpenFileName(
@@ -173,7 +173,7 @@ class OFDSQGISPlugin:
         # check
         layers = find_layers()
         if not layers:
-            self.iface.messageBar().pushMessage("Add OFDS layers first")
+            self.iface.messageBar().pushMessage("Create OFDS GeoPackage first")
             return
         # Validate
         self.validate_dialog.validate(layers, self.iface.messageBar())
@@ -182,7 +182,7 @@ class OFDSQGISPlugin:
         # check
         layers = find_layers()
         if not layers:
-            self.iface.messageBar().pushMessage("Add OFDS layers first")
+            self.iface.messageBar().pushMessage("Create OFDS GeoPackage first")
             return
         # Validate
         self.custom_ui_home.start()

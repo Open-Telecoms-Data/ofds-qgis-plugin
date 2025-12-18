@@ -8,10 +8,13 @@ from qgis.core import (Qgis, QgsAttributeEditorContainer,
                        QgsLayerTreeLayer, QgsMapLayer, QgsProject, QgsRelation,
                        QgsVectorLayer)
 
+from .customui.table_edit import TableEditDialog
+from .lib import find_layers
+
 PLUGIN_DIR = os.path.dirname(__file__)
 
 
-def add_layers(filename):
+def add_layers(filename, custom_ui=False):
     # --------   Get Information
     with open(
         os.path.join(
@@ -262,5 +265,30 @@ def add_layers(filename):
             # Wrap up
             layers[table_name].setEditFormConfig(edit_form_config)
 
+    # --------  Custom UI
+    if custom_ui:
+        for table_name in ["nodes"]:
+            # remove QGIS form on add
+            form_config = layers[table_name].editFormConfig()
+            form_config.setSuppress(Qgis.AttributeFormSuppression.On)
+            layers[table_name].setEditFormConfig(form_config)
+            # Add our event handler
+            if table_name == "nodes":
+                layers[table_name].featureAdded.connect(on_node_feature_added)
+
     # --------   Project Properties
     QgsProject.instance().setTransactionMode(Qgis.TransactionMode.AutomaticGroups)
+
+
+def on_node_feature_added(fid):
+    layers = find_layers()
+    # Need to get all data for that feature
+    feature = layers["nodes"].getFeature(fid)
+    feature_data = {}
+    for field_name in layers["nodes"].fields().names():
+        feature_data[field_name] = feature.attribute(field_name)
+    # Get Network Data
+    network_data = {}
+    # Show dialog
+    ted = TableEditDialog("nodes")
+    ted.start_edit(feature_data, network_data)

@@ -124,7 +124,7 @@ class OFDSQGISPlugin:
             os.path.join(PLUGIN_DIR, "schema_0_3", "geopackage.gpkg"), filename
         )
         # add layers
-        add_layers(filename)
+        add_layers(filename, custom_ui=CUSTOM_UI_FEATURE_FLAG)
 
     def export_json(self):
         # get data and check it

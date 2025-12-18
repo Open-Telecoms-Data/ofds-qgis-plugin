@@ -21,6 +21,7 @@ CUSTOM_UI_FEATURE_FLAG = bool(
 if CUSTOM_UI_FEATURE_FLAG:
     from .customui.home import HomeDialog
     from .customui.new_thing_select_network import NewThingSelectNetworkDialog
+    from .customui.table_edit import TableEditDialog
 
 
 class OFDSQGISPlugin:
@@ -73,6 +74,17 @@ class OFDSQGISPlugin:
             )
             self.iface.addToolBarIcon(self.action_custom_ui)
             self.action_custom_ui.triggered.connect(self.custom_ui)
+        # --------------------- custom ui selected features
+        if CUSTOM_UI_FEATURE_FLAG:
+            self.action_custom_ui_selected_features = QAction(
+                QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_custom_ui_selected_features.svg"))),
+                "Open UI on selected features",
+                self.iface.mainWindow(),
+            )
+            self.iface.addToolBarIcon(self.action_custom_ui_selected_features)
+            self.action_custom_ui_selected_features.triggered.connect(
+                self.custom_ui_selected_features
+            )
 
     def unload(self):
         # --------------------- Add Layers
@@ -95,6 +107,10 @@ class OFDSQGISPlugin:
             del self.action_custom_ui
             self.custom_ui_home.close()
             del self.custom_ui_home
+        # --------------------- custom ui on selected features
+        if CUSTOM_UI_FEATURE_FLAG:
+            self.iface.removeToolBarIcon(self.action_custom_ui_selected_features)
+            del self.action_custom_ui_selected_features
 
     def add_layers(self):
         # check projection
@@ -191,6 +207,30 @@ class OFDSQGISPlugin:
             return
         # Validate
         self.custom_ui_home.start()
+
+    def custom_ui_selected_features(self):
+        # check
+        layers = find_layers()
+        if not layers:
+            self.iface.messageBar().pushMessage("Create OFDS GeoPackage first")
+            return
+        # find features, open edit
+        self.custom_ui_selected_features_dialogs = []
+        for table_name in ["nodes", "spans"]:
+            for feature in layers[table_name].selectedFeatures():
+                # Get feature Data
+                feature_data = {}
+                for field_name in layers[table_name].fields().names():
+                    feature_data[field_name] = feature.attribute(field_name)
+                # Get Network data
+                network_data = {
+                    "id": feature_data["network_id"]
+                }  # TODO we might need more fields like this?
+                # Open Dialog
+                ted = TableEditDialog(table_name)
+                ted.start_edit(feature_data, network_data)
+                self.custom_ui_selected_features_dialogs.append(ted)
+        # TODO if no features selected, show a friendly message to the user
 
     def on_node_feature_added(self, fid):
         if not self.currently_importing:

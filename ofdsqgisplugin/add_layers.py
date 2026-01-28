@@ -2,11 +2,13 @@ import csv
 import json
 import os
 
-from qgis.core import (Qgis, QgsAttributeEditorContainer,
-                       QgsAttributeEditorRelation, QgsDefaultValue,
+from qgis.core import (Qgis, QgsAttributeEditorContainer, QgsAttributeEditorElement,
+                       QgsAttributeEditorRelation, QgsDefaultValue, QgsReadWriteContext,
                        QgsEditFormConfig, QgsEditorWidgetSetup,
                        QgsLayerTreeLayer, QgsMapLayer, QgsProject, QgsRelation,
                        QgsVectorLayer)
+from qgis.PyQt.QtXml import QDomDocument
+
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -232,11 +234,62 @@ def add_layers(filename, plugin, custom_ui=False):
             QgsProject.instance().relationManager().addRelation(join_to_related)
 
             # Set up form widget
-            relation_editor = QgsAttributeEditorRelation(join_to_base, None)
-            relation_editor.setLabel(relation["title"])
-            # set's cardinality option
-            relation_editor.setNmRelationId(join_to_related.id())
-            relation_editors.append(relation_editor)
+            if relation.get("codelist"):
+
+                tag_candidates = [
+                    'attributeEditorElement', 'attributeFormElement',
+                    'editorWidget', 'editorWidgetElement',
+                    'element', 'item', 'widget'
+                ]
+                type_candidates = [
+                    'Widget', 'EditorWidget', 'Python', 'python', 'pythonwidget',
+                    'Editor', 'Form', ''
+                ]
+                for tag in tag_candidates:
+                    for typ in type_candidates:
+                        dom = QDomDocument().createElement(tag)
+                        if typ:
+                            dom.setAttribute('type', typ)
+                        relation_editor = QgsAttributeEditorElement.create(
+                            dom,
+                            layers[table_name].id(),
+                            layers[table_name].fields(),
+                            QgsReadWriteContext(),
+                            None
+                        )   
+                        print(tag)
+                        print(typ)     
+                        if relation_editor:
+                            print("FOIND")
+                            
+
+
+                dom = QDomDocument().createElement("attributeEditorElement")
+                dom.setAttribute('type', "Python")
+                relation_editor = QgsAttributeEditorElement.create(
+                    dom,
+                    layers[table_name].id(),
+                    layers[table_name].fields(),
+                    QgsReadWriteContext(),
+                    None
+                )
+                relation_editor.setLabel(relation["title"]                                         )
+                relation_editor.setWidgetSetup( QgsEditorWidgetSetup('Python', {
+                    'module': 'ofdsqgisplugin',
+                    'class': 'RelationDragDropWidget',
+                    'referenced_layer': relation["related_table"],
+                    'relation_layer': relation["mapping_table"],
+                    'left_fk': 'base_id',
+                    'right_fk': 'related_id',
+                    'ref_pk': 'id',
+                    'display_field': 'code'
+                }))
+            else:
+                relation_editor = QgsAttributeEditorRelation(join_to_base, None)
+                relation_editor.setLabel(relation["title"])
+                # set's cardinality option
+                relation_editor.setNmRelationId(join_to_related.id())
+                relation_editors.append(relation_editor)
 
         # Set up tabs, if needed
         if relation_editors:

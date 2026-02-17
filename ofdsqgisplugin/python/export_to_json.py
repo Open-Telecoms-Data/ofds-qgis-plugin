@@ -182,6 +182,11 @@ class ExportCallableToJSON:
                 ][network_table_id]["id"]
                 # Normal fields
                 out["id"] = data["ofds_id"] or str(uuid.uuid4())
+                # If we auto-generated an id, update the mapping so foreign key
+                # lookups (e.g. span start/end -> node) resolve to the same id
+                if not data["ofds_id"] and table_name in self._tables_ids_to_standard_info_mappings:
+                    if data["id"] in self._tables_ids_to_standard_info_mappings[table_name]:
+                        self._tables_ids_to_standard_info_mappings[table_name][data["id"]]["id"] = out["id"]
                 for column_info in self._schema_information["tables"][table_name][
                     "columns"
                 ]:

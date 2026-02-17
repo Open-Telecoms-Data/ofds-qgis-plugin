@@ -1,8 +1,10 @@
+from PyQt5.QtCore import QDate
 from PyQt5.QtGui import QFont, QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QHBoxLayout,
-                             QLabel, QLineEdit, QListView, QListWidget,
-                             QListWidgetItem, QMainWindow, QPushButton,
-                             QScrollArea, QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox,
+                             QHBoxLayout, QLabel, QLineEdit, QListView,
+                             QListWidget, QListWidgetItem, QMainWindow,
+                             QPushButton, QScrollArea, QSpinBox, QVBoxLayout,
+                             QWidget)
 from qgis.core import QgsFeature, QgsJsonUtils
 
 from ..lib import find_layers
@@ -70,15 +72,50 @@ class TableEditDialog(QMainWindow):
 
                     # TODO When select is off, number field should be disabled. Then it's clearer what select does.
 
+                elif field_info["type"] == "integer":
+                    self.fields[field_idx] = {
+                        "select": QCheckBox("Set value"),
+                        "number": QSpinBox(),
+                    }
+                    self.fields[field_idx]["number"].setMinimum(0)
+                    self.fields[field_idx]["number"].setMaximum(999999)
+                    scroll_area_layout.addWidget(self.fields[field_idx]["select"])
+                    scroll_area_layout.addWidget(self.fields[field_idx]["number"])
+
                 elif field_info["type"] == "open_codelist":
                     self.fields[field_idx] = {"select": QComboBox()}
                     scroll_area_layout.addWidget(self.fields[field_idx]["select"])
 
                     # TODO must add a way for people to add new items
 
-                else:
+                elif field_info["type"] == "closed_codelist":
+                    self.fields[field_idx] = {"select": QComboBox(), "values": []}
+                    scroll_area_layout.addWidget(self.fields[field_idx]["select"])
 
-                    scroll_area_layout.addWidget(QLabel("TODO", None))
+                elif field_info["type"] == "foreign_key":
+                    self.fields[field_idx] = {"select": QComboBox(), "values": []}
+                    scroll_area_layout.addWidget(self.fields[field_idx]["select"])
+
+                elif field_info["type"] == "foreign_key_id_name_dict":
+                    self.fields[field_idx] = {"select": QComboBox(), "values": []}
+                    scroll_area_layout.addWidget(self.fields[field_idx]["select"])
+
+                elif field_info["type"] == "boolean":
+                    self.fields[field_idx] = {"checkbox": QCheckBox("Yes")}
+                    scroll_area_layout.addWidget(self.fields[field_idx]["checkbox"])
+
+                elif field_info["type"] == "date":
+                    self.fields[field_idx] = {
+                        "select": QCheckBox("Set date"),
+                        "date": QDateEdit(),
+                    }
+                    self.fields[field_idx]["date"].setCalendarPopup(True)
+                    self.fields[field_idx]["date"].setDisplayFormat("yyyy-MM-dd")
+                    scroll_area_layout.addWidget(self.fields[field_idx]["select"])
+                    scroll_area_layout.addWidget(self.fields[field_idx]["date"])
+
+                else:
+                    scroll_area_layout.addWidget(QLabel("(Field type not yet supported)", None))
 
         for relation_idx, relation_info in enumerate(
             schema_information["tables"][table_name]["relations"]
@@ -177,6 +214,57 @@ class TableEditDialog(QMainWindow):
                     [""] + [i[1] for i in self.fields[field_idx]["values"]]
                 )
 
+            elif field_info["type"] == "closed_codelist":
+                # clear current values
+                self.fields[field_idx]["select"].clear()
+
+                # load codelist values from schema_information
+                self.fields[field_idx]["values"] = []
+                codelist_name = field_info["codelist"]
+                if codelist_name in schema_information.get("closed_codelists", {}):
+                    for code, description in schema_information["closed_codelists"][codelist_name]:
+                        self.fields[field_idx]["values"].append((code, description))
+                self.fields[field_idx]["select"].addItems(
+                    [""] + [i[1] for i in self.fields[field_idx]["values"]]
+                )
+
+            elif field_info["type"] == "foreign_key" and field_info["name"] != "network_id":
+                # clear current values
+                self.fields[field_idx]["select"].clear()
+
+                # load values from the referenced layer
+                self.fields[field_idx]["values"] = []
+                fk_layer_name = field_info["foreignkey_layer"]
+                if fk_layer_name in self.layers:
+                    for fk_feature in self.layers[fk_layer_name].getFeatures():
+                        fk_id = fk_feature.attribute("id")
+                        # Try to get a display name; fall back to ofds_id or the raw id
+                        fk_name = fk_feature.attribute("name") if "name" in self.layers[fk_layer_name].fields().names() else None
+                        fk_ofds_id = fk_feature.attribute("ofds_id") if "ofds_id" in self.layers[fk_layer_name].fields().names() else None
+                        display = fk_name or fk_ofds_id or str(fk_id)
+                        self.fields[field_idx]["values"].append((fk_id, display))
+                self.fields[field_idx]["select"].addItems(
+                    [""] + ["{} (id:{})".format(i[1], i[0]) for i in self.fields[field_idx]["values"]]
+                )
+
+            elif field_info["type"] == "foreign_key_id_name_dict":
+                # clear current values
+                self.fields[field_idx]["select"].clear()
+
+                # load values from the referenced layer
+                self.fields[field_idx]["values"] = []
+                fk_layer_name = field_info["foreignkey_layer"]
+                if fk_layer_name in self.layers:
+                    for fk_feature in self.layers[fk_layer_name].getFeatures():
+                        fk_id = fk_feature.attribute("id")
+                        fk_name = fk_feature.attribute("name") if "name" in self.layers[fk_layer_name].fields().names() else None
+                        fk_ofds_id = fk_feature.attribute("ofds_id") if "ofds_id" in self.layers[fk_layer_name].fields().names() else None
+                        display = fk_name or fk_ofds_id or str(fk_id)
+                        self.fields[field_idx]["values"].append((fk_id, display))
+                self.fields[field_idx]["select"].addItems(
+                    [""] + ["{} (id:{})".format(i[1], i[0]) for i in self.fields[field_idx]["values"]]
+                )
+
         for relation_idx, relation_info in enumerate(
             schema_information["tables"][self.table_name]["relations"]
         ):
@@ -241,7 +329,7 @@ class TableEditDialog(QMainWindow):
         self.existing_data = data
 
         # Sort out window
-        self.setWindowTitle("EditOFDS " + self.table_name)
+        self.setWindowTitle("Edit OFDS " + self.table_name)
         self.setup_form_options()
 
         # Load data into fields
@@ -260,6 +348,13 @@ class TableEditDialog(QMainWindow):
                 else:
                     self.fields[field_idx]["select"].setChecked(False)
                     self.fields[field_idx]["number"].setValue(0.0)
+            elif field_info["type"] == "integer":
+                if data[field_info["name"]] is not None and data[field_info["name"]] != "" and str(data[field_info["name"]]) != "NULL":
+                    self.fields[field_idx]["select"].setChecked(True)
+                    self.fields[field_idx]["number"].setValue(int(data[field_info["name"]]))
+                else:
+                    self.fields[field_idx]["select"].setChecked(False)
+                    self.fields[field_idx]["number"].setValue(0)
             elif field_info["type"] == "open_codelist":
                 current_value = [
                     i[1]
@@ -270,6 +365,60 @@ class TableEditDialog(QMainWindow):
                     self.fields[field_idx]["select"].setCurrentText(current_value[0])
                 else:
                     self.fields[field_idx]["select"].setCurrentText("")
+            elif field_info["type"] == "closed_codelist":
+                current_value = [
+                    i[1]
+                    for i in self.fields[field_idx]["values"]
+                    if i[0] == data[field_info["name"]]
+                ]
+                if current_value:
+                    self.fields[field_idx]["select"].setCurrentText(current_value[0])
+                else:
+                    self.fields[field_idx]["select"].setCurrentText("")
+            elif field_info["type"] == "foreign_key" and field_info["name"] != "network_id":
+                val = data[field_info["name"]]
+                if val is not None and val != "" and str(val) != "NULL":
+                    # Find matching display text
+                    match = [
+                        "{} (id:{})".format(i[1], i[0])
+                        for i in self.fields[field_idx]["values"]
+                        if i[0] == val
+                    ]
+                    if match:
+                        self.fields[field_idx]["select"].setCurrentText(match[0])
+                    else:
+                        self.fields[field_idx]["select"].setCurrentText("")
+                else:
+                    self.fields[field_idx]["select"].setCurrentText("")
+            elif field_info["type"] == "foreign_key_id_name_dict":
+                val = data[field_info["name"]]
+                if val is not None and val != "" and str(val) != "NULL":
+                    match = [
+                        "{} (id:{})".format(i[1], i[0])
+                        for i in self.fields[field_idx]["values"]
+                        if i[0] == val
+                    ]
+                    if match:
+                        self.fields[field_idx]["select"].setCurrentText(match[0])
+                    else:
+                        self.fields[field_idx]["select"].setCurrentText("")
+                else:
+                    self.fields[field_idx]["select"].setCurrentText("")
+            elif field_info["type"] == "boolean":
+                val = data[field_info["name"]]
+                if val and str(val).lower() in ("true", "1", "yes"):
+                    self.fields[field_idx]["checkbox"].setChecked(True)
+                else:
+                    self.fields[field_idx]["checkbox"].setChecked(False)
+            elif field_info["type"] == "date":
+                val = data[field_info["name"]]
+                if val and str(val) != "NULL" and str(val).strip():
+                    self.fields[field_idx]["select"].setChecked(True)
+                    date = QDate.fromString(str(val), "yyyy-MM-dd")
+                    if date.isValid():
+                        self.fields[field_idx]["date"].setDate(date)
+                else:
+                    self.fields[field_idx]["select"].setChecked(False)
 
         # Show
         self.show()
@@ -360,6 +509,14 @@ class TableEditDialog(QMainWindow):
                 else:
                     feature.setAttribute(field_info["name"], None)
 
+            elif field_info["type"] == "integer":
+                if self.fields[field_idx]["select"].isChecked():
+                    feature.setAttribute(
+                        field_info["name"], self.fields[field_idx]["number"].value()
+                    )
+                else:
+                    feature.setAttribute(field_info["name"], None)
+
             elif field_info["type"] == "open_codelist":
                 current_text = self.fields[field_idx]["select"].currentText()
                 if current_text:
@@ -372,6 +529,64 @@ class TableEditDialog(QMainWindow):
                         feature.setAttribute(field_info["name"], current_value[0])
                     else:
                         feature.setAttribute(field_info["name"], None)
+                else:
+                    feature.setAttribute(field_info["name"], None)
+
+            elif field_info["type"] == "closed_codelist":
+                current_text = self.fields[field_idx]["select"].currentText()
+                if current_text:
+                    current_value = [
+                        i[0]
+                        for i in self.fields[field_idx]["values"]
+                        if i[1] == current_text
+                    ]
+                    if current_value:
+                        feature.setAttribute(field_info["name"], current_value[0])
+                    else:
+                        feature.setAttribute(field_info["name"], None)
+                else:
+                    feature.setAttribute(field_info["name"], None)
+
+            elif field_info["type"] == "foreign_key" and field_info["name"] != "network_id":
+                current_text = self.fields[field_idx]["select"].currentText()
+                if current_text:
+                    current_value = [
+                        i[0]
+                        for i in self.fields[field_idx]["values"]
+                        if "{} (id:{})".format(i[1], i[0]) == current_text
+                    ]
+                    if current_value:
+                        feature.setAttribute(field_info["name"], current_value[0])
+                    else:
+                        feature.setAttribute(field_info["name"], None)
+                else:
+                    feature.setAttribute(field_info["name"], None)
+
+            elif field_info["type"] == "foreign_key_id_name_dict":
+                current_text = self.fields[field_idx]["select"].currentText()
+                if current_text:
+                    current_value = [
+                        i[0]
+                        for i in self.fields[field_idx]["values"]
+                        if "{} (id:{})".format(i[1], i[0]) == current_text
+                    ]
+                    if current_value:
+                        feature.setAttribute(field_info["name"], current_value[0])
+                    else:
+                        feature.setAttribute(field_info["name"], None)
+                else:
+                    feature.setAttribute(field_info["name"], None)
+
+            elif field_info["type"] == "boolean":
+                if self.fields[field_idx]["checkbox"].isChecked():
+                    feature.setAttribute(field_info["name"], "true")
+                else:
+                    feature.setAttribute(field_info["name"], "false")
+
+            elif field_info["type"] == "date":
+                if self.fields[field_idx]["select"].isChecked():
+                    date_value = self.fields[field_idx]["date"].date().toString("yyyy-MM-dd")
+                    feature.setAttribute(field_info["name"], date_value)
                 else:
                     feature.setAttribute(field_info["name"], None)
 

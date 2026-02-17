@@ -6,9 +6,232 @@ from qgis.core import (Qgis, QgsAttributeEditorContainer,
                        QgsAttributeEditorRelation, QgsDefaultValue,
                        QgsEditFormConfig, QgsEditorWidgetSetup,
                        QgsLayerTreeLayer, QgsMapLayer, QgsProject, QgsRelation,
-                       QgsVectorLayer)
+                       QgsVectorLayer, QgsLayerTreeGroup, QgsUnitTypes,
+                       QgsMarkerSymbol, QgsSymbol, QgsLineSymbol,
+                       QgsSnappingConfig, QgsTolerance,
+                       QgsPalLayerSettings, QgsVectorLayerSimpleLabeling,
+                       QgsTextFormat, QgsTextBufferSettings)
+from qgis.PyQt.QtGui import QColor, QFont
+from qgis.PyQt.QtCore import Qt
 
 PLUGIN_DIR = os.path.dirname(__file__)
+
+
+def ensure_layer_order(root=None, ofds_group=None, is_initial_creation=False):
+    """Ensure OFDS layers are above basemaps and nodes are above spans.
+    
+    This function:
+    1. Within the Open Fibre group, ensures nodes layer is above spans layer
+    2. Moves the Open Fibre group to the top
+    3. Moves raster/basemap layers to the bottom of the layer tree
+    
+    Args:
+        root: QgsLayerTreeGroup - the root of the layer tree (optional)
+        ofds_group: QgsLayerTreeGroup - the Open Fibre group (optional)
+        is_initial_creation: bool - if True, we're being called during add_layers
+                            and should not clone/move the group (layers are still being added)
+    """
+    if root is None:
+        root = QgsProject.instance().layerTreeRoot()
+    
+    # Find the Open Fibre group if not provided
+    if ofds_group is None:
+        for child in root.children():
+            if isinstance(child, QgsLayerTreeGroup) and child.name() == "Open Fibre":
+                ofds_group = child
+                break
+    
+    if not ofds_group:
+        return
+    
+    # During initial creation, we cannot move the group because:
+    # 1. Layers are still being added to it
+    # 2. Cloning would lose those layer references
+    # The group is already at the top when newly created, so we just need to
+    # ensure nodes is above spans (if they exist yet)
+    if is_initial_creation:
+        _order_ofds_layers_in_group(ofds_group)
+        return
+    
+    # For calls after initial creation (e.g., when a new basemap is added):
+    # Step 1: Within OFDS group, ensure nodes is above spans
+    _order_ofds_layers_in_group(ofds_group)
+    
+    # Step 2: Ensure Open Fibre group is at the top
+    children = root.children()
+    if children and children[0] != ofds_group:
+        clone = ofds_group.clone()
+        root.removeChildNode(ofds_group)
+        root.insertChildNode(0, clone)
+    
+    # Step 3: Move rasters to bottom
+    _move_rasters_to_bottom(root)
+
+
+def _move_group_to_top(root, group):
+    """Move a group to the top of the layer tree (index 0)."""
+    children = root.children()
+    if not children or children[0] == group:
+        return  # Already at top
+    
+    # Find current index
+    current_index = -1
+    for i, child in enumerate(children):
+        if child == group:
+            current_index = i
+            break
+    
+    if current_index > 0:
+        # Use clone approach for moving groups
+        clone = group.clone()
+        root.removeChildNode(group)
+        root.insertChildNode(0, clone)
+
+
+def _move_rasters_to_bottom(root):
+    """Move all raster layers to the bottom of the layer tree."""
+    children = root.children()
+    raster_indices = []
+    
+    # Find all raster layer indices
+    for i, child in enumerate(children):
+        if isinstance(child, QgsLayerTreeLayer):
+            layer = child.layer()
+            if layer and layer.type() == QgsMapLayer.RasterLayer:
+                raster_indices.append(i)
+    
+    # Move each raster to the bottom (process in reverse to maintain order)
+    for idx in reversed(raster_indices):
+        child = root.children()[idx]
+        clone = child.clone()
+        root.removeChildNode(child)
+        root.addChildNode(clone)
+
+
+def _order_ofds_layers_in_group(group):
+    """Order layers within the Open Fibre group: nodes above spans.
+    
+    Uses a simple approach: just ensure 'nodes' is above 'spans'.
+    Does not remove/re-add all layers to avoid losing layer references.
+    """
+    children = group.children()
+    if len(children) < 2:
+        return
+    
+    # Find nodes and spans indices
+    nodes_index = -1
+    spans_index = -1
+    
+    for i, child in enumerate(children):
+        if isinstance(child, QgsLayerTreeLayer):
+            layer = child.layer()
+            if layer:
+                layer_name = layer.customProperty("ofdslayer", "")
+                if layer_name == "nodes":
+                    nodes_index = i
+                elif layer_name == "spans":
+                    spans_index = i
+    
+    # If spans is above nodes, swap them
+    if nodes_index >= 0 and spans_index >= 0 and spans_index < nodes_index:
+        # Move nodes to be above spans
+        nodes_node = children[nodes_index]
+        clone = nodes_node.clone()
+        group.removeChildNode(nodes_node)
+        group.insertChildNode(spans_index, clone)
+
+
+def move_basemap_to_bottom(layer):
+    """Move a specific basemap/raster layer to the bottom of the layer tree.
+    
+    This is called when a new layer is added to ensure basemaps stay at bottom.
+    
+    Args:
+        layer: QgsMapLayer - the layer to check and potentially move
+    """
+    if not layer or layer.type() != QgsMapLayer.RasterLayer:
+        return
+    
+    root = QgsProject.instance().layerTreeRoot()
+    
+    # Find the layer node in the tree
+    layer_node = root.findLayer(layer.id())
+    if not layer_node:
+        return
+    
+    # Only move if it's a direct child of root (not in a group)
+    parent = layer_node.parent()
+    if parent == root:
+        # Clone, remove, and re-add at the end (bottom)
+        clone = layer_node.clone()
+        root.removeChildNode(layer_node)
+        root.addChildNode(clone)
+        
+        # Also ensure OFDS group stays at top
+        for child in root.children():
+            if isinstance(child, QgsLayerTreeGroup) and child.name() == "Open Fibre":
+                if root.children()[0] != child:
+                    clone = child.clone()
+                    root.removeChildNode(child)
+                    root.insertChildNode(0, clone)
+                break
+
+
+def configure_labeling(layer, label_field, layer_type):
+    """Configure automatic labeling for a layer.
+    
+    Sets up labels with a readable style including text buffer (halo)
+    for visibility against various backgrounds.
+    
+    Args:
+        layer: QgsVectorLayer to configure labeling for
+        label_field: Name of the field to use for labels (e.g., 'name')
+        layer_type: Either 'point' or 'line' for placement settings
+    """
+    # Create label settings
+    label_settings = QgsPalLayerSettings()
+    label_settings.fieldName = label_field
+    label_settings.enabled = True
+    
+    # Text format
+    text_format = QgsTextFormat()
+    text_format.setSize(9)
+    text_format.setColor(QColor(0, 0, 0))  # Black text
+    
+    # Set font
+    font = QFont()
+    font.setFamily("Arial")
+    font.setBold(False)
+    text_format.setFont(font)
+    
+    # Add buffer (halo) for readability against any background
+    buffer_settings = QgsTextBufferSettings()
+    buffer_settings.setEnabled(True)
+    buffer_settings.setSize(1.0)
+    buffer_settings.setColor(QColor(255, 255, 255))  # White buffer
+    buffer_settings.setOpacity(0.8)
+    text_format.setBuffer(buffer_settings)
+    
+    label_settings.setFormat(text_format)
+    
+    # Placement settings based on layer type
+    # QGIS 3.26+ uses Qgis.LabelPlacement enum
+    if layer_type == 'point':
+        # For points: place label around the point
+        label_settings.placement = Qgis.LabelPlacement.AroundPoint
+        # Offset from point
+        label_settings.xOffset = 2.0
+        label_settings.yOffset = -1.0
+    else:
+        # For lines: curved labels following the line
+        label_settings.placement = Qgis.LabelPlacement.Curved
+        # Repeat labels along long lines
+        label_settings.repeatDistance = 300
+    
+    # Apply labeling to layer
+    labeling = QgsVectorLayerSimpleLabeling(label_settings)
+    layer.setLabeling(labeling)
+    layer.setLabelsEnabled(True)
 
 
 def add_layers(filename, plugin, custom_ui=False):
@@ -22,10 +245,10 @@ def add_layers(filename, plugin, custom_ui=False):
     ) as fp:
         schema_information = json.load(fp)
 
-    # --------   Create a group
+    # --------   Create a group at the TOP of the layer tree
     groupName = "Open Fibre"
     root = QgsProject.instance().layerTreeRoot()
-    group = root.addGroup(groupName)
+    group = root.insertGroup(0, groupName)  # Insert at index 0 (top)
 
     # --------  Add vector Layers
     layers = {}
@@ -41,10 +264,56 @@ def add_layers(filename, plugin, custom_ui=False):
     for table_name, table_info in schema_information["tables"].items():
         # Symbology https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/20
         if table_info["geographic_type"] == "LINESTRING":
-            renderer = layers[table_name].renderer()
-            symbol = renderer.symbol()
-            symbol.setWidth(1.5)
-            # spans_layer.triggerRepaint() may be needed, but as this point there is no data to repaint
+            # Create a visible line symbol for spans
+            # Width in MM so it scales with zoom (stays visible at continent level)
+            line_symbol = QgsLineSymbol.createSimple({
+                'color': '255,127,0,255',        # Orange color
+                'width': '0.8',                  # Width in millimeters
+                'width_unit': 'MM',              # Screen units - scales with zoom
+                'capstyle': 'round',             # Round line caps
+                'joinstyle': 'round'             # Round line joins
+            })
+            
+            # Ensure width is in MM for zoom-dependent rendering
+            symbol_layer = line_symbol.symbolLayer(0)
+            symbol_layer.setWidth(0.8)
+            symbol_layer.setWidthUnit(QgsUnitTypes.RenderMillimeters)
+            
+            # Set pen cap and join styles for smooth lines
+            symbol_layer.setPenCapStyle(Qt.RoundCap)
+            symbol_layer.setPenJoinStyle(Qt.RoundJoin)
+            
+            # Apply the symbol to the layer
+            layers[table_name].renderer().setSymbol(line_symbol)
+            
+            # Configure labeling for spans
+            configure_labeling(layers[table_name], 'name', 'line')
+        
+        # Node symbology - larger, more visible markers with fixed size
+        elif table_info["geographic_type"] == "POINT":
+            # Create a visible marker symbol
+            # Size in MM so it scales with zoom (stays visible at continent level)
+            marker = QgsMarkerSymbol.createSimple({
+                'name': 'circle',
+                'color': '0,120,215,255',       # Blue fill
+                'size': '3.0',                   # Size in millimeters
+                'size_unit': 'MM',               # Screen units - scales with zoom
+                'outline_color': '35,35,35,255', # Dark gray outline
+                'outline_width': '0.4',          # Outline width in MM
+                'outline_width_unit': 'MM'       # Outline in MM too
+            })
+            
+            # Ensure size is in MM for zoom-dependent rendering
+            symbol_layer = marker.symbolLayer(0)
+            symbol_layer.setSizeUnit(QgsUnitTypes.RenderMillimeters)
+            symbol_layer.setStrokeWidthUnit(QgsUnitTypes.RenderMillimeters)
+            
+            # Apply the symbol to the layer
+            layers[table_name].renderer().setSymbol(marker)
+            
+            # Configure labeling for nodes
+            configure_labeling(layers[table_name], 'name', 'point')
+        
         # Hide the GeoPackage ID field in all forms https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues/29
         layers[table_name].setEditorWidgetSetup(0, QgsEditorWidgetSetup("Hidden", {}))
         # Fields
@@ -280,3 +549,67 @@ def add_layers(filename, plugin, custom_ui=False):
 
     # --------   Project Properties
     QgsProject.instance().setTransactionMode(Qgis.TransactionMode.AutomaticGroups)
+    
+    # --------   Ensure proper layer ordering
+    # During initial creation, only order nodes above spans within the group
+    # Don't move the group itself (it's already at top and moving would lose layer references)
+    ensure_layer_order(root, group, is_initial_creation=True)
+    
+    # --------   Configure snapping for OFDS layers
+    # Enable snapping so spans can easily connect to node centers
+    configure_snapping_for_ofds(layers)
+
+
+def configure_snapping_for_ofds(layers):
+    """Configure snapping for OFDS layers so spans connect to node centers.
+    
+    This sets up:
+    - Global snapping enabled
+    - Advanced configuration mode for per-layer settings
+    - Nodes layer: snap to vertices (node centers)
+    - Spans layer: snap to vertices (endpoints)
+    - Topological editing enabled
+    
+    Args:
+        layers: dict of layer name -> QgsVectorLayer
+    """
+    project = QgsProject.instance()
+    config = project.snappingConfig()
+    
+    # Enable snapping globally
+    config.setEnabled(True)
+    
+    # Use advanced configuration for per-layer settings
+    config.setMode(QgsSnappingConfig.AdvancedConfiguration)
+    
+    # Configure snapping for nodes layer (snap to vertices = node centers)
+    if 'nodes' in layers:
+        individual_config = QgsSnappingConfig.IndividualLayerSettings(
+            True,                              # enabled
+            QgsSnappingConfig.VertexAndSegment,  # type - snap to vertices and segments
+            10,                                # tolerance
+            QgsTolerance.Pixels                # units
+        )
+        config.setIndividualLayerSettings(
+            layers['nodes'],
+            individual_config
+        )
+    
+    # Configure snapping for spans (snap to endpoints/vertices)
+    if 'spans' in layers:
+        individual_config = QgsSnappingConfig.IndividualLayerSettings(
+            True,                          # enabled
+            QgsSnappingConfig.Vertex,      # type - snap to vertices only
+            10,                            # tolerance
+            QgsTolerance.Pixels            # units
+        )
+        config.setIndividualLayerSettings(
+            layers['spans'],
+            individual_config
+        )
+    
+    # Apply the snapping configuration
+    project.setSnappingConfig(config)
+    
+    # Enable topological editing for maintaining connected geometries
+    project.setTopologicalEditing(True)

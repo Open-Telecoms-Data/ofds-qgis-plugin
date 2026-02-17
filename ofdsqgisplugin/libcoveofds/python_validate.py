@@ -548,12 +548,290 @@ class UniqueIDsAdditionalCheckForNetwork(AdditionalCheckForNetwork):
         return False
 
 
+class GeometryTopologyAdditionalCheckForNetwork(AdditionalCheckForNetwork):
+    """Validates that span geometry actually touches node geometry.
+    
+    This check ensures that the physical geometry of spans (LineStrings) 
+    actually connects to the nodes they reference via start/end fields.
+    This is critical for network topology integrity.
+    """
+    
+    def __init__(self, tolerance=0.00001):
+        """
+        Args:
+            tolerance: Distance tolerance in CRS units (degrees for WGS84).
+                      0.00001 degrees ≈ 1.1 meters at equator.
+                      This allows for minor GPS/digitizing inaccuracies.
+        """
+        super().__init__()
+        self._tolerance = tolerance
+        self._node_geometries = {}  # node_id -> (lon, lat)
+    
+    def check_node_first_pass(self, node: dict, path: str):
+        """Collect node locations from geometry field."""
+        node_id = node.get("id")
+        geom = node.get("geometry")
+        
+        if node_id and geom:
+            # GeoJSON Point geometry has coordinates as [lon, lat]
+            coords = geom.get("coordinates", [])
+            if isinstance(coords, list) and len(coords) >= 2:
+                self._node_geometries[node_id] = (coords[0], coords[1])
+    
+    def check_span_second_pass(self, span: dict, path: str):
+        """Verify span endpoints touch their corresponding nodes."""
+        span_id = span.get("id")
+        start_node_id = span.get("start")
+        end_node_id = span.get("end")
+        geom = span.get("geometry")
+        
+        # Skip if no geometry or not a LineString
+        if not geom or geom.get("type") != "LineString":
+            return
+        
+        coords = geom.get("coordinates", [])
+        if not isinstance(coords, list) or len(coords) < 2:
+            return
+        
+        # Check start point touches start node
+        if start_node_id and start_node_id in self._node_geometries:
+            node_coords = self._node_geometries[start_node_id]
+            span_start = coords[0]
+            
+            if isinstance(span_start, list) and len(span_start) >= 2:
+                distance = self._calculate_distance(
+                    span_start[0], span_start[1],
+                    node_coords[0], node_coords[1]
+                )
+                
+                if distance > self._tolerance:
+                    self._additional_check_results.append({
+                        "type": "span_geometry_not_touching_start_node",
+                        "span_id": span_id,
+                        "node_id": start_node_id,
+                        "distance": distance,
+                        "tolerance": self._tolerance,
+                        "path": path + "/geometry/coordinates/0"
+                    })
+        
+        # Check end point touches end node
+        if end_node_id and end_node_id in self._node_geometries:
+            node_coords = self._node_geometries[end_node_id]
+            span_end = coords[-1]
+            
+            if isinstance(span_end, list) and len(span_end) >= 2:
+                distance = self._calculate_distance(
+                    span_end[0], span_end[1],
+                    node_coords[0], node_coords[1]
+                )
+                
+                if distance > self._tolerance:
+                    self._additional_check_results.append({
+                        "type": "span_geometry_not_touching_end_node",
+                        "span_id": span_id,
+                        "node_id": end_node_id,
+                        "distance": distance,
+                        "tolerance": self._tolerance,
+                        "path": path + "/geometry/coordinates/-1"
+                    })
+    
+    def _calculate_distance(self, x1, y1, x2, y2):
+        """Calculate Euclidean distance between two points.
+        
+        Note: For WGS84 coordinates, this is an approximation that works
+        well for small distances. For more accuracy over large distances,
+        consider using the Haversine formula.
+        """
+        import math
+        return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    
+    def skip_if_any_links_have_external_node_data(self) -> bool:
+        return True
+    
+    def skip_if_any_links_have_external_span_data(self) -> bool:
+        return True
+
+
+class DanglingSpansAdditionalCheckForNetwork(AdditionalCheckForNetwork):
+    """Detects spans that don't connect to nodes on both ends.
+    
+    A 'dangling' span is one that is missing a start or end node reference.
+    This is a topology error that indicates incomplete network data.
+    
+    Spans with status 'planned' or 'underConstruction' are exempt from this
+    check, as it's common for planned infrastructure to have incomplete
+    connectivity information.
+    """
+    
+    # Statuses where dangling spans are acceptable
+    ALLOWED_DANGLING_STATUSES = ['planned', 'underConstruction']
+    
+    def __init__(self):
+        super().__init__()
+        self._node_ids = set()
+    
+    def check_node_first_pass(self, node: dict, path: str):
+        """Collect all valid node IDs."""
+        node_id = node.get("id")
+        if node_id:
+            self._node_ids.add(node_id)
+    
+    def check_span_second_pass(self, span: dict, path: str):
+        """Check if span has both start and end node references."""
+        span_id = span.get("id")
+        status = span.get("status", "")
+        start_node = span.get("start")
+        end_node = span.get("end")
+        
+        # Skip validation for planned/under construction spans
+        if status in self.ALLOWED_DANGLING_STATUSES:
+            return
+        
+        # Check for missing start node reference
+        if not start_node:
+            self._additional_check_results.append({
+                "type": "dangling_span_missing_start",
+                "span_id": span_id,
+                "status": status if status else "(no status)",
+                "path": path + "/start"
+            })
+        
+        # Check for missing end node reference
+        if not end_node:
+            self._additional_check_results.append({
+                "type": "dangling_span_missing_end",
+                "span_id": span_id,
+                "status": status if status else "(no status)",
+                "path": path + "/end"
+            })
+    
+    def skip_if_any_links_have_external_node_data(self) -> bool:
+        return False
+    
+    def skip_if_any_links_have_external_span_data(self) -> bool:
+        return False
+
+
+class SelfIntersectionAdditionalCheckForNetwork(AdditionalCheckForNetwork):
+    """Detects self-intersecting span geometries.
+    
+    A self-intersecting LineString is one where non-adjacent line segments
+    cross each other. This is typically a digitizing error and can cause
+    problems with network analysis and routing algorithms.
+    
+    Note: This check uses a computational geometry algorithm that compares
+    all non-adjacent segment pairs. For very complex geometries with many
+    vertices, this could be slow (O(n²) complexity).
+    """
+    
+    def check_span_first_pass(self, span: dict, path: str):
+        """Check if span geometry self-intersects."""
+        span_id = span.get("id")
+        geom = span.get("geometry")
+        
+        # Skip if no geometry or not a LineString
+        if not geom or geom.get("type") != "LineString":
+            return
+        
+        coords = geom.get("coordinates", [])
+        
+        # Need at least 4 points to have non-adjacent segments that could intersect
+        # (segments 0-1 and 2-3 are the minimum for a self-intersection)
+        if not isinstance(coords, list) or len(coords) < 4:
+            return
+        
+        # Check for self-intersection using line segment intersection algorithm
+        if self._has_self_intersection(coords):
+            self._additional_check_results.append({
+                "type": "span_self_intersection",
+                "span_id": span_id,
+                "vertex_count": len(coords),
+                "path": path + "/geometry"
+            })
+    
+    def _has_self_intersection(self, coords):
+        """Check if a LineString self-intersects.
+        
+        Uses the CCW (counter-clockwise) algorithm to detect if any two
+        non-adjacent line segments intersect.
+        
+        Args:
+            coords: List of [lon, lat] coordinate pairs
+            
+        Returns:
+            True if the LineString self-intersects, False otherwise
+        """
+        n = len(coords)
+        
+        # Check if this is a closed ring (first and last points are the same)
+        is_closed_ring = (
+            len(coords) >= 3 and
+            coords[0][0] == coords[-1][0] and 
+            coords[0][1] == coords[-1][1]
+        )
+        
+        # Compare each segment with all non-adjacent segments
+        for i in range(n - 1):
+            # Start j at i+2 to skip adjacent segments (they share a vertex)
+            for j in range(i + 2, n - 1):
+                # For closed rings, skip comparing the first and last segments
+                # because they share the closing vertex (not a real intersection)
+                if is_closed_ring and i == 0 and j == n - 2:
+                    continue
+                
+                # Check if segments (i, i+1) and (j, j+1) intersect
+                if self._segments_intersect(
+                    coords[i], coords[i + 1],
+                    coords[j], coords[j + 1]
+                ):
+                    return True
+        
+        return False
+    
+    def _segments_intersect(self, p1, p2, p3, p4):
+        """Check if line segment p1-p2 intersects with segment p3-p4.
+        
+        Uses the CCW (counter-clockwise) orientation test. Two segments
+        intersect if and only if:
+        - Points p1 and p2 are on opposite sides of the line through p3-p4, AND
+        - Points p3 and p4 are on opposite sides of the line through p1-p2
+        
+        Args:
+            p1, p2: Endpoints of first segment as [x, y] lists
+            p3, p4: Endpoints of second segment as [x, y] lists
+            
+        Returns:
+            True if segments intersect (cross each other), False otherwise
+        """
+        def ccw(A, B, C):
+            """Check if three points are in counter-clockwise order.
+            
+            Returns True if the path A->B->C turns counter-clockwise,
+            False if it turns clockwise or is collinear.
+            """
+            return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
+        
+        # Segments intersect if p1,p2 are on opposite sides of p3-p4
+        # AND p3,p4 are on opposite sides of p1-p2
+        return (ccw(p1, p3, p4) != ccw(p2, p3, p4) and 
+                ccw(p1, p2, p3) != ccw(p1, p2, p4))
+    
+    def skip_if_any_links_have_external_node_data(self) -> bool:
+        return True
+    
+    def skip_if_any_links_have_external_span_data(self) -> bool:
+        return True
+
+
 ADDITIONAL_CHECK_CLASSES_FOR_NETWORK = [
     SpansMustHaveValidNodesAdditionalCheckForNetwork,
     PhaseReferenceAdditionalCheckForNetwork,
     OrganisationReferenceAdditionalCheckForNetwork,
     IsNodeUsedInSpanAdditionalCheckForNetwork,
     UniqueIDsAdditionalCheckForNetwork,
+    GeometryTopologyAdditionalCheckForNetwork,
+    DanglingSpansAdditionalCheckForNetwork,
+    SelfIntersectionAdditionalCheckForNetwork,
 ]
 
 

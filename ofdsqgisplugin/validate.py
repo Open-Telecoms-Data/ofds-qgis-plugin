@@ -55,6 +55,56 @@ def error_to_human_message(data):
         return "A contract id is used more than once. The contract id is {}.".format(
             data["contract_id"]
         )
+    # Geometry topology validation errors
+    if data["type"] == "span_geometry_not_touching_start_node":
+        return (
+            "Span '{}' geometry does not touch its start node '{}'. "
+            "Distance: {:.6f} units (tolerance: {:.6f}). "
+            "The span's first coordinate should match the node's location."
+        ).format(
+            data["span_id"],
+            data["node_id"],
+            data["distance"],
+            data["tolerance"]
+        )
+    if data["type"] == "span_geometry_not_touching_end_node":
+        return (
+            "Span '{}' geometry does not touch its end node '{}'. "
+            "Distance: {:.6f} units (tolerance: {:.6f}). "
+            "The span's last coordinate should match the node's location."
+        ).format(
+            data["span_id"],
+            data["node_id"],
+            data["distance"],
+            data["tolerance"]
+        )
+    # Dangling span validation errors
+    if data["type"] == "dangling_span_missing_start":
+        return (
+            "Span '{}' is missing a start node reference (dangling span). "
+            "Status: {}. All non-planned spans must connect to nodes at both ends."
+        ).format(
+            data["span_id"],
+            data.get("status", "(no status)")
+        )
+    if data["type"] == "dangling_span_missing_end":
+        return (
+            "Span '{}' is missing an end node reference (dangling span). "
+            "Status: {}. All non-planned spans must connect to nodes at both ends."
+        ).format(
+            data["span_id"],
+            data.get("status", "(no status)")
+        )
+    # Self-intersection validation error
+    if data["type"] == "span_self_intersection":
+        return (
+            "Span '{}' geometry has a self-intersection (the line crosses itself). "
+            "This is typically a digitizing error. The span has {} vertices. "
+            "Please review and correct the geometry."
+        ).format(
+            data["span_id"],
+            data.get("vertex_count", "unknown")
+        )
     return str(data)
 
 

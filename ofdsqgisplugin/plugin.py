@@ -77,7 +77,13 @@ class OFDSQGISPlugin:
         # --------------------- custom ui selected features
         if CUSTOM_UI_FEATURE_FLAG:
             self.action_custom_ui_selected_features = QAction(
-                QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_custom_ui_selected_features.svg"))),
+                QIcon(
+                    os.path.join(
+                        os.path.join(
+                            PLUGIN_DIR, "button_custom_ui_selected_features.svg"
+                        )
+                    )
+                ),
                 "Open UI on selected features",
                 self.iface.mainWindow(),
             )

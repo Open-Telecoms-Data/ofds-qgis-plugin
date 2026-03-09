@@ -1,7 +1,15 @@
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QListView, QListWidget,
-                             QListWidgetItem, QMainWindow, QPushButton,
-                             QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (
+    QHBoxLayout,
+    QLabel,
+    QListView,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ..lib import find_layers
 from .table_edit import TableEditDialog

@@ -1,6 +1,12 @@
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (QHBoxLayout, QListView, QMainWindow, QPushButton,
-                             QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (
+    QHBoxLayout,
+    QListView,
+    QMainWindow,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from .export import get_json
 from .libcoveofds.python_validate import PythonValidate

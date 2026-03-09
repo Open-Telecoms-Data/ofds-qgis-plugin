@@ -1,0 +1,19 @@
+name: Lint
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        architecture: x64
+    - name: Install Python Packages
+      run: pip install black isort
+    - name: Lint - black
+      run: black . --check
+    - name: Lint - isort
+      run: isort . --check-only --profile black

@@ -2,11 +2,19 @@ import csv
 import json
 import os
 
-from qgis.core import (Qgis, QgsAttributeEditorContainer,
-                       QgsAttributeEditorRelation, QgsDefaultValue,
-                       QgsEditFormConfig, QgsEditorWidgetSetup,
-                       QgsLayerTreeLayer, QgsMapLayer, QgsProject, QgsRelation,
-                       QgsVectorLayer)
+from qgis.core import (
+    Qgis,
+    QgsAttributeEditorContainer,
+    QgsAttributeEditorRelation,
+    QgsDefaultValue,
+    QgsEditFormConfig,
+    QgsEditorWidgetSetup,
+    QgsLayerTreeLayer,
+    QgsMapLayer,
+    QgsProject,
+    QgsRelation,
+    QgsVectorLayer,
+)
 
 PLUGIN_DIR = os.path.dirname(__file__)
 

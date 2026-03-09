@@ -130,20 +130,16 @@ def test_export_contract_documents_1():
         "INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network'),('worky', 'Network')"
     )
     # TODO Hard coding the id's is a bit of an assumption but we are getting away with it
-    cursor.execute(
-        """
+    cursor.execute("""
         INSERT INTO contracts (ofds_id, title, network_id) 
         VALUES ('contracta', 'Contract A', 1),('contractb', 'Contract B', 1), 
         ('contracta', 'Contract A', 2),('contractb', 'Contract B', 2)
-        """
-    )
-    cursor.execute(
-        """
+        """)
+    cursor.execute("""
         INSERT INTO contracts_documents (title, network_id, contract_id) 
         VALUES ('documenta', 1, 1),('documentb', 1, 2),
         ('documentc', 2, 3),('documentd', 2, 4)
-        """
-    )
+        """)
 
     connection.commit()
     connection.close()

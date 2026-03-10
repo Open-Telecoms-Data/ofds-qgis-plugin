@@ -24,7 +24,7 @@ def add_layers(filename, plugin, custom_ui=False):
     with open(
         os.path.join(
             PLUGIN_DIR,
-            "schema_0_3",
+            "schema_0_4",
             "schema_information.json",
         )
     ) as fp:

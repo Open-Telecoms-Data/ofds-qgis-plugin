@@ -145,7 +145,7 @@ class OFDSQGISPlugin:
         )
         # Copy template to desired location
         shutil.copyfile(
-            os.path.join(PLUGIN_DIR, "schema_0_3", "geopackage.gpkg"), filename
+            os.path.join(PLUGIN_DIR, "schema_0_4", "network-schema.gpkg"), filename
         )
         # add layers
         add_layers(filename, self, custom_ui=CUSTOM_UI_FEATURE_FLAG)

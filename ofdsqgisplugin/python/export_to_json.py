@@ -15,7 +15,7 @@ START_OF_NETWORK = {
     "contracts": [],
     "links": [
         {
-            "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__3__0/schema/network-schema.json",
+            "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__4__0/schema/network-schema.json",
             "rel": "describedby",
         }
     ],
@@ -54,7 +54,7 @@ class ExportCallableToJSON:
             os.path.join(
                 PLUGIN_DIR,
                 "..",
-                "schema_0_3",
+                "schema_0_4",
                 "schema_information.json",
             )
         ) as fp:

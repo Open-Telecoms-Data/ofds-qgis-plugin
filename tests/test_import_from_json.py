@@ -19,8 +19,8 @@ def test_import_1():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -38,7 +38,7 @@ def test_import_1():
                     "nodes": [
                         {
                             "id": "node1",
-                            "physicalInfrastructureProvider": {"id": "orga"},
+                            "transmissionMediumOwner": {"id": "orga"},
                         }
                     ],
                 },
@@ -74,7 +74,7 @@ def test_import_1():
     assert ("orgb", "Org B", 2) == rows[1]
     # nodes
     cursor.execute(
-        "SELECT ofds_id, physicalInfrastructureProvider, network_id, geom FROM nodes ORDER BY ofds_id ASC"
+        "SELECT ofds_id, transmissionMediumOwner, network_id, geom FROM nodes ORDER BY ofds_id ASC"
     )
     rows = cursor.fetchall()
     assert 1 == len(rows)
@@ -94,8 +94,8 @@ def test_import_nodes_network_providers_1():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -176,8 +176,8 @@ def test_import_contract_documents_1():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -277,8 +277,8 @@ def test_import_multiple_codelists_1():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -340,8 +340,8 @@ def test_import_multiple_open_codelists_new_value_1():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -405,8 +405,8 @@ def test_import_custom_single_open_codelist_entry_1():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -474,8 +474,8 @@ def test_span_with_start_and_end_set_1():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -542,8 +542,8 @@ def test_import_broken_foreign_keys():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -558,7 +558,7 @@ def test_import_broken_foreign_keys():
                     "nodes": [
                         {
                             "id": "node1",
-                            "physicalInfrastructureProvider": {"id": "orga"},
+                            "transmissionMediumOwner": {"id": "orga"},
                         }
                     ],
                     "spans": [{"id": "span1to2", "start": "node1", "end": "node2"}],

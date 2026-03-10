@@ -19,8 +19,8 @@ def _get_and_setup_sqlite_filename():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -74,7 +74,7 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
     """
     Tests a network with an org and a node.
 
-    The org is in the node's networkProviders, and physicalInfrastructureProvider - this tests different ways there could be a link.
+    The org is in the node's networkProviders, and transmissionMediumOwner - this tests different ways there could be a link.
     """
     sqlite_filename = _get_and_setup_sqlite_filename()
 
@@ -87,7 +87,7 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
         "INSERT INTO organisations (ofds_id, name, network_id) VALUES ('orga', 'Org A', 1)"
     )
     cursor.execute(
-        "INSERT INTO nodes (ofds_id, name, network_id, geom, physicalInfrastructureProvider) VALUES ('nodea', 'Node A', 1, '{}', 1)"
+        "INSERT INTO nodes (ofds_id, name, network_id, geom, transmissionMediumOwner) VALUES ('nodea', 'Node A', 1, '{}', 1)"
     )
     cursor.execute(
         "INSERT INTO relation_nodes_networkProviders(base_id, related_id) VALUES (1, 1)"
@@ -108,7 +108,7 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
         "id": "orga",
         "name": "Org A",
     }
-    assert data["networks"][0]["nodes"][0]["physicalInfrastructureProvider"] == {
+    assert data["networks"][0]["nodes"][0]["transmissionMediumOwner"] == {
         "id": "orga",
         "name": "Org A",
     }

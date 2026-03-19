@@ -1,5 +1,6 @@
-from PyQt5.QtGui import QFont, QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (
+from qgis.core import QgsFeature, QgsJsonUtils
+from qgis.PyQt.QtGui import QFont, QStandardItem, QStandardItemModel
+from qgis.PyQt.QtWidgets import (
     QCheckBox,
     QComboBox,
     QDoubleSpinBox,
@@ -15,7 +16,6 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from qgis.core import QgsFeature, QgsJsonUtils
 
 from ..lib import find_layers
 from .base import get_schema_information

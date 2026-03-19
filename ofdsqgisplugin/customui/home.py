@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (
+from qgis.PyQt.QtGui import QStandardItem, QStandardItemModel
+from qgis.PyQt.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QListView,

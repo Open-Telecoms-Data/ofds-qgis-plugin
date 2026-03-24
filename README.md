@@ -3,7 +3,7 @@ A QGIS plugin for creating, editing and interacting with OFDS data. This is the 
 
 Feedback on its use is welcome via [GitHub issues](https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues). To comment or create issues, you need to [sign up for a free GitHub account](https://github.com/signup). If you prefer to provide feedback privately, you can email info@opentelecomdata.net.
 
-**ReadMe contents**
+**Contents**
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)

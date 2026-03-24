@@ -1,7 +1,9 @@
-# **Open Fibre Data Standard (OFDS) QGIS Plugin**
-A QGIS plugin for creating, editing and interacting with OFDS data. This is the first release of the plugin. It is an MVP (minimal viable product).
+# **OFDS Studio -  QGIS Plugin**
+A QGIS plugin for creating, editing and interacting with OFDS (Open Fibre Data Standard) data. This is the first release of the plugin. It is an MVP (minimal viable product).
 
 Feedback on its use is welcome via [GitHub issues](https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues). To comment or create issues, you need to [sign up for a free GitHub account](https://github.com/signup). If you prefer to provide feedback privately, you can email info@opentelecomdata.net.
+
+For more about the Open Fibre Data Standard, see [ofds.info](https://ofds.info).
 
 **Contents**
 - [Requirements](#requirements)

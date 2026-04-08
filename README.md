@@ -84,7 +84,7 @@ Provide non-geographic network features first, so that they can be referenced fr
 4. To edit a feature's attributes:
     1. Select **Open Attribute Table**.
     2. Select the point or line to see its attributes.
-    3. Using the form view, update the information under the **Fields* tab.
+    3. Using the form view, update the information under the **Fields** tab.
     4. Under the **Relations** tab, select **Link existing child feature(s)** to add an existing value to a field. (Do not use the **Add child feature** option.)
     5. To remove an existing value from a relations field, select it then select **Unlink selected child feature(s)**. (Do not use the **Delete selected child feature** option.)
 5. To bulk edit multiple features' attributes:
@@ -92,11 +92,16 @@ Provide non-geographic network features first, so that they can be referenced fr
     2. Select **Toggle multi edit mode**.
     3. Update the information under the **Fields** and **Relations** tabs. See the QGIS documentation on [Editing multiple fields](https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#editing-multiple-fields).
     4. Select **apply changes**.
-6. To delete a geographic feature:
+6. To delete a span:
     1. Select **Select Features by Area or Single Click**.
-    2. Select the point or line.
+    2. Select the line.
     3. Select **Delete Selected**.
-7. Select **Save edits**.
+7. To delete a node:
+    1. Ensure that the node is not the `start` or `end` of any span.
+    2. Select **Select Features by Area or Single Click**.
+    3. Select the line.
+    4. Select **Delete Selected**.
+8. Select **Save edits**.
    
 #### Edit non-geographic network features
 1. Select one of the **Open Fibre** layers: **networks**, **phases**, **organisations**, or **contracts**.
@@ -135,7 +140,7 @@ Yes. To add codes to an open codelists like `nodeType`:
 1. Select the relevant **codelist_open** layer.
 2. Follow the **Add non-geographic network features** procedure above.
 
-**Are the nodes referenced by the **Start** and **End** attributes of a span updated automatically, according to the geographical proximity of nodes?**
+**Are the nodes referenced by the `start` and `end` attributes of a span updated automatically, according to the geographical proximity of nodes?**
 
 No. Currently these values must be manually updated.
 

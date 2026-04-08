@@ -165,7 +165,7 @@
         {
           "name": "supportingInfrastructure__type",
           "title": "Supporting infrastructure Type",
-          "description": "The infrastructure that supports this node. The type of supporting infrastructure, from the open [nodeSupportingInfrastructure codelist](https://open-fibre-data-standard.readthedocs.io/en/{{vesion}}/reference/codelists#nodesupportinginfrastructure).",
+          "description": "The infrastructure that supports this node. The type of supporting infrastructure, from the open [nodeSupportingInfrastructure codelist](https://standard.ofds.info/en/{{version}}/reference/codelists#nodesupportinginfrastructure).",
           "type": "open_codelist",
           "sqlite_type": "integer",
           "codelist": "nodeSupportingInfrastructure.csv"
@@ -351,7 +351,7 @@
         {
           "name": "supportingInfrastructure__type",
           "title": "Supporting infrastructure Type",
-          "description": "The infrastructure that supports this span. The type of supporting infrastructure, from the open [spanSupportingInfrastructure codelist](https://open-fibre-data-standard.readthedocs.io/en/{{vesion}}/reference/codelists#spansupportinginfrastructure).",
+          "description": "The infrastructure that supports this span. The type of supporting infrastructure, from the open [spanSupportingInfrastructure codelist](https://standard.ofds.info/en/{{version}}/reference/codelists#spansupportinginfrastructure).",
           "type": "open_codelist",
           "sqlite_type": "integer",
           "codelist": "spanSupportingInfrastructure.csv"
@@ -698,7 +698,7 @@
         {
           "name": "value__currency",
           "title": "Value Currency",
-          "description": "The value of this contract. The currency of this value, from the closed [currency codelist](https://open-fibre-data-standard.readthedocs.io/en/{{vesion}}/reference/codelists#currency).",
+          "description": "The value of this contract. The currency of this value, from the closed [currency codelist](https://standard.ofds.info/en/{{version}}/reference/codelists#currency).",
           "type": "closed_codelist",
           "sqlite_type": "text",
           "codelist": "currency.csv"
@@ -791,7 +791,7 @@
         {
           "name": "cost__perMetre__currency",
           "title": "Cost Cost per metre Currency",
-          "description": "Information about the cost of the wayleave. The average cost per metre for this wayleave. Wayleave costs can include a mix of per length and per item fees, e.g. a fee per metre of cable and a fee per pole. The average cost per metre should be calculated by dividing the total cost of all fees by the total length in metres of cable covered by the wayleave. For recurring fees, the average cost per metre should be annualised. The currency of this value, from the closed [currency codelist](https://open-fibre-data-standard.readthedocs.io/en/{{vesion}}/reference/codelists#currency).",
+          "description": "Information about the cost of the wayleave. The average cost per metre for this wayleave. Wayleave costs can include a mix of per length and per item fees, e.g. a fee per metre of cable and a fee per pole. The average cost per metre should be calculated by dividing the total cost of all fees by the total length in metres of cable covered by the wayleave. For recurring fees, the average cost per metre should be annualised. The currency of this value, from the closed [currency codelist](https://standard.ofds.info/en/{{version}}/reference/codelists#currency).",
           "type": "closed_codelist",
           "sqlite_type": "text",
           "codelist": "currency.csv"
@@ -1119,12 +1119,16 @@
         "Bangladesh NGO Affairs Bureau (BD-NAB)"
       ],
       [
+        "BD-NBR",
+        "National Board of Revenue (BD-NBR)"
+      ],
+      [
         "BD-ROC",
-        "Bangladesh Office of the Register of Joint Stock Companies and Firms (BD-ROC)"
+        "Bangladesh Office of the Registrar of Joint Stock Companies and Firms (BD-ROC)"
       ],
       [
         "BE-BCE_KBO",
-        "Crossroads Bank for Enterprises (BE-BCE_KBO)"
+        "Crossroads Bank for Enterprises (Belgium) (BE-BCE_KBO)"
       ],
       [
         "BE-COA",
@@ -1200,7 +1204,7 @@
       ],
       [
         "BR-CNPJ",
-        "National Registry of Legal Entities (BR-CNPJ)"
+        "National Registry of Legal Entities (Brazil) (BR-CNPJ)"
       ],
       [
         "BR-COA",
@@ -1319,6 +1323,10 @@
         "Congo (the Democratic Republic of the) Chart of Accounts (CD-COA)"
       ],
       [
+        "CD-MJDH",
+        "Ministry of Justice and Human Rights (CD-MJDH)"
+      ],
+      [
         "CF-COA",
         "Central African Republic (the) Chart of Accounts (CF-COA)"
       ],
@@ -1432,7 +1440,7 @@
       ],
       [
         "CZ-DIC",
-        "Tax ID (DI\u010c) Czech Republic (CZ-DIC)"
+        "Tax ID (DI\u010c) - Ministry of Finance of the Czech Republic (CZ-DIC)"
       ],
       [
         "CZ-ICO",
@@ -1520,7 +1528,7 @@
       ],
       [
         "ES-MDJ",
-        "Ministerio de Justicia (ES-MDJ)"
+        "Ministry of Justice, Spain (ES-MDJ)"
       ],
       [
         "ES-NIF",
@@ -1536,7 +1544,7 @@
       ],
       [
         "ET-CSA",
-        "Charities and Societies Agency (Ethiopia) (ET-CSA)"
+        "Authority for Civil Society Organizations (ACSO) - Ethiopia (ET-CSA)"
       ],
       [
         "ET-MFA",
@@ -1601,6 +1609,10 @@
       [
         "GB-COA",
         "United Kingdom of Great Britain and Northern Ireland (the) Chart of Accounts (GB-COA)"
+      ],
+      [
+        "GB-COE",
+        "Church of England Church Codes (GB-COE)"
       ],
       [
         "GB-COH",
@@ -1727,6 +1739,10 @@
         "Registrar General's Department (GH-RGD)"
       ],
       [
+        "GH-TIN",
+        "Ghana Tax Identification Number (TIN) (GH-TIN)"
+      ],
+      [
         "GI-COA",
         "Gibraltar Chart of Accounts (GI-COA)"
       ],
@@ -1836,7 +1852,7 @@
       ],
       [
         "ID-DJP",
-        "Director General of Taxes (ID-DJP)"
+        "Indonesian Directorate General of Taxes (ID-DJP)"
       ],
       [
         "ID-KDN",
@@ -1925,6 +1941,10 @@
       [
         "IS-COA",
         "Iceland Chart of Accounts (IS-COA)"
+      ],
+      [
+        "IS-KEN",
+        "Icelandic Social Security Number (IS-KEN)"
       ],
       [
         "IT-CF",
@@ -2035,6 +2055,10 @@
         "Ministry of Interior National NGO Registrar (KH-NNGO)"
       ],
       [
+        "KH-TIN",
+        "Cambodia Tax Identification Number (KH-TIN)"
+      ],
+      [
         "KI-COA",
         "Kiribati Chart of Accounts (KI-COA)"
       ],
@@ -2123,6 +2147,10 @@
         "Lesotho Chart of Accounts (LS-COA)"
       ],
       [
+        "LS-HEI",
+        "Lesotho Higher Education Institution Registration Number (HEI) (LS-HEI)"
+      ],
+      [
         "LS-LCN",
         "Lesotho Council of Non Governmental Organisations (LS-LCN)"
       ],
@@ -2189,6 +2217,10 @@
       [
         "MG-COA",
         "Madagascar Chart of Accounts (MG-COA)"
+      ],
+      [
+        "MG-NIF",
+        "Directorate General of Taxes (MG-NIF)"
       ],
       [
         "MH-COA",
@@ -2323,6 +2355,10 @@
         "Taxpayer Single Identification Number (Mozambique) (MZ-NUIT)"
       ],
       [
+        "NA-BIPA",
+        "Business and Intellectual Property Authority, Republic of Namibia (NA-BIPA)"
+      ],
+      [
         "NA-COA",
         "Namibia Chart of Accounts (NA-COA)"
       ],
@@ -2337,6 +2373,10 @@
       [
         "NE-COA",
         "Niger (the) Chart of Accounts (NE-COA)"
+      ],
+      [
+        "NE-DGI",
+        "Tax Directorate (NE-DGI)"
       ],
       [
         "NF-COA",
@@ -2364,7 +2404,7 @@
       ],
       [
         "NL-COA",
-        "Netherlands (the) Chart of Accounts (NL-COA)"
+        "Netherlands (Kingdom of the) Chart of Accounts (NL-COA)"
       ],
       [
         "NL-KVK",
@@ -2388,7 +2428,7 @@
       ],
       [
         "NP-CRO",
-        "Company Registrar Office (NP-CRO)"
+        "Nepal Company Registrar Office (NP-CRO)"
       ],
       [
         "NP-IRD",
@@ -2443,6 +2483,10 @@
         "Papua New Guinea Chart of Accounts (PG-COA)"
       ],
       [
+        "PG-IPA",
+        "Investment Promotion Authority - Papua New Guinea (PG-IPA)"
+      ],
+      [
         "PH-COA",
         "Philippines (the) Chart of Accounts (PH-COA)"
       ],
@@ -2469,6 +2513,10 @@
       [
         "PK-VSWA",
         "Pakistan Voluntary Social Welfare Agency (PK-VSWA)"
+      ],
+      [
+        "PK_IS-IRT",
+        "Islamabad Registrar of Trusts, Pakistan (PK_IS-IRT)"
       ],
       [
         "PL-COA",
@@ -2505,6 +2553,10 @@
       [
         "PS-MOI",
         "Ministry of Interior (Palestine) (PS-MOI)"
+      ],
+      [
+        "PS-TIN",
+        "Tax Identifier Number, Palestine (PS-TIN)"
       ],
       [
         "PT-COA",
@@ -2585,6 +2637,10 @@
       [
         "SA-COA",
         "Saudi Arabia Chart of Accounts (SA-COA)"
+      ],
+      [
+        "SB-BR",
+        "Solomon Islands Business Registry (SB-BR)"
       ],
       [
         "SB-COA",
@@ -2692,7 +2748,7 @@
       ],
       [
         "SO-MPND",
-        "General Register for Non-Governmental Organizations (Somaliland) (SO-MPND)"
+        "Ministry of Planning and National Development - General Register for Non-Governmental Organizations (Somaliland) (SO-MPND)"
       ],
       [
         "SR-COA",
@@ -2725,6 +2781,10 @@
       [
         "SY-COA",
         "Syrian Arab Republic (the) Chart of Accounts (SY-COA)"
+      ],
+      [
+        "SZ-CIT",
+        "Ministry of Commerce, Industry and Trade, Eswatini (SZ-CIT)"
       ],
       [
         "SZ-COA",
@@ -2763,6 +2823,10 @@
         "Tajikistan Chart of Accounts (TJ-COA)"
       ],
       [
+        "TJ-TIN",
+        "Tajikstan Tax Identification Number (TJ-TIN)"
+      ],
+      [
         "TK-COA",
         "Tokelau Chart of Accounts (TK-COA)"
       ],
@@ -2788,7 +2852,7 @@
       ],
       [
         "TR-COA",
-        "Turkey Chart of Accounts (TR-COA)"
+        "T\u00fcrkiye Chart of Accounts (TR-COA)"
       ],
       [
         "TR-MERSIS",
@@ -2797,6 +2861,10 @@
       [
         "TR-MOI",
         "Department of Associations (Ministry of Interior, Turkey) (TR-MOI)"
+      ],
+      [
+        "TR-VKN",
+        "Tax Identification Number (VKN), T\u00fcrkiye (TR-VKN)"
       ],
       [
         "TT-COA",
@@ -2852,7 +2920,7 @@
       ],
       [
         "UG-RSB",
-        "Registration Services Bureau (UG-RSB)"
+        "Uganda Registration Services Bureau (URSB) (UG-RSB)"
       ],
       [
         "UM-COA",
@@ -2869,6 +2937,10 @@
       [
         "US-EIN",
         "Employer Identification Number - Internal Revenue Service (US-EIN)"
+      ],
+      [
+        "US-SAM",
+        "System for Award Management (SAM) Unique Entity ID, USA (US-SAM)"
       ],
       [
         "US-USAGOV",
@@ -2913,6 +2985,10 @@
       [
         "VN-MOST",
         "Ministry of Science and Technology (VN-MOST)"
+      ],
+      [
+        "VN-TIN",
+        "Viet Nam Tax Identification Number (TIN) (VN-TIN)"
       ],
       [
         "VU-COA",
@@ -2993,6 +3069,14 @@
       [
         "YE-COA",
         "Yemen Chart of Accounts (YE-COA)"
+      ],
+      [
+        "YE-CR",
+        "Commercial Registry, Yemen (YE-CR)"
+      ],
+      [
+        "YE-MOPIC",
+        "Yemen Ministry of Planning and International Cooperation (YE-MOPIC)"
       ],
       [
         "YE-MSAL",
@@ -3941,6 +4025,22 @@
         "3gpdash-qoe-report+xml (application/3gpdash-qoe-report+xml)"
       ],
       [
+        "application/3gpp-ims+xml",
+        "3gpp-ims+xml (application/3gpp-ims+xml)"
+      ],
+      [
+        "application/3gpp-mbs-object-manifest+json",
+        "3gpp-mbs-object-manifest+json (application/3gpp-mbs-object-manifest+json)"
+      ],
+      [
+        "application/3gpp-mbs-user-service-descriptions+json",
+        "3gpp-mbs-user-service-descriptions+json (application/3gpp-mbs-user-service-descriptions+json)"
+      ],
+      [
+        "application/3gpp-media-delivery-metrics-report+json",
+        "3gpp-media-delivery-metrics-report+json (application/3gpp-media-delivery-metrics-report+json)"
+      ],
+      [
         "application/3gppHal+json",
         "3gppHal+json (application/3gppHal+json)"
       ],
@@ -3949,12 +4049,20 @@
         "3gppHalForms+json (application/3gppHalForms+json)"
       ],
       [
-        "application/3gpp-ims+xml",
-        "3gpp-ims+xml (application/3gpp-ims+xml)"
+        "application/aas+zip",
+        "aas+zip (application/aas+zip)"
       ],
       [
         "application/A2L",
         "A2L (application/A2L)"
+      ],
+      [
+        "application/ace-groupcomm+cbor",
+        "ace-groupcomm+cbor (application/ace-groupcomm+cbor)"
+      ],
+      [
+        "application/ace-trl+cbor",
+        "ace-trl+cbor (application/ace-trl+cbor)"
       ],
       [
         "application/ace+cbor",
@@ -4037,6 +4145,14 @@
         "alto-propmapparams+json (application/alto-propmapparams+json)"
       ],
       [
+        "application/alto-tips+json",
+        "alto-tips+json (application/alto-tips+json)"
+      ],
+      [
+        "application/alto-tipsparams+json",
+        "alto-tipsparams+json (application/alto-tipsparams+json)"
+      ],
+      [
         "application/alto-updatestreamcontrol+json",
         "alto-updatestreamcontrol+json (application/alto-updatestreamcontrol+json)"
       ],
@@ -4055,6 +4171,14 @@
       [
         "application/applefile",
         "applefile (application/applefile)"
+      ],
+      [
+        "application/asyncapi+json",
+        "asyncapi+json (application/asyncapi+json)"
+      ],
+      [
+        "application/asyncapi+yaml",
+        "asyncapi+yaml (application/asyncapi+yaml)"
       ],
       [
         "application/at+jwt",
@@ -4137,6 +4261,14 @@
         "beep+xml (application/beep+xml)"
       ],
       [
+        "application/bufr",
+        "bufr (application/bufr)"
+      ],
+      [
+        "application/c2pa",
+        "c2pa (application/c2pa)"
+      ],
+      [
         "application/calendar+json",
         "calendar+json (application/calendar+json)"
       ],
@@ -4209,6 +4341,10 @@
         "cdni (application/cdni)"
       ],
       [
+        "application/ce+cbor",
+        "ce+cbor (application/ce+cbor)"
+      ],
+      [
         "application/CEA",
         "CEA (application/CEA)"
       ],
@@ -4225,8 +4361,20 @@
         "cfw (application/cfw)"
       ],
       [
+        "application/cid",
+        "cid (application/cid)"
+      ],
+      [
+        "application/cid-edhoc+cbor-seq",
+        "cid-edhoc+cbor-seq (application/cid-edhoc+cbor-seq)"
+      ],
+      [
         "application/city+json",
         "city+json (application/city+json)"
+      ],
+      [
+        "application/city+json-seq",
+        "city+json-seq (application/city+json-seq)"
       ],
       [
         "application/clr",
@@ -4245,8 +4393,28 @@
         "cms (application/cms)"
       ],
       [
+        "application/cmw+cbor",
+        "cmw+cbor (application/cmw+cbor)"
+      ],
+      [
+        "application/cmw+cose",
+        "cmw+cose (application/cmw+cose)"
+      ],
+      [
+        "application/cmw+json",
+        "cmw+json (application/cmw+json)"
+      ],
+      [
+        "application/cmw+jws",
+        "cmw+jws (application/cmw+jws)"
+      ],
+      [
         "application/cnrp+xml",
         "cnrp+xml (application/cnrp+xml)"
+      ],
+      [
+        "application/coap-eap",
+        "coap-eap (application/coap-eap)"
       ],
       [
         "application/coap-group+json",
@@ -4313,6 +4481,10 @@
         "cwl+json (application/cwl+json)"
       ],
       [
+        "application/cwl+yaml",
+        "cwl+yaml (application/cwl+yaml)"
+      ],
+      [
         "application/cwt",
         "cwt (application/cwt)"
       ],
@@ -4365,6 +4537,10 @@
         "dicom+xml (application/dicom+xml)"
       ],
       [
+        "application/did",
+        "did (application/did)"
+      ],
+      [
         "application/DII",
         "DII (application/DII)"
       ],
@@ -4407,6 +4583,34 @@
       [
         "application/dvcs",
         "dvcs (application/dvcs)"
+      ],
+      [
+        "application/eat+cwt",
+        "eat+cwt (application/eat+cwt)"
+      ],
+      [
+        "application/eat+jwt",
+        "eat+jwt (application/eat+jwt)"
+      ],
+      [
+        "application/eat-bun+cbor",
+        "eat-bun+cbor (application/eat-bun+cbor)"
+      ],
+      [
+        "application/eat-bun+json",
+        "eat-bun+json (application/eat-bun+json)"
+      ],
+      [
+        "application/eat-ucs+cbor",
+        "eat-ucs+cbor (application/eat-ucs+cbor)"
+      ],
+      [
+        "application/eat-ucs+json",
+        "eat-ucs+json (application/eat-ucs+json)"
+      ],
+      [
+        "application/edhoc+cbor-seq",
+        "edhoc+cbor-seq (application/edhoc+cbor-seq)"
       ],
       [
         "application/EDI-consent",
@@ -4485,6 +4689,10 @@
         "encaprtp (application/encaprtp)"
       ],
       [
+        "application/entity-statement+jwt",
+        "entity-statement+jwt (application/entity-statement+jwt)"
+      ],
+      [
         "application/epp+xml",
         "epp+xml (application/epp+xml)"
       ],
@@ -4507,6 +4715,10 @@
       [
         "application/expect-ct-report+json",
         "expect-ct-report+json (application/expect-ct-report+json)"
+      ],
+      [
+        "application/explicit-registration-response+jwt",
+        "explicit-registration-response+jwt (application/explicit-registration-response+jwt)"
       ],
       [
         "application/express",
@@ -4561,8 +4773,20 @@
         "geo+json-seq (application/geo+json-seq)"
       ],
       [
+        "application/geofeed+csv",
+        "geofeed+csv (application/geofeed+csv)"
+      ],
+      [
         "application/geopackage+sqlite3",
         "geopackage+sqlite3 (application/geopackage+sqlite3)"
+      ],
+      [
+        "application/geopose+json",
+        "geopose+json (application/geopose+json)"
+      ],
+      [
+        "application/geoxacml+json",
+        "geoxacml+json (application/geoxacml+json)"
       ],
       [
         "application/geoxacml+xml",
@@ -4575,6 +4799,26 @@
       [
         "application/gml+xml",
         "gml+xml (application/gml+xml)"
+      ],
+      [
+        "application/gnap-binding-jws",
+        "gnap-binding-jws (application/gnap-binding-jws)"
+      ],
+      [
+        "application/gnap-binding-jwsd",
+        "gnap-binding-jwsd (application/gnap-binding-jwsd)"
+      ],
+      [
+        "application/gnap-binding-rotation-jws",
+        "gnap-binding-rotation-jws (application/gnap-binding-rotation-jws)"
+      ],
+      [
+        "application/gnap-binding-rotation-jwsd",
+        "gnap-binding-rotation-jwsd (application/gnap-binding-rotation-jwsd)"
+      ],
+      [
+        "application/grib",
+        "grib (application/grib)"
       ],
       [
         "application/gzip",
@@ -4689,6 +4933,10 @@
         "jscalendar+json (application/jscalendar+json)"
       ],
       [
+        "application/jscontact+json",
+        "jscontact+json (application/jscontact+json)"
+      ],
+      [
         "application/json",
         "json (application/json)"
       ],
@@ -4697,8 +4945,16 @@
         "json-patch+json (application/json-patch+json)"
       ],
       [
+        "application/json-patch-query+json",
+        "json-patch-query+json (application/json-patch-query+json)"
+      ],
+      [
         "application/json-seq",
         "json-seq (application/json-seq)"
+      ],
+      [
+        "application/jsonpath",
+        "jsonpath (application/jsonpath)"
       ],
       [
         "application/jwk+json",
@@ -4709,8 +4965,20 @@
         "jwk-set+json (application/jwk-set+json)"
       ],
       [
+        "application/jwk-set+jwt",
+        "jwk-set+jwt (application/jwk-set+jwt)"
+      ],
+      [
         "application/jwt",
         "jwt (application/jwt)"
+      ],
+      [
+        "application/kb+jwt",
+        "kb+jwt (application/kb+jwt)"
+      ],
+      [
+        "application/kbl+xml",
+        "kbl+xml (application/kbl+xml)"
       ],
       [
         "application/kpml-request+xml",
@@ -4851,6 +5119,14 @@
       [
         "application/mbox",
         "mbox (application/mbox)"
+      ],
+      [
+        "application/measured-component+cbor",
+        "measured-component+cbor (application/measured-component+cbor)"
+      ],
+      [
+        "application/measured-component+json",
+        "measured-component+json (application/measured-component+json)"
       ],
       [
         "application/media_control+xml",
@@ -5181,6 +5457,18 @@
         "ppsp-tracker+json (application/ppsp-tracker+json)"
       ],
       [
+        "application/private-token-issuer-directory",
+        "private-token-issuer-directory (application/private-token-issuer-directory)"
+      ],
+      [
+        "application/private-token-request",
+        "private-token-request (application/private-token-request)"
+      ],
+      [
+        "application/private-token-response",
+        "private-token-response (application/private-token-response)"
+      ],
+      [
         "application/problem+json",
         "problem+json (application/problem+json)"
       ],
@@ -5189,8 +5477,20 @@
         "problem+xml (application/problem+xml)"
       ],
       [
+        "application/protobuf",
+        "protobuf (application/protobuf)"
+      ],
+      [
+        "application/protobuf+json",
+        "protobuf+json (application/protobuf+json)"
+      ],
+      [
         "application/provenance+xml",
         "provenance+xml (application/provenance+xml)"
+      ],
+      [
+        "application/provided-claims+jwt",
+        "provided-claims+jwt (application/provided-claims+jwt)"
       ],
       [
         "application/prs.alvestrand.titrax-sheet",
@@ -5217,8 +5517,24 @@
         "prs.implied-executable (application/prs.implied-executable)"
       ],
       [
+        "application/prs.implied-object+json",
+        "prs.implied-object+json (application/prs.implied-object+json)"
+      ],
+      [
+        "application/prs.implied-object+json-seq",
+        "prs.implied-object+json-seq (application/prs.implied-object+json-seq)"
+      ],
+      [
+        "application/prs.implied-object+yaml",
+        "prs.implied-object+yaml (application/prs.implied-object+yaml)"
+      ],
+      [
         "application/prs.implied-structure",
         "prs.implied-structure (application/prs.implied-structure)"
+      ],
+      [
+        "application/prs.mayfile",
+        "prs.mayfile (application/prs.mayfile)"
       ],
       [
         "application/prs.nprend",
@@ -5231,6 +5547,14 @@
       [
         "application/prs.rdf-xml-crypt",
         "prs.rdf-xml-crypt (application/prs.rdf-xml-crypt)"
+      ],
+      [
+        "application/prs.sclt",
+        "prs.sclt (application/prs.sclt)"
+      ],
+      [
+        "application/prs.vcfbzip2",
+        "prs.vcfbzip2 (application/prs.vcfbzip2)"
       ],
       [
         "application/prs.xsf+xml",
@@ -5285,6 +5609,10 @@
         "reputon+json (application/reputon+json)"
       ],
       [
+        "application/resolve-response+jwt",
+        "resolve-response+jwt (application/resolve-response+jwt)"
+      ],
+      [
         "application/resource-lists-diff+xml",
         "resource-lists-diff+xml (application/resource-lists-diff+xml)"
       ],
@@ -5313,10 +5641,6 @@
         "rpki-checklist (application/rpki-checklist)"
       ],
       [
-        "application/rpki-ghostbusters",
-        "rpki-ghostbusters (application/rpki-ghostbusters)"
-      ],
-      [
         "application/rpki-manifest",
         "rpki-manifest (application/rpki-manifest)"
       ],
@@ -5329,8 +5653,16 @@
         "rpki-roa (application/rpki-roa)"
       ],
       [
+        "application/rpki-signed-tal",
+        "rpki-signed-tal (application/rpki-signed-tal)"
+      ],
+      [
         "application/rpki-updown",
         "rpki-updown (application/rpki-updown)"
+      ],
+      [
+        "application/rs-metadata+xml",
+        "rs-metadata+xml (application/rs-metadata+xml)"
       ],
       [
         "application/rtf",
@@ -5377,6 +5709,14 @@
         "scim+json (application/scim+json)"
       ],
       [
+        "application/scitt-receipt+cose",
+        "scitt-receipt+cose (application/scitt-receipt+cose)"
+      ],
+      [
+        "application/scitt-statement+cose",
+        "scitt-statement+cose (application/scitt-statement+cose)"
+      ],
+      [
         "application/scvp-cv-request",
         "scvp-cv-request (application/scvp-cv-request)"
       ],
@@ -5391,6 +5731,18 @@
       [
         "application/scvp-vp-response",
         "scvp-vp-response (application/scvp-vp-response)"
+      ],
+      [
+        "application/sd-jwt",
+        "sd-jwt (application/sd-jwt)"
+      ],
+      [
+        "application/sd-jwt+json",
+        "sd-jwt+json (application/sd-jwt+json)"
+      ],
+      [
+        "application/sdf+json",
+        "sdf+json (application/sdf+json)"
       ],
       [
         "application/sdp",
@@ -5553,12 +5905,32 @@
         "sru+xml (application/sru+xml)"
       ],
       [
+        "application/sslkeylogfile",
+        "sslkeylogfile (application/sslkeylogfile)"
+      ],
+      [
         "application/ssml+xml",
         "ssml+xml (application/ssml+xml)"
       ],
       [
+        "application/ST2110-41",
+        "ST2110-41 (application/ST2110-41)"
+      ],
+      [
         "application/stix+json",
         "stix+json (application/stix+json)"
+      ],
+      [
+        "application/stratum",
+        "stratum (application/stratum)"
+      ],
+      [
+        "application/suit-envelope+cose",
+        "suit-envelope+cose (application/suit-envelope+cose)"
+      ],
+      [
+        "application/suit-report+cose",
+        "suit-report+cose (application/suit-report+cose)"
       ],
       [
         "application/swid+cbor",
@@ -5629,6 +6001,10 @@
         "TETRA_ISI (application/TETRA_ISI)"
       ],
       [
+        "application/texinfo",
+        "texinfo (application/texinfo)"
+      ],
+      [
         "application/thraud+xml",
         "thraud+xml (application/thraud+xml)"
       ],
@@ -5661,8 +6037,16 @@
         "tnauthlist (application/tnauthlist)"
       ],
       [
+        "application/toc+cbor",
+        "toc+cbor (application/toc+cbor)"
+      ],
+      [
         "application/token-introspection+jwt",
         "token-introspection+jwt (application/token-introspection+jwt)"
+      ],
+      [
+        "application/toml",
+        "toml (application/toml)"
       ],
       [
         "application/trickle-ice-sdpfrag",
@@ -5671,6 +6055,22 @@
       [
         "application/trig",
         "trig (application/trig)"
+      ],
+      [
+        "application/trust-chain+json",
+        "trust-chain+json (application/trust-chain+json)"
+      ],
+      [
+        "application/trust-mark+jwt",
+        "trust-mark+jwt (application/trust-mark+jwt)"
+      ],
+      [
+        "application/trust-mark-delegation+jwt",
+        "trust-mark-delegation+jwt (application/trust-mark-delegation+jwt)"
+      ],
+      [
+        "application/trust-mark-status-response+jwt",
+        "trust-mark-status-response+jwt (application/trust-mark-status-response+jwt)"
       ],
       [
         "application/ttml+xml",
@@ -5687,6 +6087,14 @@
       [
         "application/tzif-leap",
         "tzif-leap (application/tzif-leap)"
+      ],
+      [
+        "application/uccs+cbor",
+        "uccs+cbor (application/uccs+cbor)"
+      ],
+      [
+        "application/ujcs+json",
+        "ujcs+json (application/ujcs+json)"
       ],
       [
         "application/ulpfec",
@@ -5709,12 +6117,44 @@
         "urc-uisocketdesc+xml (application/urc-uisocketdesc+xml)"
       ],
       [
+        "application/v3c",
+        "v3c (application/v3c)"
+      ],
+      [
+        "application/vc",
+        "vc (application/vc)"
+      ],
+      [
+        "application/vc+cose",
+        "vc+cose (application/vc+cose)"
+      ],
+      [
+        "application/vc+jwt",
+        "vc+jwt (application/vc+jwt)"
+      ],
+      [
+        "application/vc+sd-jwt",
+        "vc+sd-jwt (application/vc+sd-jwt)"
+      ],
+      [
         "application/vcard+json",
         "vcard+json (application/vcard+json)"
       ],
       [
         "application/vcard+xml",
         "vcard+xml (application/vcard+xml)"
+      ],
+      [
+        "application/vec+xml",
+        "vec+xml (application/vec+xml)"
+      ],
+      [
+        "application/vec-package+gzip",
+        "vec-package+gzip (application/vec-package+gzip)"
+      ],
+      [
+        "application/vec-package+zip",
+        "vec-package+zip (application/vec-package+zip)"
       ],
       [
         "application/vemmi",
@@ -5731,6 +6171,22 @@
       [
         "application/vnd.3gpp.5gnas",
         "vnd.3gpp.5gnas (application/vnd.3gpp.5gnas)"
+      ],
+      [
+        "application/vnd.3gpp.5gsa2x",
+        "vnd.3gpp.5gsa2x (application/vnd.3gpp.5gsa2x)"
+      ],
+      [
+        "application/vnd.3gpp.5gsa2x-local-service-information",
+        "vnd.3gpp.5gsa2x-local-service-information (application/vnd.3gpp.5gsa2x-local-service-information)"
+      ],
+      [
+        "application/vnd.3gpp.5gsv2x",
+        "vnd.3gpp.5gsv2x (application/vnd.3gpp.5gsv2x)"
+      ],
+      [
+        "application/vnd.3gpp.5gsv2x-local-service-information",
+        "vnd.3gpp.5gsv2x-local-service-information (application/vnd.3gpp.5gsv2x-local-service-information)"
       ],
       [
         "application/vnd.3gpp.access-transfer-events+xml",
@@ -5909,6 +6365,10 @@
         "vnd.3gpp.pic-bw-var (application/vnd.3gpp.pic-bw-var)"
       ],
       [
+        "application/vnd.3gpp.pinapp-info+xml",
+        "vnd.3gpp.pinapp-info+xml (application/vnd.3gpp.pinapp-info+xml)"
+      ],
+      [
         "application/vnd.3gpp-prose-pc3a+xml",
         "vnd.3gpp-prose-pc3a+xml (application/vnd.3gpp-prose-pc3a+xml)"
       ],
@@ -5933,12 +6393,28 @@
         "vnd.3gpp.s1ap (application/vnd.3gpp.s1ap)"
       ],
       [
+        "application/vnd.3gpp.seal-app-comm-requirements-info+xml",
+        "vnd.3gpp.seal-app-comm-requirements-info+xml (application/vnd.3gpp.seal-app-comm-requirements-info+xml)"
+      ],
+      [
+        "application/vnd.3gpp.seal-data-delivery-info+cbor",
+        "vnd.3gpp.seal-data-delivery-info+cbor (application/vnd.3gpp.seal-data-delivery-info+cbor)"
+      ],
+      [
+        "application/vnd.3gpp.seal-data-delivery-info+xml",
+        "vnd.3gpp.seal-data-delivery-info+xml (application/vnd.3gpp.seal-data-delivery-info+xml)"
+      ],
+      [
         "application/vnd.3gpp.seal-group-doc+xml",
         "vnd.3gpp.seal-group-doc+xml (application/vnd.3gpp.seal-group-doc+xml)"
       ],
       [
         "application/vnd.3gpp.seal-info+xml",
         "vnd.3gpp.seal-info+xml (application/vnd.3gpp.seal-info+xml)"
+      ],
+      [
+        "application/vnd.3gpp.seal-location-info+cbor",
+        "vnd.3gpp.seal-location-info+cbor (application/vnd.3gpp.seal-location-info+cbor)"
       ],
       [
         "application/vnd.3gpp.seal-location-info+xml",
@@ -5949,8 +6425,16 @@
         "vnd.3gpp.seal-mbms-usage-info+xml (application/vnd.3gpp.seal-mbms-usage-info+xml)"
       ],
       [
+        "application/vnd.3gpp.seal-mbs-usage-info+xml",
+        "vnd.3gpp.seal-mbs-usage-info+xml (application/vnd.3gpp.seal-mbs-usage-info+xml)"
+      ],
+      [
         "application/vnd.3gpp.seal-network-QoS-management-info+xml",
         "vnd.3gpp.seal-network-QoS-management-info+xml (application/vnd.3gpp.seal-network-QoS-management-info+xml)"
+      ],
+      [
+        "application/vnd.3gpp.seal-network-resource-info+cbor",
+        "vnd.3gpp.seal-network-resource-info+cbor (application/vnd.3gpp.seal-network-resource-info+cbor)"
       ],
       [
         "application/vnd.3gpp.seal-ue-config-info+xml",
@@ -6031,6 +6515,10 @@
       [
         "application/vnd.acm.addressxfer+json",
         "vnd.acm.addressxfer+json (application/vnd.acm.addressxfer+json)"
+      ],
+      [
+        "application/vnd.acm.chatbot+json",
+        "vnd.acm.chatbot+json (application/vnd.acm.chatbot+json)"
       ],
       [
         "application/vnd.acucobol",
@@ -6129,6 +6617,10 @@
         "vnd.ahead.space (application/vnd.ahead.space)"
       ],
       [
+        "application/vnd.aia",
+        "vnd.aia (application/vnd.aia)"
+      ],
+      [
         "application/vnd.airzip.filesecure.azf",
         "vnd.airzip.filesecure.azf (application/vnd.airzip.filesecure.azf)"
       ],
@@ -6179,6 +6671,10 @@
       [
         "application/vnd.apache.arrow.stream",
         "vnd.apache.arrow.stream (application/vnd.apache.arrow.stream)"
+      ],
+      [
+        "application/vnd.apache.parquet",
+        "vnd.apache.parquet (application/vnd.apache.parquet)"
       ],
       [
         "application/vnd.apache.thrift.binary",
@@ -6239,6 +6735,22 @@
       [
         "application/vnd.artsquare",
         "vnd.artsquare (application/vnd.artsquare)"
+      ],
+      [
+        "application/vnd.as207960.vas.config+jer",
+        "vnd.as207960.vas.config+jer (application/vnd.as207960.vas.config+jer)"
+      ],
+      [
+        "application/vnd.as207960.vas.config+uper",
+        "vnd.as207960.vas.config+uper (application/vnd.as207960.vas.config+uper)"
+      ],
+      [
+        "application/vnd.as207960.vas.tap+jer",
+        "vnd.as207960.vas.tap+jer (application/vnd.as207960.vas.tap+jer)"
+      ],
+      [
+        "application/vnd.as207960.vas.tap+uper",
+        "vnd.as207960.vas.tap+uper (application/vnd.as207960.vas.tap+uper)"
       ],
       [
         "application/vnd.astraea-software.iota",
@@ -6341,6 +6853,14 @@
         "vnd.byu.uapi+json (application/vnd.byu.uapi+json)"
       ],
       [
+        "application/vnd.bzip3",
+        "vnd.bzip3 (application/vnd.bzip3)"
+      ],
+      [
+        "application/vnd.c3voc.schedule+xml",
+        "vnd.c3voc.schedule+xml (application/vnd.c3voc.schedule+xml)"
+      ],
+      [
         "application/vnd.cab-jscript",
         "vnd.cab-jscript (application/vnd.cab-jscript)"
       ],
@@ -6355,6 +6875,10 @@
       [
         "application/vnd.capasystems-pg+json",
         "vnd.capasystems-pg+json (application/vnd.capasystems-pg+json)"
+      ],
+      [
+        "application/vnd.cel",
+        "vnd.cel (application/vnd.cel)"
       ],
       [
         "application/vnd.cendio.thinlinc.clientconf",
@@ -6615,6 +7139,10 @@
       [
         "application/vnd.dbf",
         "vnd.dbf (application/vnd.dbf)"
+      ],
+      [
+        "application/vnd.dcmp+xml",
+        "vnd.dcmp+xml (application/vnd.dcmp+xml)"
       ],
       [
         "application/vnd.debian.binary-package",
@@ -6881,6 +7409,10 @@
         "vnd.ericsson.quickcall (application/vnd.ericsson.quickcall)"
       ],
       [
+        "application/vnd.erofs",
+        "vnd.erofs (application/vnd.erofs)"
+      ],
+      [
         "application/vnd.espass-espass+zip",
         "vnd.espass-espass+zip (application/vnd.espass-espass+zip)"
       ],
@@ -7017,6 +7549,10 @@
         "vnd.f-secure.mobile (application/vnd.f-secure.mobile)"
       ],
       [
+        "application/vnd.faf+yaml",
+        "vnd.faf+yaml (application/vnd.faf+yaml)"
+      ],
+      [
         "application/vnd.fastcopy-disk-image",
         "vnd.fastcopy-disk-image (application/vnd.fastcopy-disk-image)"
       ],
@@ -7033,8 +7569,16 @@
         "vnd.fdsn.seed (application/vnd.fdsn.seed)"
       ],
       [
+        "application/vnd.fdsn.stationxml+xml",
+        "vnd.fdsn.stationxml+xml (application/vnd.fdsn.stationxml+xml)"
+      ],
+      [
         "application/vnd.ffsns",
         "vnd.ffsns (application/vnd.ffsns)"
+      ],
+      [
+        "application/vnd.fgb",
+        "vnd.fgb (application/vnd.fgb)"
       ],
       [
         "application/vnd.ficlab.flb+zip",
@@ -7067,6 +7611,10 @@
       [
         "application/vnd.framemaker",
         "vnd.framemaker (application/vnd.framemaker)"
+      ],
+      [
+        "application/vnd.freelog.comic",
+        "vnd.freelog.comic (application/vnd.freelog.comic)"
       ],
       [
         "application/vnd.fsc.weblaunch",
@@ -7153,6 +7701,14 @@
         "vnd.fuzzysheet (application/vnd.fuzzysheet)"
       ],
       [
+        "application/vnd.g3pix.g3fc",
+        "vnd.g3pix.g3fc (application/vnd.g3pix.g3fc)"
+      ],
+      [
+        "application/vnd.ga4gh.passport+jwt",
+        "vnd.ga4gh.passport+jwt (application/vnd.ga4gh.passport+jwt)"
+      ],
+      [
         "application/vnd.genomatix.tuxedo",
         "vnd.genomatix.tuxedo (application/vnd.genomatix.tuxedo)"
       ],
@@ -7195,6 +7751,10 @@
       [
         "application/vnd.geogebra.file",
         "vnd.geogebra.file (application/vnd.geogebra.file)"
+      ],
+      [
+        "application/vnd.geogebra.pinboard",
+        "vnd.geogebra.pinboard (application/vnd.geogebra.pinboard)"
       ],
       [
         "application/vnd.geogebra.slides",
@@ -7247,10 +7807,6 @@
       [
         "application/vnd.google-earth.kmz",
         "vnd.google-earth.kmz (application/vnd.google-earth.kmz)"
-      ],
-      [
-        "application/vnd.gov.sk.e-form+xml",
-        "vnd.gov.sk.e-form+xml (application/vnd.gov.sk.e-form+xml)"
       ],
       [
         "application/vnd.gov.sk.e-form+zip",
@@ -7323,6 +7879,14 @@
       [
         "application/vnd.hcl-bireports",
         "vnd.hcl-bireports (application/vnd.hcl-bireports)"
+      ],
+      [
+        "application/vnd.hdfgroup.hdf4",
+        "vnd.hdfgroup.hdf4 (application/vnd.hdfgroup.hdf4)"
+      ],
+      [
+        "application/vnd.hdfgroup.hdf5",
+        "vnd.hdfgroup.hdf5 (application/vnd.hdfgroup.hdf5)"
       ],
       [
         "application/vnd.hdt",
@@ -7513,6 +8077,10 @@
         "vnd.intu.qfx (application/vnd.intu.qfx)"
       ],
       [
+        "application/vnd.ipfs.ipns-record",
+        "vnd.ipfs.ipns-record (application/vnd.ipfs.ipns-record)"
+      ],
+      [
         "application/vnd.ipld.car",
         "vnd.ipld.car (application/vnd.ipld.car)"
       ],
@@ -7665,8 +8233,20 @@
         "vnd.kde.kword (application/vnd.kde.kword)"
       ],
       [
+        "application/vnd.kdl",
+        "vnd.kdl (application/vnd.kdl)"
+      ],
+      [
         "application/vnd.kenameaapp",
         "vnd.kenameaapp (application/vnd.kenameaapp)"
+      ],
+      [
+        "application/vnd.keyman.kmp+zip",
+        "vnd.keyman.kmp+zip (application/vnd.keyman.kmp+zip)"
+      ],
+      [
+        "application/vnd.keyman.kmx",
+        "vnd.keyman.kmx (application/vnd.keyman.kmx)"
       ],
       [
         "application/vnd.kidspiration",
@@ -7699,6 +8279,10 @@
       [
         "application/vnd.laszip",
         "vnd.laszip (application/vnd.laszip)"
+      ],
+      [
+        "application/vnd.ldev.productlicensing",
+        "vnd.ldev.productlicensing (application/vnd.ldev.productlicensing)"
       ],
       [
         "application/vnd.leap+json",
@@ -7755,6 +8339,10 @@
       [
         "application/vnd.macports.portpkg",
         "vnd.macports.portpkg (application/vnd.macports.portpkg)"
+      ],
+      [
+        "application/vnd.maml",
+        "vnd.maml (application/vnd.maml)"
       ],
       [
         "application/vnd.mapbox-vector-tile",
@@ -7815,6 +8403,10 @@
       [
         "application/vnd.meridian-slingshot",
         "vnd.meridian-slingshot (application/vnd.meridian-slingshot)"
+      ],
+      [
+        "application/vnd.mermaid",
+        "vnd.mermaid (application/vnd.mermaid)"
       ],
       [
         "application/vnd.MFER",
@@ -8101,6 +8693,10 @@
         "vnd.mseq (application/vnd.mseq)"
       ],
       [
+        "application/vnd.msgpack",
+        "vnd.msgpack (application/vnd.msgpack)"
+      ],
+      [
         "application/vnd.msign",
         "vnd.msign (application/vnd.msign)"
       ],
@@ -8131,6 +8727,22 @@
       [
         "application/vnd.nacamar.ybrid+json",
         "vnd.nacamar.ybrid+json (application/vnd.nacamar.ybrid+json)"
+      ],
+      [
+        "application/vnd.nato.bindingdataobject+cbor",
+        "vnd.nato.bindingdataobject+cbor (application/vnd.nato.bindingdataobject+cbor)"
+      ],
+      [
+        "application/vnd.nato.bindingdataobject+json",
+        "vnd.nato.bindingdataobject+json (application/vnd.nato.bindingdataobject+json)"
+      ],
+      [
+        "application/vnd.nato.bindingdataobject+xml",
+        "vnd.nato.bindingdataobject+xml (application/vnd.nato.bindingdataobject+xml)"
+      ],
+      [
+        "application/vnd.nato.openxmlformats-package.iepd+zip",
+        "vnd.nato.openxmlformats-package.iepd+zip (application/vnd.nato.openxmlformats-package.iepd+zip)"
       ],
       [
         "application/vnd.ncd.control",
@@ -8279,6 +8891,22 @@
       [
         "application/vnd.ntt-local.sip-ta_tcp_stream",
         "vnd.ntt-local.sip-ta_tcp_stream (application/vnd.ntt-local.sip-ta_tcp_stream)"
+      ],
+      [
+        "application/vnd.nubaltec.nudoku-game",
+        "vnd.nubaltec.nudoku-game (application/vnd.nubaltec.nudoku-game)"
+      ],
+      [
+        "application/vnd.oai.workflows",
+        "vnd.oai.workflows (application/vnd.oai.workflows)"
+      ],
+      [
+        "application/vnd.oai.workflows+json",
+        "vnd.oai.workflows+json (application/vnd.oai.workflows+json)"
+      ],
+      [
+        "application/vnd.oai.workflows+yaml",
+        "vnd.oai.workflows+yaml (application/vnd.oai.workflows+yaml)"
       ],
       [
         "application/vnd.oasis.opendocument.base",
@@ -8585,6 +9213,10 @@
         "vnd.oma-scws-http-response (application/vnd.oma-scws-http-response)"
       ],
       [
+        "application/vnd.oms.cellular-cose-content+cbor",
+        "vnd.oms.cellular-cose-content+cbor (application/vnd.oms.cellular-cose-content+cbor)"
+      ],
+      [
         "application/vnd.onepager",
         "vnd.onepager (application/vnd.onepager)"
       ],
@@ -8625,12 +9257,20 @@
         "vnd.openeye.oeb (application/vnd.openeye.oeb)"
       ],
       [
+        "application/vnd.openprinttag",
+        "vnd.openprinttag (application/vnd.openprinttag)"
+      ],
+      [
         "application/vnd.openstreetmap.data+xml",
         "vnd.openstreetmap.data+xml (application/vnd.openstreetmap.data+xml)"
       ],
       [
         "application/vnd.opentimestamps.ots",
         "vnd.opentimestamps.ots (application/vnd.opentimestamps.ots)"
+      ],
+      [
+        "application/vnd.openvpi.dspx+json",
+        "vnd.openvpi.dspx+json (application/vnd.openvpi.dspx+json)"
       ],
       [
         "application/vnd.openxmlformats-officedocument.custom-properties+xml",
@@ -9017,6 +9657,10 @@
         "vnd.pmi.widget (application/vnd.pmi.widget)"
       ],
       [
+        "application/vnd.pmtiles",
+        "vnd.pmtiles (application/vnd.pmtiles)"
+      ],
+      [
         "application/vnd.poc.group-advertisement+xml",
         "vnd.poc.group-advertisement+xml (application/vnd.poc.group-advertisement+xml)"
       ],
@@ -9049,6 +9693,10 @@
         "vnd.powerbuilder7-s (application/vnd.powerbuilder7-s)"
       ],
       [
+        "application/vnd.pp.systemverify+xml",
+        "vnd.pp.systemverify+xml (application/vnd.pp.systemverify+xml)"
+      ],
+      [
         "application/vnd.preminet",
         "vnd.preminet (application/vnd.preminet)"
       ],
@@ -9057,12 +9705,20 @@
         "vnd.previewsystems.box (application/vnd.previewsystems.box)"
       ],
       [
+        "application/vnd.project-graph",
+        "vnd.project-graph (application/vnd.project-graph)"
+      ],
+      [
         "application/vnd.proteus.magazine",
         "vnd.proteus.magazine (application/vnd.proteus.magazine)"
       ],
       [
         "application/vnd.psfs",
         "vnd.psfs (application/vnd.psfs)"
+      ],
+      [
+        "application/vnd.pt.mundusmundi",
+        "vnd.pt.mundusmundi (application/vnd.pt.mundusmundi)"
       ],
       [
         "application/vnd.publishare-delta-tree",
@@ -9081,6 +9737,10 @@
         "vnd.pwg-xhtml-print+xml (application/vnd.pwg-xhtml-print+xml)"
       ],
       [
+        "application/vnd.pyon+json",
+        "vnd.pyon+json (application/vnd.pyon+json)"
+      ],
+      [
         "application/vnd.qualcomm.brew-app-res",
         "vnd.qualcomm.brew-app-res (application/vnd.qualcomm.brew-app-res)"
       ],
@@ -9095,6 +9755,10 @@
       [
         "application/vnd.quobject-quoxdocument",
         "vnd.quobject-quoxdocument (application/vnd.quobject-quoxdocument)"
+      ],
+      [
+        "application/vnd.R74n.sandboxels+json",
+        "vnd.R74n.sandboxels+json (application/vnd.R74n.sandboxels+json)"
       ],
       [
         "application/vnd.radisys.moml+xml",
@@ -9179,6 +9843,10 @@
       [
         "application/vnd.recordare.musicxml+xml",
         "vnd.recordare.musicxml+xml (application/vnd.recordare.musicxml+xml)"
+      ],
+      [
+        "application/vnd.relpipe",
+        "vnd.relpipe (application/vnd.relpipe)"
       ],
       [
         "application/vnd.RenLearn.rlprint",
@@ -9345,6 +10013,14 @@
         "vnd.siren+json (application/vnd.siren+json)"
       ],
       [
+        "application/vnd.sirtx.vmv0",
+        "vnd.sirtx.vmv0 (application/vnd.sirtx.vmv0)"
+      ],
+      [
+        "application/vnd.sketchometry",
+        "vnd.sketchometry (application/vnd.sketchometry)"
+      ],
+      [
         "application/vnd.smaf",
         "vnd.smaf (application/vnd.smaf)"
       ],
@@ -9415,6 +10091,10 @@
       [
         "application/vnd.sun.wadl+xml",
         "vnd.sun.wadl+xml (application/vnd.sun.wadl+xml)"
+      ],
+      [
+        "application/vnd.superfile.super",
+        "vnd.superfile.super (application/vnd.superfile.super)"
       ],
       [
         "application/vnd.sus-calendar",
@@ -9533,6 +10213,22 @@
         "vnd.ufdl (application/vnd.ufdl)"
       ],
       [
+        "application/vnd.uic.dosipas.v1",
+        "vnd.uic.dosipas.v1 (application/vnd.uic.dosipas.v1)"
+      ],
+      [
+        "application/vnd.uic.dosipas.v2",
+        "vnd.uic.dosipas.v2 (application/vnd.uic.dosipas.v2)"
+      ],
+      [
+        "application/vnd.uic.osdm+json",
+        "vnd.uic.osdm+json (application/vnd.uic.osdm+json)"
+      ],
+      [
+        "application/vnd.uic.tlb-fcb",
+        "vnd.uic.tlb-fcb (application/vnd.uic.tlb-fcb)"
+      ],
+      [
         "application/vnd.uiq.theme",
         "vnd.uiq.theme (application/vnd.uiq.theme)"
       ],
@@ -9625,6 +10321,18 @@
         "vnd.vel+json (application/vnd.vel+json)"
       ],
       [
+        "application/vnd.veraison.tsm-report+cbor",
+        "vnd.veraison.tsm-report+cbor (application/vnd.veraison.tsm-report+cbor)"
+      ],
+      [
+        "application/vnd.veraison.tsm-report+json",
+        "vnd.veraison.tsm-report+json (application/vnd.veraison.tsm-report+json)"
+      ],
+      [
+        "application/vnd.verifier-attestation+jwt",
+        "vnd.verifier-attestation+jwt (application/vnd.verifier-attestation+jwt)"
+      ],
+      [
         "application/vnd.verimatrix.vcas",
         "vnd.verimatrix.vcas (application/vnd.verimatrix.vcas)"
       ],
@@ -9657,8 +10365,20 @@
         "vnd.vividence.scriptfile (application/vnd.vividence.scriptfile)"
       ],
       [
+        "application/vnd.vocalshaper.vsp4",
+        "vnd.vocalshaper.vsp4 (application/vnd.vocalshaper.vsp4)"
+      ],
+      [
         "application/vnd.vsf",
         "vnd.vsf (application/vnd.vsf)"
+      ],
+      [
+        "application/vnd.vuq",
+        "vnd.vuq (application/vnd.vuq)"
+      ],
+      [
+        "application/vnd.wantverse",
+        "vnd.wantverse (application/vnd.wantverse)"
       ],
       [
         "application/vnd.wap.sic",
@@ -9703,6 +10423,10 @@
       [
         "application/vnd.windows.devicepairing",
         "vnd.windows.devicepairing (application/vnd.windows.devicepairing)"
+      ],
+      [
+        "application/vnd.wmap",
+        "vnd.wmap (application/vnd.wmap)"
       ],
       [
         "application/vnd.wmc",
@@ -9763,6 +10487,18 @@
       [
         "application/vnd.xara",
         "vnd.xara (application/vnd.xara)"
+      ],
+      [
+        "application/vnd.xarin.cpj",
+        "vnd.xarin.cpj (application/vnd.xarin.cpj)"
+      ],
+      [
+        "application/vnd.xcdn",
+        "vnd.xcdn (application/vnd.xcdn)"
+      ],
+      [
+        "application/vnd.xecrets-encrypted",
+        "vnd.xecrets-encrypted (application/vnd.xecrets-encrypted)"
       ],
       [
         "application/vnd.xfdl",
@@ -9845,6 +10581,10 @@
         "vnd.yellowriver-custom-menu (application/vnd.yellowriver-custom-menu)"
       ],
       [
+        "application/vnd.zoho-presentation.show",
+        "vnd.zoho-presentation.show (application/vnd.zoho-presentation.show)"
+      ],
+      [
         "application/vnd.zul",
         "vnd.zul (application/vnd.zul)"
       ],
@@ -9859,6 +10599,26 @@
       [
         "application/voucher-cms+json",
         "voucher-cms+json (application/voucher-cms+json)"
+      ],
+      [
+        "application/voucher-jws+json",
+        "voucher-jws+json (application/voucher-jws+json)"
+      ],
+      [
+        "application/vp",
+        "vp (application/vp)"
+      ],
+      [
+        "application/vp+cose",
+        "vp+cose (application/vp+cose)"
+      ],
+      [
+        "application/vp+jwt",
+        "vp+jwt (application/vp+jwt)"
+      ],
+      [
+        "application/vp+sd-jwt",
+        "vp+sd-jwt (application/vp+sd-jwt)"
       ],
       [
         "application/vq-rtcpxr",
@@ -10013,6 +10773,10 @@
         "xv+xml (application/xv+xml)"
       ],
       [
+        "application/yaml",
+        "yaml (application/yaml)"
+      ],
+      [
         "application/yang",
         "yang (application/yang)"
       ],
@@ -10035,6 +10799,10 @@
       [
         "application/yang-patch+xml",
         "yang-patch+xml (application/yang-patch+xml)"
+      ],
+      [
+        "application/yang-sid+json",
+        "yang-sid+json (application/yang-sid+json)"
       ],
       [
         "application/yin+xml",
@@ -10229,6 +10997,10 @@
         "example (audio/example)"
       ],
       [
+        "audio/flac",
+        "flac (audio/flac)"
+      ],
+      [
         "audio/flexfec",
         "flexfec (audio/flexfec)"
       ],
@@ -10333,6 +11105,10 @@
         "LPC (audio/LPC)"
       ],
       [
+        "audio/matroska",
+        "matroska (audio/matroska)"
+      ],
+      [
         "audio/MELP",
         "MELP (audio/MELP)"
       ],
@@ -10351,6 +11127,10 @@
       [
         "audio/mhas",
         "mhas (audio/mhas)"
+      ],
+      [
+        "audio/midi-clip",
+        "midi-clip (audio/midi-clip)"
       ],
       [
         "audio/mobile-xmf",
@@ -10461,6 +11241,10 @@
         "sofa (audio/sofa)"
       ],
       [
+        "audio/soundfont",
+        "soundfont (audio/soundfont)"
+      ],
+      [
         "audio/sp-midi",
         "sp-midi (audio/sp-midi)"
       ],
@@ -10527,6 +11311,10 @@
       [
         "audio/vnd.audiokoz",
         "vnd.audiokoz (audio/vnd.audiokoz)"
+      ],
+      [
+        "audio/vnd.blockfact.facta",
+        "vnd.blockfact.facta (audio/vnd.blockfact.facta)"
       ],
       [
         "audio/vnd.CELP",
@@ -10781,12 +11569,20 @@
         "hej2k (image/hej2k)"
       ],
       [
-        "image/hsj2",
-        "hsj2 (image/hsj2)"
-      ],
-      [
         "image/ief",
         "ief (image/ief)"
+      ],
+      [
+        "image/j2c",
+        "j2c (image/j2c)"
+      ],
+      [
+        "image/jaii",
+        "jaii (image/jaii)"
+      ],
+      [
+        "image/jais",
+        "jais (image/jais)"
       ],
       [
         "image/jls",
@@ -10815,6 +11611,10 @@
       [
         "image/jpx",
         "jpx (image/jpx)"
+      ],
+      [
+        "image/jxl",
+        "jxl (image/jxl)"
       ],
       [
         "image/jxr",
@@ -10895,6 +11695,14 @@
       [
         "image/vnd.airzip.accelerator.azv",
         "vnd.airzip.accelerator.azv (image/vnd.airzip.accelerator.azv)"
+      ],
+      [
+        "image/vnd.blockfact.facti",
+        "vnd.blockfact.facti (image/vnd.blockfact.facti)"
+      ],
+      [
+        "image/vnd.clip",
+        "vnd.clip (image/vnd.clip)"
       ],
       [
         "image/vnd.cns.inf2",
@@ -11071,6 +11879,14 @@
       [
         "message/mls",
         "mls (message/mls)"
+      ],
+      [
+        "message/ohttp-chunked-req",
+        "ohttp-chunked-req (message/ohttp-chunked-req)"
+      ],
+      [
+        "message/ohttp-chunked-res",
+        "ohttp-chunked-res (message/ohttp-chunked-res)"
       ],
       [
         "message/ohttp-req",
@@ -11437,6 +12253,10 @@
         "n3 (text/n3)"
       ],
       [
+        "text/org",
+        "org (text/org)"
+      ],
+      [
         "text/parameters",
         "parameters (text/parameters)"
       ],
@@ -11463,6 +12283,10 @@
       [
         "text/prs.prop.logic",
         "prs.prop.logic (text/prs.prop.logic)"
+      ],
+      [
+        "text/prs.texi",
+        "prs.texi (text/prs.texi)"
       ],
       [
         "text/raptorfec",
@@ -11661,8 +12485,16 @@
         "vnd.sosi (text/vnd.sosi)"
       ],
       [
+        "text/vnd.typst",
+        "vnd.typst (text/vnd.typst)"
+      ],
+      [
         "text/vnd.trolltech.linguist",
         "vnd.trolltech.linguist (text/vnd.trolltech.linguist)"
+      ],
+      [
+        "text/vnd.vcf",
+        "vnd.vcf (text/vnd.vcf)"
       ],
       [
         "text/vnd.wap.si",
@@ -11679,6 +12511,10 @@
       [
         "text/vnd.wap.wmlscript",
         "vnd.wap.wmlscript (text/vnd.wap.wmlscript)"
+      ],
+      [
+        "text/vnd.zoo.kcl",
+        "vnd.zoo.kcl (text/vnd.zoo.kcl)"
       ],
       [
         "text/vtt",
@@ -11735,6 +12571,10 @@
       [
         "video/encaprtp",
         "encaprtp (video/encaprtp)"
+      ],
+      [
+        "video/evc",
+        "evc (video/evc)"
       ],
       [
         "video/example",
@@ -11797,8 +12637,24 @@
         "jpeg2000 (video/jpeg2000)"
       ],
       [
+        "video/jpeg2000-scl",
+        "jpeg2000-scl (video/jpeg2000-scl)"
+      ],
+      [
         "video/jxsv",
         "jxsv (video/jxsv)"
+      ],
+      [
+        "video/lottie+json",
+        "lottie+json (video/lottie+json)"
+      ],
+      [
+        "video/matroska",
+        "matroska (video/matroska)"
+      ],
+      [
+        "video/matroska-3d",
+        "matroska-3d (video/matroska-3d)"
       ],
       [
         "video/mj2",
@@ -11899,6 +12755,10 @@
       [
         "video/vc2",
         "vc2 (video/vc2)"
+      ],
+      [
+        "video/vnd.blockfact.factv",
+        "vnd.blockfact.factv (video/vnd.blockfact.factv)"
       ],
       [
         "video/vnd.CCTV",
@@ -12007,6 +12867,10 @@
       [
         "video/vnd.objectvideo",
         "vnd.objectvideo (video/vnd.objectvideo)"
+      ],
+      [
+        "video/vnd.planar",
+        "vnd.planar (video/vnd.planar)"
       ],
       [
         "video/vnd.radgamettools.bink",
@@ -13245,10 +14109,6 @@
         "Armenian Dram (AMD)"
       ],
       [
-        "ANG",
-        "Netherlands Antillean Guilder (ANG)"
-      ],
-      [
         "AOA",
         "Kwanza (AOA)"
       ],
@@ -13279,10 +14139,6 @@
       [
         "BDT",
         "Taka (BDT)"
-      ],
-      [
-        "BGN",
-        "Bulgarian Lev (BGN)"
       ],
       [
         "BHD",
@@ -13375,10 +14231,6 @@
       [
         "CRC",
         "Costa Rican Colon (CRC)"
-      ],
-      [
-        "CUC",
-        "Peso Convertible (CUC)"
       ],
       [
         "CUP",
@@ -13745,10 +14597,6 @@
         "Leone (SLE)"
       ],
       [
-        "SLL",
-        "Leone (SLL)"
-      ],
-      [
         "SOS",
         "Somali Shilling (SOS)"
       ],
@@ -13865,6 +14713,10 @@
         "Tala (WST)"
       ],
       [
+        "XAD",
+        "Arab Accounting Dinar (XAD)"
+      ],
+      [
         "XAF",
         "CFA Franc BEAC (XAF)"
       ],
@@ -13895,6 +14747,10 @@
       [
         "XCD",
         "East Caribbean Dollar (XCD)"
+      ],
+      [
+        "XCG",
+        "Caribbean Guilder (XCG)"
       ],
       [
         "XDR",
@@ -13945,8 +14801,8 @@
         "Zambian Kwacha (ZMW)"
       ],
       [
-        "ZWL",
-        "Zimbabwe Dollar (ZWL)"
+        "ZWG",
+        "Zimbabwe Gold (ZWG)"
       ],
       [
         "ADP",
@@ -13959,6 +14815,10 @@
       [
         "ALK",
         "Old Lek (ALK): 1989-12"
+      ],
+      [
+        "ANG",
+        "Netherlands Antillean Guilder (ANG): 2025-03"
       ],
       [
         "AOK",
@@ -14025,6 +14885,10 @@
         "Lev (BGL): 2003-11"
       ],
       [
+        "BGN",
+        "Bulgarian Lev (BGN): 2026-01"
+      ],
+      [
         "BOP",
         "Peso boliviano (BOP): 1987-02"
       ],
@@ -14075,6 +14939,10 @@
       [
         "CSK",
         "Koruna (CSK): 1993-03"
+      ],
+      [
+        "CUC",
+        "Peso Convertible (CUC): 2021-06"
       ],
       [
         "CYP",
@@ -14317,6 +15185,10 @@
         "Slovak Koruna (SKK): 2009-01"
       ],
       [
+        "SLL",
+        "Leone (SLL): 2023-12"
+      ],
+      [
         "SRG",
         "Surinam Guilder (SRG): 2003-12"
       ],
@@ -14435,6 +15307,10 @@
       [
         "ZWD",
         "Zimbabwe Dollar (ZWD): 2008-08"
+      ],
+      [
+        "ZWL",
+        "Zimbabwe\u00a0Dollar (ZWL): 2024-09"
       ],
       [
         "ZWN",

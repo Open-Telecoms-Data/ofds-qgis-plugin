@@ -528,6 +528,110 @@ def test_span_with_start_and_end_set_1():
     connection.close()
 
 
+def test_wayleaves():
+    # Get new SQLite filename
+    sqlite_filename = tempfile.mkstemp(suffix=".sqlite")
+    os.close(sqlite_filename[0])
+    sqlite_filename = sqlite_filename[1]
+    # Copy template
+    shutil.copyfile(
+        os.path.join(
+            PLUGIN_DIR,
+            "..",
+            "ofdsqgisplugin",
+            "schema_0_4",
+            "network-schema.gpkg",
+        ),
+        sqlite_filename,
+    )
+
+    # Do the import
+    import_json_to_sqlite(
+        {
+            "networks": [
+                {
+                    "id": "network1",
+                    "name": "Network 1",
+                    "nodes": [
+                        {
+                            "id": "node1",
+                        },
+                        {
+                            "id": "node2",
+                        },
+                    ],
+                    "spans": [
+                        {
+                            "id": "span1to2",
+                            "start": "node1",
+                            "end": "node2",
+                            "wayleaves": ["wl1"],
+                        }
+                    ],
+                    "wayleaves": [
+                        {
+                            "id": "wl1",
+                            "grantor": {"id": "1", "name": "Org A"},
+                            "yearSigned": 2022,
+                            "term": {"indefinite": False, "years": 25},
+                            "cost": {
+                                "recurring": True,
+                                "perMetre": {"amount": 1.75, "currency": "GHS"},
+                            },
+                        }
+                    ],
+                    "organisations": [
+                        {"id": "1", "name": "Org A"},
+                    ],
+                }
+            ]
+        },
+        sqlite_filename,
+        enforce_foreign_keys=True,
+    )
+
+    # Test the database contents
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    # networks
+    cursor.execute("SELECT id, ofds_id, name FROM networks ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert (1, "network1", "Network 1") == rows[0]
+    # nodes
+    cursor.execute("SELECT id, ofds_id, network_id FROM nodes ORDER BY ofds_id ASC")
+    rows = cursor.fetchall()
+    assert 2 == len(rows)
+    assert (1, "node1", 1) == rows[0]
+    assert (2, "node2", 1) == rows[1]
+    # spans
+    cursor.execute(
+        "SELECT id, ofds_id, start, end, network_id FROM spans ORDER BY ofds_id ASC"
+    )
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert (1, "span1to2", 1, 2, 1) == rows[0]
+    # wayleaves
+    cursor.execute(
+        "SELECT id, ofds_id, grantor, yearSigned, term__indefinite, term__years, cost__recurring, cost__perMetre__amount, cost__perMetre__currency, network_id FROM wayleaves ORDER BY ofds_id ASC"
+    )
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert (1, "wl1", 1, 2022, "0", 25, "1", 1.75, "GHS", 1) == rows[0]
+    cursor.execute("""
+        SELECT spans.ofds_id, wayleaves.ofds_id
+        FROM relation_spans_wayleaves
+        JOIN spans ON spans.id == relation_spans_wayleaves.base_id
+        JOIN wayleaves ON wayleaves.id = relation_spans_wayleaves.related_id
+        ORDER BY spans.ofds_id ASC
+        """)
+    rows = cursor.fetchall()
+    assert 1 == len(rows)
+    assert ("span1to2", "wl1") == rows[0]
+    # wrapup
+    connection.close()
+
+
 def test_import_broken_foreign_keys():
     """
     Can we import broken data with foreign keys that point to things that don't exist without crashing?

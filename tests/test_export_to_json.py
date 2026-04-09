@@ -269,6 +269,49 @@ def test_span_with_start_and_end_set_1():
     }
 
 
+def test_export_wayleaves():
+    sqlite_filename = _get_and_setup_sqlite_filename()
+
+    # Set Some data
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network')")
+    cursor.execute(
+        "INSERT INTO nodes (network_id, ofds_id, geom) VALUES (1, 'node1', '{}'), (1, 'node2','{}')"
+    )
+    cursor.execute(
+        "INSERT INTO spans (ofds_id, network_id, start, end, geom) VALUES ('span1to2', 1, 1, 2, '{}')",
+    )
+    cursor.execute(
+        "INSERT INTO wayleaves (id, ofds_id, grantor, yearSigned, term__indefinite, term__years, cost__recurring, cost__perMetre__amount, cost__perMetre__currency, network_id) VALUES (1, 'wl1', 1, 2022, 0, 25, 'true', 1.75, 'GHS', 1)"
+    )
+    cursor.execute(
+        "INSERT INTO organisations (id, ofds_id, name, network_id) VALUES (1, 'orga', 'Org A', 1)"
+    )
+    cursor.execute(
+        "INSERT INTO relation_spans_wayleaves(base_id, related_id) VALUES (1, 1)"
+    )
+    connection.commit()
+    connection.close()
+
+    # Export
+    data = export_sqlite_to_json(sqlite_filename)
+
+    # Test
+    assert data["networks"][0]["wayleaves"][0] == {
+        "id": "wl1",
+        "grantor": {"id": "orga", "name": "Org A"},
+        "yearSigned": 2022,
+        "term": {"indefinite": False, "years": 25},
+        "cost": {
+            "recurring": True,
+            "perMetre": {"amount": 1.75, "currency": "GHS"},
+        },
+    }
+
+    assert data["networks"][0]["spans"][0]["wayleaves"] == ["wl1"]
+
+
 def test_export_no_geom():
     """
     Export nodes with no geographic features

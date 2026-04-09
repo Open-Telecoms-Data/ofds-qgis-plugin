@@ -92,16 +92,11 @@ Provide non-geographic network features first, so that they can be referenced fr
     2. Select **Toggle multi edit mode**.
     3. Update the information under the **Fields** and **Relations** tabs. See the QGIS documentation on [Editing multiple fields](https://docs.qgis.org/latest/en/docs/user_manual/working_with_vector/attribute_table.html#editing-multiple-fields).
     4. Select **apply changes**.
-6. To delete a span:
+6. To delete a node or span:
     1. Select **Select Features by Area or Single Click**.
-    2. Select the line.
+    2. Select the point or line.
     3. Select **Delete Selected**.
-7. To delete a node:
-    1. Ensure that the node is not the `start` or `end` of any span.
-    2. Select **Select Features by Area or Single Click**.
-    3. Select the line.
-    4. Select **Delete Selected**.
-8. Select **Save edits**.
+7. Select **Save edits**.
    
 #### Edit non-geographic network features
 1. Select one of the **Open Fibre** layers: **networks**, **phases**, **organisations**, or **contracts**.

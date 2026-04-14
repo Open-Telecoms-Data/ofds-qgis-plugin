@@ -1,6 +1,7 @@
 [general]
 name=OFDS Studio
-description=This plugin helps make Open Fibre data.
+description=QGIS plugin for OFDS (Open Fibre Data Standard)
+about=A QGIS plugin for creating, editing and interacting with OFDS (Open Fibre Data Standard) data. OFDS is a data standard for describing terrestrial fibre optic networks, see https://ofds.info/en/ for more.
 version=1.1
 qgisMinimumVersion=3.40
 qgisMaximumVersion=4.99
@@ -8,3 +9,6 @@ supportsQt6=True
 author=Open Data Services
 email=code@opendataservices.coop
 icon=logo.png
+homepage=https://github.com/Open-Telecoms-Data/ofds-qgis-plugin#readme
+repository=https://github.com/Open-Telecoms-Data/ofds-qgis-plugin
+tracker=https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/issues

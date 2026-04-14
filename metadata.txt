@@ -1,5 +1,5 @@
 [general]
-name=Open Fibre
+name=OFDS Studio
 description=This plugin helps make Open Fibre data.
 version=1.1
 qgisMinimumVersion=3.40

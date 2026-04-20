@@ -58,7 +58,7 @@ class ImportJSONToCallable:
             os.path.join(
                 PLUGIN_DIR,
                 "..",
-                "schema_0_3",
+                "schema_0_4",
                 "schema_information.json",
             )
         ) as fp:
@@ -170,6 +170,7 @@ class ImportJSONToCallable:
             "nodes",
             "spans",
             "contracts",
+            "wayleaves",
         ]:
             table_datas = network.get(table_name, [])
             self._standard_id_to_geopackage_id_mappings[table_name] = {}
@@ -283,6 +284,7 @@ class ImportJSONToCallable:
                                 relation_data_id = (
                                     relation_data
                                     if relation.get("codelist")
+                                    or isinstance(relation_data, str)
                                     else relation_data.get("id")
                                 )
                                 if relation_data_id:

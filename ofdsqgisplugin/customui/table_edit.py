@@ -1,9 +1,21 @@
-from PyQt5.QtGui import QFont, QStandardItem, QStandardItemModel
-from PyQt5.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox, QHBoxLayout,
-                             QLabel, QLineEdit, QListView, QListWidget,
-                             QListWidgetItem, QMainWindow, QPushButton,
-                             QScrollArea, QVBoxLayout, QWidget)
 from qgis.core import QgsFeature, QgsJsonUtils
+from qgis.PyQt.QtGui import QFont, QStandardItem, QStandardItemModel
+from qgis.PyQt.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QListView,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QPushButton,
+    QScrollArea,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ..lib import find_layers
 from .base import get_schema_information

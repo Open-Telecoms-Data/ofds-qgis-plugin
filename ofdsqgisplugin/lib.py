@@ -1,8 +1,8 @@
 import json
 import os
 
-from PyQt5.QtCore import QDate, Qt
 from qgis.core import QgsProject, QgsVectorLayer
+from qgis.PyQt.QtCore import QDate, Qt
 
 PLUGIN_DIR = os.path.dirname(__file__)
 
@@ -12,7 +12,7 @@ def find_layers():
     with open(
         os.path.join(
             PLUGIN_DIR,
-            "schema_0_3",
+            "schema_0_4",
             "schema_information.json",
         )
     ) as fp:

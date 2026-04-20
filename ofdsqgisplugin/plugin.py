@@ -77,7 +77,13 @@ class OFDSQGISPlugin:
         # --------------------- custom ui selected features
         if CUSTOM_UI_FEATURE_FLAG:
             self.action_custom_ui_selected_features = QAction(
-                QIcon(os.path.join(os.path.join(PLUGIN_DIR, "button_custom_ui_selected_features.svg"))),
+                QIcon(
+                    os.path.join(
+                        os.path.join(
+                            PLUGIN_DIR, "button_custom_ui_selected_features.svg"
+                        )
+                    )
+                ),
                 "Open UI on selected features",
                 self.iface.mainWindow(),
             )
@@ -139,7 +145,7 @@ class OFDSQGISPlugin:
         )
         # Copy template to desired location
         shutil.copyfile(
-            os.path.join(PLUGIN_DIR, "schema_0_3", "geopackage.gpkg"), filename
+            os.path.join(PLUGIN_DIR, "schema_0_4", "network-schema.gpkg"), filename
         )
         # add layers
         add_layers(filename, self, custom_ui=CUSTOM_UI_FEATURE_FLAG)

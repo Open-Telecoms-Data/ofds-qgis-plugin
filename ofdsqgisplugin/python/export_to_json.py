@@ -13,9 +13,10 @@ START_OF_NETWORK = {
     "phases": [],
     "organisations": [],
     "contracts": [],
+    "wayleaves": [],
     "links": [
         {
-            "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__3__0/schema/network-schema.json",
+            "href": "https://raw.githubusercontent.com/Open-Telecoms-Data/open-fibre-data-standard/0__4__0/schema/network-schema.json",
             "rel": "describedby",
         }
     ],
@@ -54,7 +55,7 @@ class ExportCallableToJSON:
             os.path.join(
                 PLUGIN_DIR,
                 "..",
-                "schema_0_3",
+                "schema_0_4",
                 "schema_information.json",
             )
         ) as fp:
@@ -64,7 +65,8 @@ class ExportCallableToJSON:
         self, data, key, value, column_info={}, open_codelist_ids_to_codes_mappings={}
     ):
         # ------------ data check
-        if not value:
+        # Check for isNull on pyQt QVariant
+        if value is None or (hasattr(value, "isNull") and value.isNull()):
             return
 
         # ------------ setup
@@ -159,13 +161,25 @@ class ExportCallableToJSON:
             }
         # Other tables - first load geopackage id's to json id mapping
         geopackage_id_to_standard_info_mappings = {}
-        for table_name in ["nodes", "spans", "phases", "organisations", "contracts"]:
+        for table_name in [
+            "nodes",
+            "spans",
+            "phases",
+            "organisations",
+            "contracts",
+            "wayleaves",
+        ]:
             geopackage_id_to_standard_info_mappings[table_name] = {}
             for data in self._callable(table_name):
-                geopackage_id_to_standard_info_mappings[table_name][data["id"]] = {
-                    "id": data["ofds_id"],
-                    "name": data["name"] if "name" in data.keys() else None,
-                }
+                if table_name == "wayleaves":
+                    geopackage_id_to_standard_info_mappings[table_name][data["id"]] = (
+                        data["ofds_id"]
+                    )
+                else:
+                    geopackage_id_to_standard_info_mappings[table_name][data["id"]] = {
+                        "id": data["ofds_id"],
+                        "name": data["name"] if "name" in data.keys() else None,
+                    }
         # Other tables - now process
         for table_name, sub_tables in [
             ("nodes", [("internationalConnections", "node_id")]),
@@ -173,6 +187,7 @@ class ExportCallableToJSON:
             ("phases", []),
             ("organisations", []),
             ("contracts", [("documents", "contract_id")]),
+            ("wayleaves", []),
         ]:
             for data in self._callable(table_name):
                 out = {}
@@ -281,7 +296,14 @@ class ExportCallableToJSON:
 
         # Clear empty arrays out of networks
         for network in networks.values():
-            for key in ["nodes", "spans", "phases", "organisations", "contracts"]:
+            for key in [
+                "nodes",
+                "spans",
+                "phases",
+                "organisations",
+                "contracts",
+                "wayleaves",
+            ]:
                 if not network[key]:
                     del network[key]
         # Wrap up

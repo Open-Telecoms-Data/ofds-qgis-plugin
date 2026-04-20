@@ -19,8 +19,8 @@ def _get_and_setup_sqlite_filename():
             PLUGIN_DIR,
             "..",
             "ofdsqgisplugin",
-            "schema_0_3",
-            "geopackage.gpkg",
+            "schema_0_4",
+            "network-schema.gpkg",
         ),
         sqlite_filename,
     )
@@ -74,7 +74,7 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
     """
     Tests a network with an org and a node.
 
-    The org is in the node's networkProviders, and physicalInfrastructureProvider - this tests different ways there could be a link.
+    The org is in the node's networkProviders, and transmissionMediumOwner - this tests different ways there could be a link.
     """
     sqlite_filename = _get_and_setup_sqlite_filename()
 
@@ -87,7 +87,7 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
         "INSERT INTO organisations (ofds_id, name, network_id) VALUES ('orga', 'Org A', 1)"
     )
     cursor.execute(
-        "INSERT INTO nodes (ofds_id, name, network_id, geom, physicalInfrastructureProvider) VALUES ('nodea', 'Node A', 1, '{}', 1)"
+        "INSERT INTO nodes (ofds_id, name, network_id, geom, transmissionMediumOwner) VALUES ('nodea', 'Node A', 1, '{}', 1)"
     )
     cursor.execute(
         "INSERT INTO relation_nodes_networkProviders(base_id, related_id) VALUES (1, 1)"
@@ -108,7 +108,7 @@ def test_export_network_with_id_and_organisation_and_node_and_org_and_node_linke
         "id": "orga",
         "name": "Org A",
     }
-    assert data["networks"][0]["nodes"][0]["physicalInfrastructureProvider"] == {
+    assert data["networks"][0]["nodes"][0]["transmissionMediumOwner"] == {
         "id": "orga",
         "name": "Org A",
     }
@@ -130,20 +130,16 @@ def test_export_contract_documents_1():
         "INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network'),('worky', 'Network')"
     )
     # TODO Hard coding the id's is a bit of an assumption but we are getting away with it
-    cursor.execute(
-        """
+    cursor.execute("""
         INSERT INTO contracts (ofds_id, title, network_id) 
         VALUES ('contracta', 'Contract A', 1),('contractb', 'Contract B', 1), 
         ('contracta', 'Contract A', 2),('contractb', 'Contract B', 2)
-        """
-    )
-    cursor.execute(
-        """
+        """)
+    cursor.execute("""
         INSERT INTO contracts_documents (title, network_id, contract_id) 
         VALUES ('documenta', 1, 1),('documentb', 1, 2),
         ('documentc', 2, 3),('documentd', 2, 4)
-        """
-    )
+        """)
 
     connection.commit()
     connection.close()
@@ -271,6 +267,49 @@ def test_span_with_start_and_end_set_1():
         "start": "node1",
         "end": "node2",
     }
+
+
+def test_export_wayleaves():
+    sqlite_filename = _get_and_setup_sqlite_filename()
+
+    # Set Some data
+    connection = sqlite3.connect(sqlite_filename)
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO networks (ofds_id, name) VALUES ('netty', 'Network')")
+    cursor.execute(
+        "INSERT INTO nodes (network_id, ofds_id, geom) VALUES (1, 'node1', '{}'), (1, 'node2','{}')"
+    )
+    cursor.execute(
+        "INSERT INTO spans (ofds_id, network_id, start, end, geom) VALUES ('span1to2', 1, 1, 2, '{}')",
+    )
+    cursor.execute(
+        "INSERT INTO wayleaves (id, ofds_id, grantor, yearSigned, term__indefinite, term__years, cost__recurring, cost__perMetre__amount, cost__perMetre__currency, network_id) VALUES (1, 'wl1', 1, 2022, 0, 25, 'true', 1.75, 'GHS', 1)"
+    )
+    cursor.execute(
+        "INSERT INTO organisations (id, ofds_id, name, network_id) VALUES (1, 'orga', 'Org A', 1)"
+    )
+    cursor.execute(
+        "INSERT INTO relation_spans_wayleaves(base_id, related_id) VALUES (1, 1)"
+    )
+    connection.commit()
+    connection.close()
+
+    # Export
+    data = export_sqlite_to_json(sqlite_filename)
+
+    # Test
+    assert data["networks"][0]["wayleaves"][0] == {
+        "id": "wl1",
+        "grantor": {"id": "orga", "name": "Org A"},
+        "yearSigned": 2022,
+        "term": {"indefinite": False, "years": 25},
+        "cost": {
+            "recurring": True,
+            "perMetre": {"amount": 1.75, "currency": "GHS"},
+        },
+    }
+
+    assert data["networks"][0]["spans"][0]["wayleaves"] == ["wl1"]
 
 
 def test_export_no_geom():

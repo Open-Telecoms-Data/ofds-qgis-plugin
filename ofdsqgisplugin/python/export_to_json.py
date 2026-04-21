@@ -27,6 +27,9 @@ START_OF_NETWORK = {
 }
 
 
+# Note: this function is only called from the tests, not from the qgis plugin
+# If it is to be used outside the tests, we should review the nosec comments below
+# (remove them and run this file with bandit for more information)
 def export_sqlite_to_json(sqlite_filename):
     # Setup
     connection = sqlite3.connect(sqlite_filename)
@@ -35,7 +38,7 @@ def export_sqlite_to_json(sqlite_filename):
 
     # Start
     def callable(table_name):
-        cursor.execute("SELECT * FROM " + table_name)
+        cursor.execute("SELECT * FROM " + table_name)  # nosec B608
         return cursor.fetchall()
 
     data = ExportCallableToJSON(callable).go()

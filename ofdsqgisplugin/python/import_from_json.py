@@ -6,6 +6,9 @@ import uuid
 PLUGIN_DIR = os.path.dirname(__file__)
 
 
+# Note: this function is only called from the tests, not from the qgis plugin
+# If it is to be used outside the tests, we should review the nosec comments below
+# (remove them and run this file with bandit for more information)
 def import_json_to_sqlite(
     json_data_to_import, sqlite_filename, enforce_foreign_keys=False
 ):
@@ -20,7 +23,7 @@ def import_json_to_sqlite(
     def callable_write(table_name, data):
         cursor.execute(
             "INSERT INTO "
-            + table_name
+            + table_name  # nosec B608
             + " ("
             + ",".join([i[0] for i in data])
             + ") VALUES ("
@@ -33,7 +36,7 @@ def import_json_to_sqlite(
         return cursor.fetchone()[0]
 
     def callable_read(table_name):
-        cursor.execute("SELECT * FROM " + table_name)
+        cursor.execute("SELECT * FROM " + table_name)  # nosec B608
         return cursor.fetchall()
 
     import_json_to_callable = ImportJSONToCallable(

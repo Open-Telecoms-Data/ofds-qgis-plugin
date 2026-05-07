@@ -50,6 +50,15 @@ You'll also want to search for the following plugins and activate them:
 * *First Aid* - Get a nice debug page when your python crashes
 * *Plugin Reloader* - Easy button to reload plugin without restarting QGIS
 
+## Uploading a new version to the plugin repository
+
+* Download the zip from https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/archive/refs/heads/main.zip
+* Edit the zip to have `ofds_studio` as the top level directory (any valid python module name should work, but dashes are not allowed)
+* Test the edited zip in QGIS
+* Upload the zip to https://plugins.qgis.org/plugins/ofds_studio/version/add/
+* The plugin should contain a Changelog, so you don't need to fill one here
+* You should be able to check off everything in the Pre-upload Checklist (true as of 2026-05-06, they may add extra)
+
 ## Linting
 
 Please black and isort the python code - we don't have C.I. set up for this yet.

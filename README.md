@@ -34,7 +34,7 @@ See the QGIS documentation for [full guidance](https://docs.qgis.org/latest/en/d
 1. Select **Create OFDS GeoPackage** <img src="https://raw.githubusercontent.com/Open-Telecoms-Data/ofds-qgis-plugin/refs/heads/main/ofdsqgisplugin/button_add.svg">. 
 2. Save the geopackage (.gpkg) file to your system. This creates an **Open Fibre** group of layers.
 3. Add a base map for context. For example, from the **Browser panel** > **XYZ Tiles** drag the **OpenStreetMap** layer onto your map. Ensure the map is under the **Open Fibre** layer group.
-4. To import existing OFDS JSON data:
+4. To import existing OFDS JSON data, for example downloaded from the [OFDS public data repository](https://github.com/Open-Telecoms-Data/OFDS-public-data):
     1. Select **Import JSON** <img src="https://raw.githubusercontent.com/Open-Telecoms-Data/ofds-qgis-plugin/refs/heads/main/ofdsqgisplugin/button_import_json.svg">. 
     2. Select and open your chosen OFDS JSON file. This adds network data to the **Open Fibre** layer group.
 

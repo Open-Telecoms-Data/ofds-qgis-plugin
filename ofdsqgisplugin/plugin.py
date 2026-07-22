@@ -2,7 +2,7 @@ import json
 import os
 import shutil
 
-from qgis.core import QgsProject
+from qgis.core import QgsCoordinateReferenceSystem, QgsProject
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QFileDialog
 
@@ -123,10 +123,10 @@ class OFDSQGISPlugin:
         # The data standard says it should be OGC:CRS84
         # https://standard.ofds.info/en/0.1-dev/reference/schema.html?highlight=wgs84#coordinatereferencesystem
         if QgsProject.instance().crs().authid() not in ["OGC:CRS84", "EPSG:4326"]:
-            self.iface.messageBar().pushMessage(
-                "Can only use OFDS with projects in the OGC:CRS84 or EPSG:4326 coordinate reference system (CRS). Please change your coordinate reference system."
-            )
-            return
+            QgsProject.instance().setCrs(QgsCoordinateReferenceSystem("EPSG:4326"))
+            crs_switch = True
+        else:
+            crs_switch = False
         # check already has layers
         layers = find_layers()
         if layers:
@@ -149,6 +149,10 @@ class OFDSQGISPlugin:
         )
         # add layers
         add_layers(filename, self, custom_ui=CUSTOM_UI_FEATURE_FLAG)
+        message = "OFDS layers addded."
+        if crs_switch:
+            message += " Automatically switching project CRS to EPSG:4326."
+        self.iface.messageBar().pushMessage(message)
 
     def export_json(self):
         # get data and check it

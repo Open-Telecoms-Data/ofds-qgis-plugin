@@ -54,6 +54,7 @@ You'll also want to search for the following plugins and activate them:
 
 * Download the zip from https://github.com/Open-Telecoms-Data/ofds-qgis-plugin/archive/refs/heads/main.zip
 * Edit the zip to have `ofds_studio` as the top level directory (any valid python module name should work, but dashes are not allowed)
+* Edit the zip to delete the `tests` directory
 * Test the edited zip in QGIS
 * Upload the zip to https://plugins.qgis.org/plugins/ofds_studio/version/add/
 * The plugin should contain a Changelog, so you don't need to fill one here
